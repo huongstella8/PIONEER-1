@@ -118,13 +118,16 @@ function norm(s){
     .replace(/[.,!?;:]+$/,'').trim();
 }
 function noap(s){return norm(s).replace(/'/g,'').replace(/\s+/g,' ').trim();}
+// punctuation-insensitive form: drop . , ! ? ; : ' " anywhere (for word-order phrases like "Oh no! What a shame!")
+function nopunc(s){return norm(s).replace(/[.,!?;:'"]/g,'').replace(/\s+/g,' ').trim();}
 
 function matches(userRaw, accepts){
-  const u = norm(userRaw), un = noap(userRaw);
+  const u = norm(userRaw), un = noap(userRaw), up = nopunc(userRaw);
   if(u==='') return false;               // an empty box is never correct (must type '-' for no article)
   for(const a of accepts){
     if(u===norm(a)) return true;
     if(un===noap(a)) return true;
+    if(up===nopunc(a)) return true;
   }
   return false;
 }
