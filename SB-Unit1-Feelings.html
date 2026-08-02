@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student&#x27;s Book — Unit 1: Feelings</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--pur:#7a1f6b;--pur2:#a5228e;--org:#f39200;--ink:#222;--line:#e3d7e0;--ok:#1a8f43;--no:#c62828;--bg:#faf7fa;}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+header.top{background:linear-gradient(120deg,var(--pur),var(--pur2));color:#fff;padding:16px 28px 20px}
+header.top .brand{font-size:12px;font-weight:800;letter-spacing:.32em;opacity:.92;margin-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:9px;display:inline-block}
+header.top h1{margin:0;font-size:22px}
+header.top p{margin:4px 0 0;opacity:.9;font-size:13px}
+.savebar{margin-top:10px;font-size:13px;color:var(--pur);background:#f4eef3;border:1px solid var(--line);
+  border-radius:8px;padding:7px 11px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px 120px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.panel h3{margin:.1em 0 .5em;color:var(--pur)}
+.namebar{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.namebar label{font-weight:600;font-size:14px}
+.namebar input{padding:8px 10px;border:1px solid #bbb;border-radius:8px;font-size:14px}
+.attempt{margin-left:auto;font-size:13px;color:#555}
+.attempt b{color:var(--pur)}
+.lesson{margin:26px 0}
+.lesson>h2{background:var(--pur);color:#fff;padding:9px 14px;border-radius:9px;font-size:18px;display:flex;align-items:center;gap:10px}
+.lcode{background:#fff;color:var(--pur);border-radius:6px;padding:2px 9px;font-weight:800}
+.ltag{margin-left:auto;font-size:12px;font-weight:400;opacity:.85;text-transform:uppercase;letter-spacing:.06em}
+.exercise{background:#fff;border:1px solid var(--line);border-left:5px solid var(--org);border-radius:10px;padding:14px 16px;margin:14px 0}
+.exhead{display:flex;align-items:baseline;gap:8px}
+.excode{background:var(--org);color:#fff;font-weight:700;border-radius:5px;padding:1px 8px;font-size:13px}
+.extitle{font-weight:700}
+.instr{margin:.4em 0 .7em;color:#444;font-size:14px}
+.qrow{padding:5px 0;font-size:15px}
+.qnum{display:inline-block;min-width:22px;font-weight:700;color:var(--pur)}
+.order .scramble{font-style:italic;color:#555}
+input.field,select.field{font-size:14px;padding:4px 7px;border:1px solid #b8a9b4;border-radius:6px;background:#fffdfe;margin:2px 3px}
+input.field:focus,select.field:focus{outline:2px solid var(--pur2)}
+.field.correct{border-color:var(--ok);background:#eaffef}
+.field.wrong{border-color:var(--no);background:#ffecec}
+.correction{color:var(--ok);font-size:13px;font-weight:600;margin-left:6px;white-space:nowrap}
+.correction.miss{color:var(--no)}
+.exfoot{margin-top:10px;display:flex;align-items:center;gap:12px}
+.checkBtn{background:var(--pur);color:#fff;border:0;border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer}
+.checkBtn:hover{background:var(--pur2)}
+.exResult{font-weight:700;font-size:14px}
+.reading{background:#f4eef3;border:1px dashed #c9b6c6;border-radius:8px;padding:10px 14px;margin:6px 0 12px;font-size:14px}
+.reading h4{margin:.1em 0 .4em;color:var(--pur)}
+.reading p{margin:.4em 0}
+.listen{margin:6px 0 12px}
+.listenHead{font-size:13.5px;background:#eef4ea;border:1px solid #cbe0c1;border-radius:8px;padding:8px 12px;margin-bottom:8px}
+.transcript{margin:0;font-size:13.5px}
+.transcript summary{cursor:pointer;display:inline-block;background:var(--pur);color:#fff;border-radius:8px;
+  padding:6px 14px;font-weight:600;font-size:13px;list-style:none;user-select:none}
+.transcript summary::-webkit-details-marker{display:none}
+.transcript summary::before{content:'▶ '}
+.transcript[open] summary::before{content:'▼ '}
+.transcript[open] summary{background:var(--pur2)}
+.transcript>div{background:#f4eef3;border-radius:8px;padding:10px 14px;margin-top:8px}
+.actionbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--pur);
+  padding:12px 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;box-shadow:0 -2px 8px rgba(0,0,0,.08);z-index:50}
+.actionbar .score{font-weight:800;font-size:16px;color:var(--pur);margin-right:auto}
+.btn{border:0;border-radius:9px;padding:10px 16px;font-size:14px;cursor:pointer;font-weight:600}
+.btn.grade{background:var(--org);color:#fff}
+.btn.pdf{background:var(--pur);color:#fff}
+.btn.mail{background:#1769aa;color:#fff}
+.btn.reset{background:#eee;color:#444}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.noteHead{font-weight:700;color:var(--pur);font-size:13px;margin:12px 0 4px}
+.note{font-size:13px;color:#555;margin:0;padding-left:20px}
+.note li{margin:5px 0}
+.src{text-align:center;color:#cbbcc6;font-size:11px;font-style:italic;letter-spacing:.02em;margin:38px 0 4px}
+@media(max-width:640px){.actionbar{flex-direction:column;align-items:stretch}.actionbar .score{margin:0 0 4px}}
+</style></head><body>
+<header class="top"><div class="brand">HUONG&nbsp;STELLA&nbsp;PARADIGM&nbsp;&nbsp;|&nbsp;&nbsp;PIONEER&nbsp;SERIES</div><h1>Student&#x27;s Book — Unit 1: Feelings</h1></header>
+<div class="wrap">
+  <div class="panel">
+    <div class="namebar">
+      <label for="sname">Your name:</label>
+      <input id="sname" type="text" placeholder="Full name" style="min-width:180px">
+      <label for="semail">Email:</label>
+      <input id="semail" type="email" placeholder="you@example.com" style="min-width:210px">
+      <span class="attempt" id="attLbl"></span>
+    </div>
+    <div class="savebar" id="saveLbl">Enter your email to save your progress and continue later.</div>
+    <p class="noteHead">How this worksheet works</p>
+    <ul class="note">
+      <li>Type your <b>name</b> and <b>email</b>, then answer the questions.</li>
+      <li>Your work is <b>saved automatically to your email</b> — if you can't finish in one go, just reopen the page and type the same email to restore your answers.</li>
+      <li>Press <b>Check</b> on an exercise or <b>Grade all</b> to see right (green) / wrong (red). <b>Answers are not shown on screen</b>, so you can try again.</li>
+      <li>Download the <b>PDF report</b> (with your <b>attempt number</b>) and submit it to your teacher (huongstella8@gmail.com).</li>
+      <li>The report shows the correct answers only if you score <b>70% or more</b>; below that you are asked to redo.</li>
+      <li>Each <b>listening</b> task tells you which <b>audio track</b> to play from the link your teacher shares on Google Classroom; the transcript stays hidden behind a <b>Show transcript</b> button so you can check it only after listening.</li>
+    </ul>
+  </div>
+  <section class="lesson"><h2><span class="lcode">1A</span> How do you feel? <span class="ltag">Vocabulary</span></h2><div class="exercise" data-exid="1A · Ex 3" data-title="Positive or negative feelings"><div class="exhead"><span class="excode">1A · Ex 3</span><span class="extitle">Positive or negative feelings</span></div><p class="instr">Put each adjective into the correct category.</p><div class="qrow"><span class="qnum">1</span> delighted &nbsp; <select class="field" data-accept='[&quot;Positive&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">2</span> excited &nbsp; <select class="field" data-accept='[&quot;Positive&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">3</span> proud &nbsp; <select class="field" data-accept='[&quot;Positive&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">4</span> relieved &nbsp; <select class="field" data-accept='[&quot;Positive&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">5</span> anxious &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">6</span> ashamed &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">7</span> bored &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">8</span> confused &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">9</span> cross &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">10</span> disappointed &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">11</span> embarrassed &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">12</span> envious &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">13</span> frightened &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">14</span> shocked &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">15</span> suspicious &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="qrow"><span class="qnum">16</span> upset &nbsp; <select class="field" data-accept='[&quot;Negative&quot;]'><option value="">—</option><option value="Positive">Positive</option><option value="Negative">Negative</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="1A · Ex 5" data-title="Complete the hashtags"><div class="exhead"><span class="excode">1A · Ex 5</span><span class="extitle">Complete the hashtags</span></div><p class="instr">Complete each tweet's hashtag with a suitable adjective. (Tweet 1 = #envious, given.)</p><div class="qrow"><span class="qnum">2</span> Amy Price: There&#x27;s nothing to do here. # <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;bored&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">3</span> Student Voice: It&#x27;s our end-of-term party tonight!! # <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;excited&quot;, &quot;relieved&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">4</span> MaryGG: Our English teacher is away so we haven&#x27;t got a test :D # <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;delighted&quot;, &quot;relieved&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">5</span> Music Mad: My new MP3 player doesn&#x27;t work. # <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;cross&quot;, &quot;upset&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">6</span> Dan B: Oops! Dropped a plate of food in the school canteen. # <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;embarrassed&quot;]' style="width:150px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">1B</span> Past simple (affirmative) <span class="ltag">Grammar</span></h2><div class="exercise" data-exid="1B · Ex 4" data-title="Complete with past simple forms"><div class="exhead"><span class="excode">1B · Ex 4</span><span class="extitle">Complete with past simple forms</span></div><p class="instr">Use the correct past simple verbs from the story.</p><div class="qrow"><span class="qnum">1</span> She won millions on the lottery. She <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;spent&quot;]' style="width:150px"> all the money in only three years.</div><div class="qrow"><span class="qnum">2</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dropped&quot;]' style="width:150px"> my keys in the street. Luckily, I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;found&quot;]' style="width:150px"> them later.</div><div class="qrow"><span class="qnum">3</span> Our cousin <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;went&quot;]' style="width:150px"> to university when he was only fifteen. He <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;studied&quot;]' style="width:150px"> maths there.</div><div class="qrow"><span class="qnum">4</span> My grandfather <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;married&quot;]' style="width:150px"> my grandmother in 1965 and they <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;were&quot;]' style="width:150px"> together until she died last year.</div><div class="qrow"><span class="qnum">5</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;left&quot;]' style="width:150px"> home when I was nineteen and <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;moved&quot;]' style="width:150px"> to London.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="1B · Ex 5" data-title="Complete the text (Michael Carroll)"><div class="exhead"><span class="excode">1B · Ex 5</span><span class="extitle">Complete the text (Michael Carroll)</span></div><p class="instr">Write the past simple form of each verb in brackets.</p><div class="reading"><h4>The lottery winner</h4><p>In 2002, nineteen-year-old British refuse collector Michael Carroll and his family <b>1</b>___ (be) delighted when he <b>2</b>___ (win) £9.7 million in the lottery. He <b>3</b>___ (give) millions of pounds to charity and to friends and relatives. He also <b>4</b>___ (spend) thousands on loud, all-night parties, and over the next few years, he <b>5</b>___ (get) into trouble with the police several times. His wife Sandra <b>6</b>___ (be) cross and upset and <b>7</b>___ (decide) to leave. Soon, he <b>8</b>___ (have) no money left, and in 2010, he <b>9</b>___ (begin) work as a refuse collector again. 'I'm just glad it's over,' he <b>10</b>___ (say).</p></div><div class="qrow"><span class="qnum">1</span> 1 (be) → &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;were&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">2</span> 2 (win) → &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;won&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">3</span> 3 (give) → &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;gave&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">4</span> 4 (spend) → &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;spent&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">5</span> 5 (get) → &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;got&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">6</span> 6 (be) → &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;was&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">7</span> 7 (decide) → &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;decided&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">8</span> 8 (have) → &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;had&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">9</span> 9 (begin) → &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;began&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">10</span> 10 (say) → &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;said&quot;]' style="width:120px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="1B · Ex 7" data-title="Adjectives + past simple"><div class="exhead"><span class="excode">1B · Ex 7</span><span class="extitle">Adjectives + past simple</span></div><p class="instr">Complete with an adjective (bored, delighted, disappointed, embarrassed, relieved, suspicious, upset) and the past simple of the verb in brackets.</p><div class="qrow"><span class="qnum">2</span> Spencer <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;was&quot;]' style="width:150px"> (be) <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;embarrassed&quot;]' style="width:150px"> when he <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dropped&quot;]' style="width:150px"> (drop) his money on the floor of the shop.</div><div class="qrow"><span class="qnum">3</span> Bess <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;was&quot;]' style="width:150px"> (be) <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;delighted&quot;]' style="width:150px"> when she <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;won&quot;]' style="width:150px"> (win) the essay competition.</div><div class="qrow"><span class="qnum">4</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;felt&quot;]' style="width:150px"> (feel) a bit <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;suspicious&quot;]' style="width:150px"> when the man <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;said&quot;]' style="width:150px"> (say) he was a millionaire.</div><div class="qrow"><span class="qnum">5</span> We <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;were&quot;]' style="width:150px"> (be) very <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;disappointed&quot;]' style="width:150px"> when the music <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;stopped&quot;]' style="width:150px"> (stop) and everyone <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;left&quot;]' style="width:150px"> (leave).</div><div class="qrow"><span class="qnum">6</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;got&quot;]' style="width:150px"> (get) a bit <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;bored&quot;]' style="width:150px"> because Dan <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;talked&quot;]' style="width:150px"> (talk) about his new girlfriend all evening.</div><div class="qrow"><span class="qnum">7</span> You <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;were&quot;]' style="width:150px"> (be) extremely <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;relieved&quot;]' style="width:150px"> when we <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;found&quot;]' style="width:150px"> (find) your mobile phone behind the sofa.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">1C</span> Problems, problems! <span class="ltag">Listening</span></h2><div class="exercise" data-exid="1C · Ex 6" data-title="Complete the collocations"><div class="exhead"><span class="excode">1C · Ex 6</span><span class="extitle">Complete the collocations</span></div><p class="instr">Complete with: give, have, make, take, tell. (Dialogue A: 1 make a plan, 2 take a break — given.)</p><div class="qrow"><span class="qnum">3</span> Dialogue B:  <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;take&quot;]' style="width:150px"> offence</div><div class="qrow"><span class="qnum">4</span> Dialogue B:  <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;give&quot;]' style="width:150px"> somebody a call</div><div class="qrow"><span class="qnum">5</span> Dialogue C:  <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;tell&quot;]' style="width:150px"> the truth</div><div class="qrow"><span class="qnum">6</span> Dialogue C:  <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;have&quot;]' style="width:150px"> a word (with somebody)</div><div class="qrow"><span class="qnum">7</span> Dialogue D:  <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;make&quot;]' style="width:150px"> an excuse</div><div class="qrow"><span class="qnum">8</span> Dialogue D:  <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;tell&quot;]' style="width:150px"> a lie</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">1D</span> Past simple (negative and interrogative) <span class="ltag">Grammar</span></h2><div class="exercise" data-exid="1D · Ex 3" data-title="Complete the rules"><div class="exhead"><span class="excode">1D · Ex 3</span><span class="extitle">Complete the rules</span></div><p class="instr">Complete with did / didn't / did not, be and can.</p><div class="qrow"><span class="qnum">a</span> We form the negative of the past simple with <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did not&quot;, &quot;didn&#x27;t&quot;]' style="width:150px"> and the infinitive without &lt;i&gt;to&lt;/i&gt;.</div><div class="qrow"><span class="qnum">b</span> We form the interrogative of the past simple with <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did&quot;]' style="width:150px"> and the infinitive without &lt;i&gt;to&lt;/i&gt;.</div><div class="qrow"><span class="qnum">c1</span> We do not use did / didn&#x27;t with the verb <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;be&quot;, &quot;was&quot;, &quot;were&quot;, &quot;was / were&quot;, &quot;was/were&quot;]' style="width:150px"> …</div><div class="qrow"><span class="qnum">c2</span> … or the verb <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;can&quot;, &quot;could&quot;, &quot;couldn&#x27;t&quot;, &quot;could / couldn&#x27;t&quot;, &quot;could/couldn&#x27;t&quot;]' style="width:150px"> .</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="1D · Ex 4" data-title="Make the sentences negative"><div class="exhead"><span class="excode">1D · Ex 4</span><span class="extitle">Make the sentences negative</span></div><p class="instr">Rewrite each sentence in the negative.</p><div class="qrow order"><span class="qnum">2</span> <span class="scramble">I could walk when I was one year old. → (make negative)</span><br><input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;I couldn&#x27;t walk when I was one year old&quot;, &quot;I could not walk when I was one year old&quot;]' style="width:560px"></div><div class="qrow order"><span class="qnum">3</span> <span class="scramble">I walked home from school yesterday. → (make negative)</span><br><input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;I didn&#x27;t walk home from school yesterday&quot;, &quot;I did not walk home from school yesterday&quot;]' style="width:560px"></div><div class="qrow order"><span class="qnum">4</span> <span class="scramble">My teacher gave us lots of homework last weekend. → (make negative)</span><br><input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;My teacher didn&#x27;t give us lots of homework last weekend&quot;, &quot;My teacher did not give us lots of homework last weekend&quot;]' style="width:560px"></div><div class="qrow order"><span class="qnum">5</span> <span class="scramble">It was hot and sunny yesterday. → (make negative)</span><br><input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;It wasn&#x27;t hot and sunny yesterday&quot;, &quot;It was not hot and sunny yesterday&quot;]' style="width:560px"></div><div class="qrow order"><span class="qnum">6</span> <span class="scramble">I got up before seven o&#x27;clock this morning. → (make negative)</span><br><input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;I didn&#x27;t get up before seven o&#x27;clock this morning&quot;, &quot;I did not get up before seven o&#x27;clock this morning&quot;]' style="width:560px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="1D · Ex 5" data-title="Complete the dialogue"><div class="exhead"><span class="excode">1D · Ex 5</span><span class="extitle">Complete the dialogue</span></div><p class="instr">Use the affirmative, negative or interrogative past simple.</p><div class="qrow"><span class="qnum">1</span> Sam: You <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;didn&#x27;t leave&quot;, &quot;did not leave&quot;]' style="width:150px"> (not leave) your mobile at the cinema.</div><div class="qrow"><span class="qnum">2</span> Sam: You <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;lent&quot;]' style="width:150px"> (lend) it to me, remember?</div><div class="qrow"><span class="qnum">3</span> Sam: I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;didn&#x27;t give&quot;, &quot;did not give&quot;]' style="width:150px"> (not give) it back to you.</div><div class="qrow"><span class="qnum">4</span> Sam: I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;left&quot;]' style="width:150px"> (leave) it on the bus yesterday evening.</div><div class="qrow"><span class="qnum">5</span> Anna: What <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did you do&quot;]' style="width:150px"> (you / do)?</div><div class="qrow"><span class="qnum">6</span> Anna: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did you ring&quot;]' style="width:150px"> (you / ring) the bus company?</div><div class="qrow"><span class="qnum">7</span> Sam: Yes, I did, but they <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;couldn&#x27;t&quot;, &quot;could not&quot;]' style="width:150px"> (not can) find it.</div><div class="qrow"><span class="qnum">8</span> Sam: It <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;wasn&#x27;t&quot;, &quot;was not&quot;]' style="width:150px"> (not be) on the bus.</div><div class="qrow"><span class="qnum">9</span> Sam: I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;phoned&quot;]' style="width:150px"> (phone) your number …</div><div class="qrow"><span class="qnum">10</span> Anna: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did anyone answer&quot;]' style="width:150px"> (anyone / answer)?</div><div class="qrow"><span class="qnum">11</span> Anna: Why <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did she have&quot;]' style="width:150px"> (she / have) my phone?</div><div class="qrow"><span class="qnum">12</span> Anna: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;was she&quot;]' style="width:150px"> (she / be) on the bus with you?</div><div class="qrow"><span class="qnum">13</span> Sam: Yes. She <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;picked&quot;]' style="width:150px"> (pick) it up by mistake.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="1D · Ex 7" data-title="Complete the yes/no and follow-up questions"><div class="exhead"><span class="excode">1D · Ex 7</span><span class="extitle">Complete the yes/no and follow-up questions</span></div><p class="instr">Use the past simple interrogative. (Q1 = Did you watch TV? What did you watch? — given.)</p><div class="qrow"><span class="qnum">2</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did you go&quot;]' style="width:150px"> out on Friday or Saturday evening? Where <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did you go&quot;]' style="width:150px">?</div><div class="qrow"><span class="qnum">3</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did you see&quot;]' style="width:150px"> anyone on Saturday or Sunday? Who <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did you see&quot;]' style="width:150px">?</div><div class="qrow"><span class="qnum">4</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did you do&quot;]' style="width:150px"> any homework? When <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did you do it&quot;]' style="width:150px">?</div><div class="qrow"><span class="qnum">5</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did you play&quot;]' style="width:150px"> computer games? Which <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;games did you play&quot;]' style="width:150px">?</div><div class="qrow"><span class="qnum">6</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;did you do&quot;]' style="width:150px"> any sport? What <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;sport did you do&quot;]' style="width:150px">?</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">1E</span> Adjective endings <span class="ltag">Word Skills</span></h2><div class="exercise" data-exid="1E · Ex 7" data-title="Circle the correct adjective"><div class="exhead"><span class="excode">1E · Ex 7</span><span class="extitle">Circle the correct adjective</span></div><p class="instr">Choose the -ed or -ing form.</p><div class="qrow"><span class="qnum">1</span> I don&#x27;t like this film. It&#x27;s ___ . &nbsp; <select class="field" data-accept='[&quot;boring&quot;]'><option value="">—</option><option value="bored">bored</option><option value="boring">boring</option></select></div><div class="qrow"><span class="qnum">2</span> I don&#x27;t find computer games very ___ . &nbsp; <select class="field" data-accept='[&quot;exciting&quot;]'><option value="">—</option><option value="excited">excited</option><option value="exciting">exciting</option></select></div><div class="qrow"><span class="qnum">3</span> Don&#x27;t be ___ . The dog won&#x27;t bite. &nbsp; <select class="field" data-accept='[&quot;frightened&quot;]'><option value="">—</option><option value="frightened">frightened</option><option value="frightening">frightening</option></select></div><div class="qrow"><span class="qnum">4</span> I was ___ when I heard the news. &nbsp; <select class="field" data-accept='[&quot;shocked&quot;]'><option value="">—</option><option value="shocked">shocked</option><option value="shocking">shocking</option></select></div><div class="qrow"><span class="qnum">5</span> It&#x27;s really ___ when you interrupt. &nbsp; <select class="field" data-accept='[&quot;annoying&quot;]'><option value="">—</option><option value="annoyed">annoyed</option><option value="annoying">annoying</option></select></div><div class="qrow"><span class="qnum">6</span> Why are you looking so ___ ? &nbsp; <select class="field" data-accept='[&quot;worried&quot;]'><option value="">—</option><option value="worried">worried</option><option value="worrying">worrying</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="1E · Ex 8" data-title="Complete with -ed / -ing adjectives"><div class="exhead"><span class="excode">1E · Ex 8</span><span class="extitle">Complete with -ed / -ing adjectives</span></div><p class="instr">Form the correct adjective from the verb in brackets.</p><div class="qrow"><span class="qnum">1a</span> I don&#x27;t understand this map. It&#x27;s very <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;confusing&quot;]' style="width:150px"> (confuse).</div><div class="qrow"><span class="qnum">1b</span> Can you help me with my maths? I&#x27;m <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;confused&quot;]' style="width:150px"> (confuse).</div><div class="qrow"><span class="qnum">2a</span> I was <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;embarrassed&quot;]' style="width:150px"> when I fell over. (embarrass)</div><div class="qrow"><span class="qnum">2b</span> I hate it when my dad dances. It&#x27;s so <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;embarrassing&quot;]' style="width:150px">! (embarrass)</div><div class="qrow"><span class="qnum">3a</span> That journey was very <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;tiring&quot;]' style="width:150px"> . (tire)</div><div class="qrow"><span class="qnum">3b</span> I was <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;tired&quot;]' style="width:150px"> after a long day at school. (tire)</div><div class="qrow"><span class="qnum">4a</span> Are you <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;interested&quot;]' style="width:150px"> in photography? (interest)</div><div class="qrow"><span class="qnum">4b</span> Which is the most <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;interesting&quot;]' style="width:150px"> lesson in this unit? (interest)</div><div class="qrow"><span class="qnum">5a</span> Yuck! This cheese smells <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;disgusting&quot;]' style="width:150px">! (disgust)</div><div class="qrow"><span class="qnum">5b</span> She was <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;disgusted&quot;]' style="width:150px"> by his bad behaviour. (disgust)</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">1F</span> Painless <span class="ltag">Reading</span></h2><div class="exercise" data-exid="1F · Ex 3" data-title="Match the questions with the paragraphs"><div class="exhead"><span class="excode">1F · Ex 3</span><span class="extitle">Match the questions with the paragraphs</span></div><p class="instr">In which paragraph (A–E) does the writer tell us …? Choose 'none' if there is no matching paragraph.</p><div class="reading"><h4>A life without pain</h4><p><b>A</b> All children hurt themselves from time to time. But when thirteen-year-old Ashlyn Blocker was younger, she had more accidents and injuries than her friends. For example, she once put her hands on a very hot engine and got a serious burn. She only knew about it when she looked at her skin. Ashlyn simply did not know when she injured herself.</p><p><b>B</b> When Ashlyn was a baby, her parents knew she was different: she didn't cry. When she was eight months old, they noticed some blood in her eye and took her to a doctor. The doctor was shocked and confused: there was a serious cut, but the baby wasn't upset. Doctors realised Ashlyn had a very unusual medical condition: she couldn't feel any pain.</p><p><b>C</b> This condition is very rare: only about a hundred people a year in the USA are born with it, and many of them die because of it. Pain is a natural warning: when you're ill or injured, your body hurts. People who can't feel pain often die young because when they break a bone or have a heart problem, they just don't realise.</p><p><b>D</b> The first few years of Ashlyn's life were very difficult. She often tripped and injured herself. At school, a teacher watched Ashlyn all the time to keep her safe.</p><p><b>E</b> When she was five, Ashlyn's story appeared in newspapers. She had invitations to appear on TV shows and became well known. Scientists studied her condition and found it was a genetic disorder: pain signals do not reach her brain. Unfortunately, there is no cure.</p></div><div class="qrow"><span class="qnum">1</span> when doctors realised Ashlyn had a medical problem &nbsp; <select class="field" data-accept='[&quot;B&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="qrow"><span class="qnum">2</span> what causes her condition &nbsp; <select class="field" data-accept='[&quot;E&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="qrow"><span class="qnum">3</span> what happened when she burned her hands &nbsp; <select class="field" data-accept='[&quot;A&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="qrow"><span class="qnum">4</span> what scientists are doing to find a cure &nbsp; <select class="field" data-accept='[&quot;none&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="qrow"><span class="qnum">5</span> why some people die from this condition &nbsp; <select class="field" data-accept='[&quot;C&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="qrow"><span class="qnum">6</span> what treatment Ashlyn receives every day &nbsp; <select class="field" data-accept='[&quot;none&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="qrow"><span class="qnum">7</span> how school life for Ashlyn was unusual &nbsp; <select class="field" data-accept='[&quot;D&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="1F · Ex 5" data-title="Complete the questions"><div class="exhead"><span class="excode">1F · Ex 5</span><span class="extitle">Complete the questions</span></div><p class="instr">Complete with the correct question word. (Q1 = How, given.)</p><div class="qrow"><span class="qnum">2</span> ___ was the doctor shocked when he saw Ashlyn&#x27;s eye injury? &nbsp; <select class="field" data-accept='[&quot;Why&quot;]'><option value="">—</option><option value="How">How</option><option value="How many">How many</option><option value="When">When</option><option value="What">What</option><option value="Who">Who</option><option value="Why">Why</option></select></div><div class="qrow"><span class="qnum">3</span> ___ people are born with this medical condition in the USA each year? &nbsp; <select class="field" data-accept='[&quot;How many&quot;]'><option value="">—</option><option value="How">How</option><option value="How many">How many</option><option value="When">When</option><option value="What">What</option><option value="Who">Who</option><option value="Why">Why</option></select></div><div class="qrow"><span class="qnum">4</span> ___ watched Ashlyn carefully in the playground at school? &nbsp; <select class="field" data-accept='[&quot;Who&quot;]'><option value="">—</option><option value="How">How</option><option value="How many">How many</option><option value="When">When</option><option value="What">What</option><option value="Who">Who</option><option value="Why">Why</option></select></div><div class="qrow"><span class="qnum">5</span> ___ did Ashlyn&#x27;s story first appear in newspapers? &nbsp; <select class="field" data-accept='[&quot;When&quot;]'><option value="">—</option><option value="How">How</option><option value="How many">How many</option><option value="When">When</option><option value="What">What</option><option value="Who">Who</option><option value="Why">Why</option></select></div><div class="qrow"><span class="qnum">6</span> ___ is the cause of Ashlyn&#x27;s medical condition? &nbsp; <select class="field" data-accept='[&quot;What&quot;]'><option value="">—</option><option value="How">How</option><option value="How many">How many</option><option value="When">When</option><option value="What">What</option><option value="Who">Who</option><option value="Why">Why</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="1F · Ex 6" data-title="Accidents and injuries — vocabulary"><div class="exhead"><span class="excode">1F · Ex 6</span><span class="extitle">Accidents and injuries — vocabulary</span></div><p class="instr">Complete the words. (Type the whole word.)</p><div class="qrow"><span class="qnum">1</span> burn / cut / hurt / <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;injure&quot;]' style="width:150px"> yourself, your hand, etc.</div><div class="qrow"><span class="qnum">2</span> fall / <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;trip&quot;]' style="width:150px"> / slip over</div><div class="qrow"><span class="qnum">3</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;break&quot;]' style="width:150px"> your arm / finger, etc.</div><div class="qrow"><span class="qnum">4</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;blood&quot;, &quot;bleed&quot;]' style="width:150px"> (a broken arm / finger has this)</div><div class="qrow"><span class="qnum">5</span> a <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;bruise&quot;]' style="width:150px"> (a dark mark on the skin after you hit it)</div><div class="qrow"><span class="qnum">6</span> a <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;burn&quot;]' style="width:150px"> (an injury from something very hot)</div><div class="qrow"><span class="qnum">7</span> an <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;injury&quot;]' style="width:150px"> (general word: a cut, a sprain, etc.)</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="1F · Ex 7" data-title="Past simple forms — regular or irregular?"><div class="exhead"><span class="excode">1F · Ex 7</span><span class="extitle">Past simple forms — regular or irregular?</span></div><p class="instr">Write the infinitive and say whether it is regular or irregular. (a bled → bleed, irregular — given.)</p><div class="qrow"><span class="qnum">b</span> broke → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;break&quot;]' style="width:150px"> , this verb is <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;irregular&quot;]' style="width:150px"> (regular/irregular).</div><div class="qrow"><span class="qnum">c</span> burned → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;burn&quot;]' style="width:150px"> , this verb is <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;regular&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">d</span> cut → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;cut&quot;]' style="width:150px"> , this verb is <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;irregular&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">e</span> fell over → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;fall over&quot;]' style="width:150px"> , this verb is <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;irregular&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">f</span> hurt → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;hurt&quot;]' style="width:150px"> , this verb is <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;irregular&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">g</span> injured → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;injure&quot;]' style="width:150px"> , this verb is <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;regular&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">h</span> sprained → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;sprain&quot;]' style="width:150px"> , this verb is <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;regular&quot;]' style="width:150px"> .</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">1G</span> Narrating events <span class="ltag">Speaking</span></h2><div class="exercise" data-exid="1G · Ex 2" data-title="Complete the dialogue"><div class="exhead"><span class="excode">1G · Ex 2</span><span class="extitle">Complete the dialogue</span></div><p class="instr">Use the affirmative or negative past simple of: be, get, learn, leave, love, spend, watch.</p><div class="qrow"><span class="qnum">1</span> Yes, it was. I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;learned&quot;, &quot;learnt&quot;]' style="width:150px"> (learn) a new sport – bodyboarding.</div><div class="qrow"><span class="qnum">2</span> Yes, I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;loved&quot;]' style="width:150px"> (love) it. It was really exciting.</div><div class="qrow"><span class="qnum">3</span> Well, the second half of the holiday <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;wasn&#x27;t&quot;, &quot;was not&quot;]' style="width:150px"> (be) so good.</div><div class="qrow"><span class="qnum">4</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;got&quot;]' style="width:150px"> (get) a stomach bug.</div><div class="qrow"><span class="qnum">5</span> … and <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;spent&quot;]' style="width:150px"> (spend) nearly a week on the sofa.</div><div class="qrow"><span class="qnum">6</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;didn&#x27;t leave&quot;, &quot;did not leave&quot;]' style="width:150px"> (leave) the house for days.</div><div class="qrow"><span class="qnum">7</span> I just <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;watched&quot;]' style="width:150px"> (watch) DVDs.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">1H</span> A description of an event <span class="ltag">Writing</span></h2><div class="exercise" data-exid="1H · Ex 4" data-title="Phrasal verbs and register"><div class="exhead"><span class="excode">1H · Ex 4</span><span class="extitle">Phrasal verbs and register</span></div><p class="instr">📖 The two forum posts are on page 17 of your Student's Book (also shown below). Find the phrasal verb in the posts that means the same as each word.</p><div class="reading"><h4>Forum posts (exercise 2) — &#x27;Pranks!&#x27;</h4><p><b>Dave338:</b> When I was about nine years old, I bought an enormous plastic spider from a joke shop. It looked very real and had really long legs. I couldn't wait to play a prank on my sister with it. One morning, I put it in the shower just before my big sister went into the bathroom. I heard a really loud scream and my sister ran out of the bathroom. When she found out that I put the spider there, she was really cross. I feel bad about it now. It took her ages to get over it because she was so shocked!</p><p><b>Kate44:</b> Last February, I sent my brother a Valentine's card and I tried to disguise my handwriting. When he opened it, he looked carefully at the writing. He thought the card was from a girl in his class, and he decided to ask her out. Eventually he mentioned the card to her and she said she didn't send it. He suspected me, so I owned up. He was a bit cross, but he forgave me.</p></div><div class="qrow"><span class="qnum">a</span> discover → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;find out&quot;]' style="width:150px"> (phrasal verb)</div><div class="qrow"><span class="qnum">b</span> recover from → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;get over&quot;]' style="width:150px"> (phrasal verb)</div><div class="qrow"><span class="qnum">c</span> examine → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;look at&quot;, &quot;look carefully at&quot;]' style="width:150px"> (phrasal verb)</div><div class="qrow"><span class="qnum">d</span> confess → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;own up&quot;]' style="width:150px"> (phrasal verb)</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+  <div class="src">Solutions Pre-Intermediate (3rd Edition) · Unit 1 Feelings (1A–1H) · interactive lesson with auto-marking</div>
+</div>
+<div class="actionbar">
+  <span class="score" id="scoreLbl">Score: — / —</span>
+  <button class="btn grade" id="gradeBtn" type="button">Grade all</button>
+  <button class="btn pdf" id="pdfBtn" type="button" disabled>Download PDF report</button>
+  <button class="btn mail" id="mailBtn" type="button" disabled>Submit to teacher (email)</button>
+  <button class="btn reset" id="resetBtn" type="button">Reset</button>
+</div>
+<script>
+const TEACHER_EMAIL = "huongstella8@gmail.com";
+const FILEKEY = "SB_Unit1";
+const WS_TITLE = "Student's Book – Unit 1: Feelings";
+
+function norm(s){
+  return (s||'').toString().toLowerCase()
+    .replace(/[’‘ʼ]/g,"'").replace(/[–—]/g,'-')
+    .replace(/ /g,' ').trim().replace(/\s+/g,' ')
+    .replace(/[.,!?;:]+$/,'').trim();
+}
+function noap(s){return norm(s).replace(/'/g,'').replace(/\s+/g,' ').trim();}
+
+function matches(userRaw, accepts){
+  const u = norm(userRaw), un = noap(userRaw);
+  if(u==='') return false;               // an empty box is never correct (must type '-' for no article)
+  for(const a of accepts){
+    if(u===norm(a)) return true;
+    if(un===noap(a)) return true;
+  }
+  return false;
+}
+
+function clearField(f){
+  f.classList.remove('correct','wrong');
+  if(f.nextSibling && f.nextSibling.classList && f.nextSibling.classList.contains('correction'))
+    f.nextSibling.remove();
+}
+
+const PASS = 70;   // pass threshold (%)
+
+// ---- grading: ONLY colour red/green. No answer keys are shown on screen.
+function gradeExercise(ex){
+  const fields=[...ex.querySelectorAll('.field')];
+  let correct=0;
+  fields.forEach(f=>{
+    clearField(f);
+    const accepts=JSON.parse(f.dataset.accept);
+    if(matches(f.value, accepts)){ f.classList.add('correct'); correct++; }
+    else { f.classList.add('wrong'); }
+  });
+  return {correct, total:fields.length};
+}
+
+function paintResult(ex,r){
+  const res=ex.querySelector('.exResult');
+  res.textContent=r.correct+' / '+r.total;
+  res.style.color=(r.correct===r.total)?'#1a8f43':(r.correct===0?'#c62828':'#a5228e');
+}
+
+function gradeAll(){
+  let C=0,T=0; const per=[];
+  document.querySelectorAll('.exercise').forEach(ex=>{
+    const r=gradeExercise(ex); C+=r.correct; T+=r.total; paintResult(ex,r);
+    per.push({code:ex.dataset.exid,title:ex.dataset.title,correct:r.correct,total:r.total});
+  });
+  const pct = T? Math.round(C/T*100):0;
+  const passed = pct>=PASS;
+  const lbl=document.getElementById('scoreLbl');
+  lbl.textContent='Score: '+C+' / '+T+'  ('+pct+'%)  —  '+(passed?'PASSED ✓':'REDO REQUIRED (below '+PASS+'%)');
+  lbl.style.color = passed ? '#1a8f43' : '#c62828';
+  window.__grade={C,T,pct,passed,per};
+  document.getElementById('pdfBtn').disabled=false;
+  return window.__grade;
+}
+
+// ---- progress saved per email -------------------------------------------------
+function emailVal(){return (document.getElementById('semail').value||'').trim();}
+function emailOK(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function studentName(){return (document.getElementById('sname').value||'').trim();}
+function pkey(e){return 'hsp_'+FILEKEY+'_'+e.toLowerCase();}
+function attKey(e){return 'att_'+FILEKEY+'_'+(e?e.toLowerCase():'anon');}
+
+function saveProgress(){
+  const e=emailVal(); if(!emailOK(e)){return;}
+  const ans={};
+  document.querySelectorAll('.field').forEach(f=>{ if((f.value||'').trim()!=='') ans[f.dataset.fi]=f.value; });
+  localStorage.setItem(pkey(e), JSON.stringify({name:studentName(), answers:ans, ts:Date.now()}));
+  const s=document.getElementById('saveLbl');
+  s.textContent='Progress saved for '+e+' · '+new Date().toLocaleTimeString();
+}
+function loadProgress(){
+  const e=emailVal(); if(!emailOK(e)){return false;}
+  const raw=localStorage.getItem(pkey(e));
+  showAttempt();
+  if(!raw){document.getElementById('saveLbl').textContent='New email — a fresh progress file will be started for '+e+'.';return false;}
+  const d=JSON.parse(raw);
+  if(d.name && !studentName()) document.getElementById('sname').value=d.name;
+  let n=0;
+  document.querySelectorAll('.field').forEach(f=>{ const v=d.answers[f.dataset.fi]; if(v!==undefined){ f.value=v; clearField(f); n++; } });
+  document.getElementById('saveLbl').textContent='Progress restored for '+e+' ('+n+' answers). You can continue where you left off.';
+  return true;
+}
+function attemptCount(){return parseInt(localStorage.getItem(attKey(emailVal()))||'0',10);}
+function bumpAttempt(){const n=attemptCount()+1;localStorage.setItem(attKey(emailVal()),n);showAttempt();return n;}
+function showAttempt(){document.getElementById('attLbl').innerHTML='Completed attempts: <b>'+attemptCount()+'</b>';}
+
+// ---- PDF report ---------------------------------------------------------------
+function makePDF(){
+  const name=studentName(), email=emailVal();
+  if(!name){alert('Please type your name at the top before downloading the report.');document.getElementById('sname').focus();return null;}
+  if(!emailOK(email)){alert('Please type a valid email at the top (your progress is saved to this email).');document.getElementById('semail').focus();return null;}
+  const g = window.__grade || gradeAll();
+  const passed=g.passed;
+  const attempt = bumpAttempt();
+  const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'pt',format:'a4'});
+  const W=doc.internal.pageSize.getWidth(); let y=0;
+  // header band
+  doc.setFillColor(122,31,107); doc.rect(0,0,W,86,'F');
+  doc.setTextColor(255); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+  doc.text('HUONG STELLA PARADIGM  |  PIONEER SERIES',40,20);
+  doc.setFontSize(16); doc.text('Homework Result Report',40,42);
+  doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.text(WS_TITLE,40,62);
+  doc.setFontSize(9); doc.text('Solutions Pre-Intermediate (3rd Edition) · auto-graded',40,76);
+  y=108; doc.setTextColor(34);
+  // info box
+  doc.setDrawColor(220); doc.setFillColor(247,242,246); doc.roundedRect(40,y,W-80,96,6,6,'FD');
+  doc.setFont('helvetica','bold'); doc.setFontSize(11);
+  const dt=new Date();
+  doc.text('Student: '+name, 54, y+22);
+  doc.text('Attempt #: '+attempt, W-170, y+22);
+  doc.setFont('helvetica','normal');
+  doc.text('Email: '+email, 54, y+40);
+  doc.text('Date: '+dt.toLocaleString(), 54, y+58);
+  doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(122,31,107);
+  doc.text('Total score: '+g.C+' / '+g.T+'   ('+g.pct+'%)', 54, y+82);
+  doc.setFontSize(12); doc.setTextColor(passed?26:198, passed?143:40, passed?67:40);
+  doc.text('Result: '+(passed?'PASSED':'REDO REQUIRED (below '+PASS+'%)'), W-230, y+82);
+  doc.setTextColor(34); doc.setFontSize(10); doc.setFont('helvetica','normal');
+  y+=116;
+  // per-exercise table
+  doc.setFont('helvetica','bold'); doc.setFillColor(122,31,107); doc.setTextColor(255);
+  doc.rect(40,y,W-80,20,'F');
+  doc.text('Exercise',48,y+14); doc.text('Score',W-170,y+14); doc.text('%',W-90,y+14);
+  y+=20; doc.setTextColor(34); doc.setFont('helvetica','normal');
+  g.per.forEach((p,i)=>{
+    if(y>790){doc.addPage();y=48;}
+    if(i%2){doc.setFillColor(244,238,243);doc.rect(40,y,W-80,18,'F');}
+    const t=(p.code+'  '+p.title); const pc=p.total?Math.round(p.correct/p.total*100):0;
+    doc.text(doc.splitTextToSize(t,W-260)[0],48,y+13);
+    doc.text(p.correct+' / '+p.total,W-170,y+13);
+    doc.text(pc+'%',W-90,y+13);
+    y+=18;
+  });
+  // wrong-answer section (answers revealed ONLY if passed >= 70%)
+  const wrong=[]; document.querySelectorAll('.exercise').forEach(ex=>{
+    const fs=[...ex.querySelectorAll('.field')];
+    fs.forEach((f,k)=>{ if(f.classList.contains('wrong')){
+      const acc=JSON.parse(f.dataset.accept); const shown=acc[0]==='-'?'(no article)':acc[0];
+      wrong.push({label:ex.dataset.exid+' — item '+(k+1), your:(f.value||'').trim()||'(blank)', corr:shown});
+    }});
+  });
+  y+=24; if(y>760){doc.addPage();y=48;}
+  if(wrong.length===0){
+    doc.setTextColor(26,143,67);doc.setFont('helvetica','bold');doc.setFontSize(12);
+    doc.text('Perfect! All answers are correct.',40,y);
+  } else if(passed){
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(122,31,107);
+    doc.text('Answers to review ('+wrong.length+')',40,y); y+=16;
+    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(34);
+    wrong.forEach(w=>{ if(y>800){doc.addPage();y=48;}
+      const line=w.label+':  your answer "'+w.your+'"  ->  correct: '+w.corr;
+      doc.text(doc.splitTextToSize(line,W-80),44,y); y+=13; });
+  } else {
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(198,40,40);
+    doc.text('REDO REQUIRED — your score is below '+PASS+'%.',40,y); y+=18;
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(34);
+    doc.text(doc.splitTextToSize('Correct answers are hidden until you reach '+PASS+'%. Please redo the questions listed below (marked in red on screen) and download the report again.',W-80),40,y);
+    y+=34;
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(122,31,107);
+    doc.text('Questions to redo ('+wrong.length+')',40,y); y+=15;
+    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(34);
+    wrong.forEach(w=>{ if(y>800){doc.addPage();y=48;}
+      const line=w.label+':  your answer "'+w.your+'"  (incorrect)';
+      doc.text(doc.splitTextToSize(line,W-80),44,y); y+=13; });
+  }
+  const fn = 'Report_'+FILEKEY+'_'+name.replace(/\s+/g,'')+'_attempt'+attempt+'.pdf';
+  doc.save(fn);
+  window.__lastReport={name,email,attempt,pct:g.pct,C:g.C,T:g.T,passed,file:fn};
+  document.getElementById('mailBtn').disabled=false;
+  return window.__lastReport;
+}
+
+function emailTeacher(){
+  const r=window.__lastReport;
+  if(!r){alert('Please download the PDF report first, then submit it.');return;}
+  const subj='Homework submission - '+WS_TITLE+' - '+r.name+' (Attempt '+r.attempt+')';
+  const body=
+    'Dear teacher,\n\nPlease find my completed homework attached.\n\n'+
+    'Student: '+r.name+'\n'+
+    'Student email: '+r.email+'\n'+
+    'Worksheet: '+WS_TITLE+'\n'+
+    'Attempt: '+r.attempt+'\n'+
+    'Score: '+r.C+' / '+r.T+' ('+r.pct+'%) - '+(r.passed?'PASSED':'REDO REQUIRED')+'\n\n'+
+    'IMPORTANT: please attach the downloaded file "'+r.file+'" to this email before sending.\n\n'+
+    'Best regards,\n'+r.name;
+  window.location.href='mailto:'+TEACHER_EMAIL+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
+}
+
+function resetAll(){
+  if(!confirm('Clear all your answers on this page? (Saved progress for your email will also be removed.)'))return;
+  document.querySelectorAll('.field').forEach(f=>{clearField(f);f.value='';});
+  document.querySelectorAll('.exResult').forEach(s=>s.textContent='');
+  const lbl=document.getElementById('scoreLbl');lbl.textContent='Score: — / —';lbl.style.color='';
+  window.__grade=null;window.__lastReport=null;
+  document.getElementById('pdfBtn').disabled=true;document.getElementById('mailBtn').disabled=true;
+  const e=emailVal(); if(emailOK(e)) localStorage.removeItem(pkey(e));
+  document.getElementById('saveLbl').textContent='Answers cleared.';
+}
+
+document.addEventListener('click',e=>{
+  if(e.target.classList.contains('checkBtn')){
+    const ex=e.target.closest('.exercise'); paintResult(ex, gradeExercise(ex));
+  }
+});
+document.addEventListener('input',e=>{
+  if(e.target.classList.contains('field')||e.target.id==='sname'){ saveProgress(); }
+});
+window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.field').forEach((f,i)=>f.dataset.fi=i);
+  showAttempt();
+  const em=document.getElementById('semail');
+  em.addEventListener('change',loadProgress);
+  em.addEventListener('blur',loadProgress);
+  document.getElementById('gradeBtn').onclick=gradeAll;
+  document.getElementById('pdfBtn').onclick=makePDF;
+  document.getElementById('mailBtn').onclick=emailTeacher;
+  document.getElementById('resetBtn').onclick=resetAll;
+});
+</script>
+</body></html>

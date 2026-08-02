@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Homework (Workbook) — Introduction</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--pur:#7a1f6b;--pur2:#a5228e;--org:#f39200;--ink:#222;--line:#e3d7e0;--ok:#1a8f43;--no:#c62828;--bg:#faf7fa;}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+header.top{background:linear-gradient(120deg,var(--pur),var(--pur2));color:#fff;padding:16px 28px 20px}
+header.top .brand{font-size:12px;font-weight:800;letter-spacing:.32em;opacity:.92;margin-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:9px;display:inline-block}
+header.top h1{margin:0;font-size:22px}
+header.top p{margin:4px 0 0;opacity:.9;font-size:13px}
+.savebar{margin-top:10px;font-size:13px;color:var(--pur);background:#f4eef3;border:1px solid var(--line);
+  border-radius:8px;padding:7px 11px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px 120px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.panel h3{margin:.1em 0 .5em;color:var(--pur)}
+.namebar{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.namebar label{font-weight:600;font-size:14px}
+.namebar input{padding:8px 10px;border:1px solid #bbb;border-radius:8px;font-size:14px}
+.attempt{margin-left:auto;font-size:13px;color:#555}
+.attempt b{color:var(--pur)}
+.lesson{margin:26px 0}
+.lesson>h2{background:var(--pur);color:#fff;padding:9px 14px;border-radius:9px;font-size:18px;display:flex;align-items:center;gap:10px}
+.lcode{background:#fff;color:var(--pur);border-radius:6px;padding:2px 9px;font-weight:800}
+.ltag{margin-left:auto;font-size:12px;font-weight:400;opacity:.85;text-transform:uppercase;letter-spacing:.06em}
+.exercise{background:#fff;border:1px solid var(--line);border-left:5px solid var(--org);border-radius:10px;padding:14px 16px;margin:14px 0}
+.exhead{display:flex;align-items:baseline;gap:8px}
+.excode{background:var(--org);color:#fff;font-weight:700;border-radius:5px;padding:1px 8px;font-size:13px}
+.extitle{font-weight:700}
+.instr{margin:.4em 0 .7em;color:#444;font-size:14px}
+.qrow{padding:5px 0;font-size:15px}
+.qnum{display:inline-block;min-width:22px;font-weight:700;color:var(--pur)}
+.order .scramble{font-style:italic;color:#555}
+input.field,select.field{font-size:14px;padding:4px 7px;border:1px solid #b8a9b4;border-radius:6px;background:#fffdfe;margin:2px 3px}
+input.field:focus,select.field:focus{outline:2px solid var(--pur2)}
+.field.correct{border-color:var(--ok);background:#eaffef}
+.field.wrong{border-color:var(--no);background:#ffecec}
+.correction{color:var(--ok);font-size:13px;font-weight:600;margin-left:6px;white-space:nowrap}
+.correction.miss{color:var(--no)}
+.exfoot{margin-top:10px;display:flex;align-items:center;gap:12px}
+.checkBtn{background:var(--pur);color:#fff;border:0;border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer}
+.checkBtn:hover{background:var(--pur2)}
+.exResult{font-weight:700;font-size:14px}
+.reading{background:#f4eef3;border:1px dashed #c9b6c6;border-radius:8px;padding:10px 14px;margin:6px 0 12px;font-size:14px}
+.reading h4{margin:.1em 0 .4em;color:var(--pur)}
+.reading p{margin:.4em 0}
+.listen{margin:6px 0 12px}
+.listenHead{font-size:13.5px;background:#eef4ea;border:1px solid #cbe0c1;border-radius:8px;padding:8px 12px;margin-bottom:8px}
+.transcript{margin:0;font-size:13.5px}
+.transcript summary{cursor:pointer;display:inline-block;background:var(--pur);color:#fff;border-radius:8px;
+  padding:6px 14px;font-weight:600;font-size:13px;list-style:none;user-select:none}
+.transcript summary::-webkit-details-marker{display:none}
+.transcript summary::before{content:'▶ '}
+.transcript[open] summary::before{content:'▼ '}
+.transcript[open] summary{background:var(--pur2)}
+.transcript>div{background:#f4eef3;border-radius:8px;padding:10px 14px;margin-top:8px}
+.actionbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--pur);
+  padding:12px 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;box-shadow:0 -2px 8px rgba(0,0,0,.08);z-index:50}
+.actionbar .score{font-weight:800;font-size:16px;color:var(--pur);margin-right:auto}
+.btn{border:0;border-radius:9px;padding:10px 16px;font-size:14px;cursor:pointer;font-weight:600}
+.btn.grade{background:var(--org);color:#fff}
+.btn.pdf{background:var(--pur);color:#fff}
+.btn.mail{background:#1769aa;color:#fff}
+.btn.reset{background:#eee;color:#444}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.noteHead{font-weight:700;color:var(--pur);font-size:13px;margin:12px 0 4px}
+.note{font-size:13px;color:#555;margin:0;padding-left:20px}
+.note li{margin:5px 0}
+.src{text-align:center;color:#cbbcc6;font-size:11px;font-style:italic;letter-spacing:.02em;margin:38px 0 4px}
+@media(max-width:640px){.actionbar{flex-direction:column;align-items:stretch}.actionbar .score{margin:0 0 4px}}
+</style></head><body>
+<header class="top"><div class="brand">HUONG&nbsp;STELLA&nbsp;PARADIGM&nbsp;&nbsp;|&nbsp;&nbsp;PIONEER&nbsp;SERIES</div><h1>Homework (Workbook) — Introduction</h1></header>
+<div class="wrap">
+  <div class="panel">
+    <div class="namebar">
+      <label for="sname">Your name:</label>
+      <input id="sname" type="text" placeholder="Full name" style="min-width:180px">
+      <label for="semail">Email:</label>
+      <input id="semail" type="email" placeholder="you@example.com" style="min-width:210px">
+      <span class="attempt" id="attLbl"></span>
+    </div>
+    <div class="savebar" id="saveLbl">Enter your email to save your progress and continue later.</div>
+    <p class="noteHead">How this worksheet works</p>
+    <ul class="note">
+      <li>Type your <b>name</b> and <b>email</b>, then answer the questions.</li>
+      <li>Your work is <b>saved automatically to your email</b> — if you can't finish in one go, just reopen the page and type the same email to restore your answers.</li>
+      <li>Press <b>Check</b> on an exercise or <b>Grade all</b> to see right (green) / wrong (red). <b>Answers are not shown on screen</b>, so you can try again.</li>
+      <li>Download the <b>PDF report</b> (with your <b>attempt number</b>) and submit it to your teacher (huongstella8@gmail.com).</li>
+      <li>The report shows the correct answers only if you score <b>70% or more</b>; below that you are asked to redo.</li>
+      <li>Each <b>listening</b> task tells you which <b>audio track</b> to play from the link your teacher shares on Google Classroom; the transcript stays hidden behind a <b>Show transcript</b> button so you can check it only after listening.</li>
+    </ul>
+  </div>
+  <section class="lesson"><h2><span class="lcode">IA</span> Likes and dislikes <span class="ltag">Vocabulary</span></h2><div class="exercise" data-exid="IA · Ex 1" data-title="Complete the sentences"><div class="exhead"><span class="excode">IA · Ex 1</span><span class="extitle">Complete the sentences</span></div><p class="instr">📖 <b>Look at the pictures and the like/dislike chart on page 4 of your Workbook.</b> First match the phrases (I love / I don't like / I don't mind / I like / I can't stand / I hate / I'm really keen on) to the pictures in the chart, then complete sentences 1–5 with the correct phrase or activity from the chart.</p><div class="qrow"><span class="qnum">1</span> I can&#x27;t stand <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;swimming&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">2</span> I&#x27;m really keen on <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dancing&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">3</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;i don&#x27;t mind&quot;, &quot;i dont mind&quot;]' style="width:120px"> chess.</div><div class="qrow"><span class="qnum">4</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;i like&quot;]' style="width:120px"> football.</div><div class="qrow"><span class="qnum">5</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;i don&#x27;t like&quot;, &quot;i dont like&quot;]' style="width:120px"> video games.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IA · Ex 2" data-title="Complete the dialogue"><div class="exhead"><span class="excode">IA · Ex 2</span><span class="extitle">Complete the dialogue</span></div><p class="instr">Use: can't stand, hate, don't mind, quite like, really keen, love, terrible, isn't bad, is great.</p><div class="qrow"><span class="qnum">1</span> Dave: No, I&#x27;m not really excited. I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;don&#x27;t mind&quot;, &quot;dont mind&quot;]' style="width:150px"> school, but it&#x27;s not my favourite thing.</div><div class="qrow"><span class="qnum">2</span> Kim: I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;love&quot;]' style="width:150px"> school! I really enjoy learning new things.</div><div class="qrow"><span class="qnum">3</span> Dave: I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;don&#x27;t mind&quot;, &quot;dont mind&quot;, &quot;quite like&quot;]' style="width:150px"> IT, because I&#x27;m interested in computers.</div><div class="qrow"><span class="qnum">4</span> Dave: I&#x27;m <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;really keen&quot;]' style="width:150px"> on drama.</div><div class="qrow"><span class="qnum">5</span> Dave: I think acting <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;is great&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">6</span> Kim: I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;can&#x27;t stand&quot;, &quot;cant stand&quot;, &quot;hate&quot;]' style="width:150px"> drama. I just get too scared in front of people.</div><div class="qrow"><span class="qnum">7</span> Dave: Actually, I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;can&#x27;t stand&quot;, &quot;cant stand&quot;, &quot;hate&quot;]' style="width:150px"> maths! I just can&#x27;t understand it.</div><div class="qrow"><span class="qnum">8</span> Dave: It&#x27;s <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;terrible&quot;]' style="width:150px"> !</div><div class="qrow"><span class="qnum">9</span> Dave: OK, science <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;isn&#x27;t bad&quot;, &quot;isnt bad&quot;]' style="width:150px"> . It&#x27;s actually kind of interesting.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IA · Ex 3" data-title="Match definitions with activities"><div class="exhead"><span class="excode">IA · Ex 3</span><span class="extitle">Match definitions with activities</span></div><p class="instr">cycling · volleyball · chess · ice hockey · board games · basketball · swimming · drawing · video games</p><div class="qrow"><span class="qnum">1</span> a game where you bounce a ball and try to throw it through a hoop &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;basketball&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">2</span> making pictures with a pencil or pen &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;drawing&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">3</span> exercising in water &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;swimming&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">4</span> a game with 32 pieces on a board, including a king and queen &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;chess&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">5</span> games with pieces that you play on a table &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;board games&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">6</span> games you play on a computer or TV screen &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;video games&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">7</span> riding a bike &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;cycling&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">8</span> a game you play on ice with a long stick &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;ice hockey&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">9</span> a game where you hit a ball with your hands over a high net &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;volleyball&quot;]' style="width:150px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">IB</span> Contrast: present simple and present continuous <span class="ltag">Grammar</span></h2><div class="exercise" data-exid="IB · Ex 1" data-title="Complete the dialogues"><div class="exhead"><span class="excode">IB · Ex 1</span><span class="extitle">Complete the dialogues</span></div><p class="instr">Use the correct present simple form.</p><div class="qrow"><span class="qnum">1</span> A: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;do you go&quot;]' style="width:150px"> (you / go) to the gym every day? B: No, I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;don&#x27;t go&quot;, &quot;dont go&quot;]' style="width:150px"> (not go) every day. I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;go&quot;]' style="width:150px"> (go) three times a week.</div><div class="qrow"><span class="qnum">2</span> A: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;does sam study&quot;]' style="width:150px"> (Sam / study) at your school? B: No, he <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;doesn&#x27;t&quot;, &quot;doesnt&quot;, &quot;does not&quot;]' style="width:150px"> (not study) there. He <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;studies&quot;]' style="width:150px"> (study) at a private school.</div><div class="qrow"><span class="qnum">3</span> A: Does your mother <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;teach&quot;]' style="width:150px"> (teach) English? B: Yes. She also <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;teaches&quot;]' style="width:150px"> (teach) French and Spanish. She <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;s&quot;, &quot;is&quot;]' style="width:150px"> (be) very good at languages.</div><div class="qrow"><span class="qnum">4</span> A: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;do your parents work&quot;]' style="width:150px"> (your parents / work) in London? B: No, they don&#x27;t. They both <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;work&quot;]' style="width:150px"> (work) in Oxford.</div><div class="qrow"><span class="qnum">5</span> A: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;do you practise&quot;, &quot;do you practice&quot;]' style="width:150px"> (you / practise) much before you perform a new play? B: Yes, we <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;practise&quot;, &quot;practice&quot;]' style="width:150px"> (practise) for weeks, and the director <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;makes&quot;]' style="width:150px"> (make) a lot of changes.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IB · Ex 2" data-title="Complete the voice message"><div class="exhead"><span class="excode">IB · Ex 2</span><span class="extitle">Complete the voice message</span></div><p class="instr">Use the present continuous.</p><div class="qrow"><span class="qnum">1</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;are you having&quot;]' style="width:150px"> (you / have) a good time in Hull?</div><div class="qrow"><span class="qnum">2</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;m calling&quot;, &quot;am calling&quot;, &quot;im calling&quot;]' style="width:150px"> (call) from my grandparents&#x27; house in Cornwall.</div><div class="qrow"><span class="qnum">3</span> My sister and I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;are staying&quot;, &quot;&#x27;re staying&quot;, &quot;re staying&quot;]' style="width:150px"> (stay) here for a couple of weeks.</div><div class="qrow"><span class="qnum">4</span> … and we <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;are enjoying&quot;, &quot;&#x27;re enjoying&quot;, &quot;re enjoying&quot;]' style="width:150px"> (enjoy) it a lot.</div><div class="qrow"><span class="qnum">5</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;am planning&quot;, &quot;&#x27;m planning&quot;, &quot;im planning&quot;]' style="width:150px"> (plan) to study for my exams later.</div><div class="qrow"><span class="qnum">6</span> … but now I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;am relaxing&quot;, &quot;&#x27;m relaxing&quot;, &quot;im relaxing&quot;]' style="width:150px"> (relax).</div><div class="qrow"><span class="qnum">7</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;am running&quot;, &quot;&#x27;m running&quot;, &quot;im running&quot;]' style="width:150px"> (run) every morning.</div><div class="qrow"><span class="qnum">8</span> Jake and I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;are thinking&quot;, &quot;&#x27;re thinking&quot;, &quot;re thinking&quot;]' style="width:150px"> (think) about spending a month in Spain.</div><div class="qrow"><span class="qnum">9</span> the sun <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;is shining&quot;, &quot;&#x27;s shining&quot;, &quot;s shining&quot;]' style="width:150px"> (shine) so I think I&#x27;ll go for a walk.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IB · Ex 3" data-title="Match the uses with the sentences"><div class="exhead"><span class="excode">IB · Ex 3</span><span class="extitle">Match the uses with the sentences</span></div><p class="instr">Match uses 1–6 with sentences a–f.</p><div class="reading"><h4>Sentences (a–f)</h4><p>a I am leaving for London at 6 a.m. tomorrow.<br>b The Earth goes around the sun.<br>c I always play basketball on Saturdays.<br>d They are spending a lot of time together these days.<br>e I need some help with homework.<br>f Look outside – it's snowing!</p></div><div class="qrow"><span class="qnum">1</span> something that happens regularly &nbsp; <select class="field" data-accept='[&quot;c&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="qrow"><span class="qnum">2</span> verbs not used in continuous tenses &nbsp; <select class="field" data-accept='[&quot;e&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="qrow"><span class="qnum">3</span> something happening at this moment &nbsp; <select class="field" data-accept='[&quot;f&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="qrow"><span class="qnum">4</span> stating a fact or law &nbsp; <select class="field" data-accept='[&quot;b&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="qrow"><span class="qnum">5</span> something happening around this time &nbsp; <select class="field" data-accept='[&quot;d&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="qrow"><span class="qnum">6</span> a future plan &nbsp; <select class="field" data-accept='[&quot;a&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IB · Ex 4" data-title="Present simple or continuous"><div class="exhead"><span class="excode">IB · Ex 4</span><span class="extitle">Present simple or continuous</span></div><p class="instr">Complete with the correct form.</p><div class="qrow"><span class="qnum">1</span> Josh <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;scores&quot;]' style="width:150px"> (score) at least one point in every game he plays.</div><div class="qrow"><span class="qnum">2</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;believe&quot;]' style="width:150px"> (believe) that they will give Kate a place on the team.</div><div class="qrow"><span class="qnum">3</span> Susan <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;is trying&quot;, &quot;&#x27;s trying&quot;, &quot;s trying&quot;]' style="width:150px"> (try) to finish her homework today.</div><div class="qrow"><span class="qnum">4</span> My dad <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;is cooking&quot;, &quot;&#x27;s cooking&quot;, &quot;s cooking&quot;]' style="width:150px"> (cook) Chinese food tonight.</div><div class="qrow"><span class="qnum">5</span> My brother loves books. He <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;reads&quot;]' style="width:150px"> (read) a book every week.</div><div class="qrow"><span class="qnum">6</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;m watching&quot;, &quot;am watching&quot;, &quot;im watching&quot;]' style="width:150px"> (watch) all of my old Friends DVDs this week.</div><div class="qrow"><span class="qnum">7</span> Sam <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;gets up&quot;]' style="width:150px"> (get up) before 7 a.m., even on Sundays.</div><div class="qrow"><span class="qnum">8</span> Look out of the window. A big storm <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;is coming&quot;, &quot;&#x27;s coming&quot;, &quot;s coming&quot;]' style="width:150px"> (come)!</div><div class="qrow"><span class="qnum">9</span> Lisa usually <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;plays&quot;]' style="width:150px"> (play) video games when she gets home.</div><div class="qrow"><span class="qnum">10</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;understand&quot;]' style="width:150px"> (understand) what you&#x27;re saying, but I don&#x27;t agree with it.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IB · Ex 5" data-title="Complete the email"><div class="exhead"><span class="excode">IB · Ex 5</span><span class="extitle">Complete the email</span></div><p class="instr">Use the present simple or present continuous.</p><div class="qrow"><span class="qnum">1</span> How <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;is&quot;]' style="width:150px"> (be) everything?</div><div class="qrow"><span class="qnum">2</span> We <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;re having&quot;, &quot;are having&quot;, &quot;re having&quot;]' style="width:150px"> (have) a great time this week.</div><div class="qrow"><span class="qnum">3</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;m enjoying&quot;, &quot;am enjoying&quot;, &quot;im enjoying&quot;]' style="width:150px"> (enjoy) my summer drama project.</div><div class="qrow"><span class="qnum">4</span> Every summer we <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;put on&quot;]' style="width:150px"> (put on) a play by Shakespeare.</div><div class="qrow"><span class="qnum">5</span> this year we <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;re working&quot;, &quot;are working&quot;, &quot;re working&quot;]' style="width:150px"> (work) on A Midsummer Night&#x27;s Dream.</div><div class="qrow"><span class="qnum">6</span> It&#x27;s a great play because it <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;has&quot;]' style="width:150px"> (have) so many different roles.</div><div class="qrow"><span class="qnum">7</span> We <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;re practising&quot;, &quot;are practising&quot;, &quot;re practising&quot;, &quot;&#x27;re practicing&quot;, &quot;are practicing&quot;]' style="width:150px"> (practise) about six hours a day.</div><div class="qrow"><span class="qnum">8</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;m trying&quot;, &quot;am trying&quot;, &quot;im trying&quot;]' style="width:150px"> (try) very hard to learn my lines.</div><div class="qrow"><span class="qnum">9</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;m playing&quot;, &quot;am playing&quot;, &quot;im playing&quot;]' style="width:150px"> (play) two parts in the play.</div><div class="qrow"><span class="qnum">10</span> sometimes I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;forget&quot;]' style="width:150px"> (forget) which part I&#x27;m playing!</div><div class="qrow"><span class="qnum">11</span> I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;believe&quot;]' style="width:150px"> (believe) it will be a great performance.</div><div class="qrow"><span class="qnum">12</span> My grandparents <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;are travelling&quot;, &quot;&#x27;re travelling&quot;, &quot;re travelling&quot;, &quot;are traveling&quot;]' style="width:150px"> (travel) from Leeds to see me in the play.</div><div class="qrow"><span class="qnum">13</span> I know you <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;re&quot;, &quot;are&quot;, &quot;re&quot;]' style="width:150px"> (be) very busy at camp.</div><div class="qrow"><span class="qnum">14</span> but I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;hope&quot;]' style="width:150px"> (hope) to hear from you soon.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">IC</span> Describing people <span class="ltag">Vocabulary</span></h2><div class="exercise" data-exid="IC · Ex 1" data-title="Describe the hair"><div class="exhead"><span class="excode">IC · Ex 1</span><span class="extitle">Describe the hair</span></div><p class="instr">📖 <b>Look at pictures 1–6 on page 6 of your Workbook.</b> Describe each person's hair using the adjectives (curly, dark, fair, long, medium-length, short, straight, wavy) in the correct order (length, then style, then colour).</p><div class="qrow"><span class="qnum">1</span> Maria&#x27;s got <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;long&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;straight&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;black&quot;]' style="width:120px"> hair.</div><div class="qrow"><span class="qnum">2</span> Tom&#x27;s got <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;short&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;curly&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dark&quot;]' style="width:120px"> hair.</div><div class="qrow"><span class="qnum">3</span> Alice&#x27;s got <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;medium-length&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;wavy&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;fair&quot;]' style="width:120px"> hair.</div><div class="qrow"><span class="qnum">4</span> Sean&#x27;s got <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;short&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;straight&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dark&quot;]' style="width:120px"> hair.</div><div class="qrow"><span class="qnum">5</span> Lara&#x27;s got <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;long&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;wavy&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dark&quot;]' style="width:120px"> hair.</div><div class="qrow"><span class="qnum">6</span> Alex&#x27;s got <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;medium-length&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;straight&quot;]' style="width:120px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dark&quot;]' style="width:120px"> hair.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IC · Ex 2" data-title="Match the clothes words"><div class="exhead"><span class="excode">IC · Ex 2</span><span class="extitle">Match the clothes words</span></div><p class="instr">Match a clothes word (boots · dress · coat · gloves · hoodie · jeans · socks · T-shirt · tie · trainers) with each description below.</p><div class="qrow"><span class="qnum">1</span> I wear them in winter to keep my feet warm and dry. &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;boots&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">2</span> I wear it over my other clothes when it&#x27;s very cold outside. &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;coat&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">3</span> I wear them on my feet, inside my shoes. &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;socks&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">4</span> Men often wear one around their necks when they go to work. &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;tie&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">5</span> I wear these on my feet when I run or exercise. &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;trainers&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">6</span> It&#x27;s like a jacket. It&#x27;s soft and warm, with a part to cover my head. &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;hoodie&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">7</span> I wear these to cover my lower body. They are dark blue and very strong. &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;jeans&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">8</span> A short-sleeved top; it sometimes has pictures or words on it. &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;t-shirt&quot;, &quot;t shirt&quot;, &quot;tshirt&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">9</span> I wear these to cover my hands when the weather is cold. &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;gloves&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">10</span> A woman wears this. It usually covers her from shoulders to knees. &nbsp;<input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dress&quot;]' style="width:150px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IC · Ex 4" data-title="Complete the lost-property descriptions"><div class="exhead"><span class="excode">IC · Ex 4</span><span class="extitle">Complete the lost-property descriptions</span></div><p class="instr">📖 <b>Look at the two photos on page 6 of your Workbook</b> and read the lost-property notices. Complete the descriptions with: brown · dark · eyes · jacket · long · moustache · scarf · shirt · short · straight · tie · wavy.</p><div class="qrow"><span class="qnum">1</span> (train notice) You are tall, with <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;long&quot;]' style="width:150px"> , … hair.</div><div class="qrow"><span class="qnum">2</span> … <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;straight&quot;]' style="width:150px"> , … hair.</div><div class="qrow"><span class="qnum">3</span> … <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dark&quot;]' style="width:150px"> hair.</div><div class="qrow"><span class="qnum">4</span> You wore a light <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;scarf&quot;]' style="width:150px"> …</div><div class="qrow"><span class="qnum">5</span> … and a dark <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;jacket&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">6</span> (bus notice) You have <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;short&quot;]' style="width:150px"> , … hair.</div><div class="qrow"><span class="qnum">7</span> … <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;wavy&quot;]' style="width:150px"> , … hair.</div><div class="qrow"><span class="qnum">8</span> … <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;brown&quot;]' style="width:150px"> hair …</div><div class="qrow"><span class="qnum">9</span> … and brown <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;eyes&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">10</span> You have a dark beard and a <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;moustache&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">11</span> You wore a stripy <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;tie&quot;]' style="width:150px"> …</div><div class="qrow"><span class="qnum">12</span> … and a blue <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;shirt&quot;]' style="width:150px"> .</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">ID</span> Articles <span class="ltag">Grammar</span></h2><div class="exercise" data-exid="ID · Ex 1" data-title="Match sentences with uses"><div class="exhead"><span class="excode">ID · Ex 1</span><span class="extitle">Match sentences with uses</span></div><p class="instr">Match sentences a–f with uses 1–6.</p><div class="reading"><h4>Sentences (a–f)</h4><p>a There is a strange man in our street.<br>b Chad has a new car. The car is black and silver.<br>c The moon is very bright tonight.<br>d We meet in the café after school.<br>e Gemma is a shop assistant.<br>f I'm really interested in (–) science.</p></div><div class="qrow"><span class="qnum">1</span> it is clear what we are talking about &nbsp; <select class="field" data-accept='[&quot;d&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="qrow"><span class="qnum">2</span> saying what someone&#x27;s job is &nbsp; <select class="field" data-accept='[&quot;e&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="qrow"><span class="qnum">3</span> something mentioned for the first time &nbsp; <select class="field" data-accept='[&quot;a&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="qrow"><span class="qnum">4</span> the only one of something &nbsp; <select class="field" data-accept='[&quot;c&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="qrow"><span class="qnum">5</span> a generalisation &nbsp; <select class="field" data-accept='[&quot;f&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="qrow"><span class="qnum">6</span> something mentioned for the second time &nbsp; <select class="field" data-accept='[&quot;b&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="ID · Ex 2" data-title="the or no article (–)"><div class="exhead"><span class="excode">ID · Ex 2</span><span class="extitle">the or no article (–)</span></div><p class="instr">Type 'the', or '-' for no article.</p><div class="qrow"><span class="qnum">1</span> I enjoy walking in <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> rain – it&#x27;s so peaceful.</div><div class="qrow"><span class="qnum">2</span> Some young people don&#x27;t see <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> point of studying <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> history.</div><div class="qrow"><span class="qnum">3</span> I&#x27;ll meet you at <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> railway station at 6 o&#x27;clock.</div><div class="qrow"><span class="qnum">4</span> Do you like <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> action films?</div><div class="qrow"><span class="qnum">5</span> I don&#x27;t like to see <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> young children playing <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> violent sports like rugby.</div><div class="qrow"><span class="qnum">6</span> It&#x27;s likely I&#x27;ll be late for <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> school tomorrow.</div><div class="qrow"><span class="qnum">7</span> I love <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> food in this restaurant, but I always enjoy <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> Italian food.</div><div class="qrow"><span class="qnum">8</span> All over <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> world, <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> people have similar problems.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="ID · Ex 3" data-title="a / an, the or no article (–)"><div class="exhead"><span class="excode">ID · Ex 3</span><span class="extitle">a / an, the or no article (–)</span></div><p class="instr">Complete the gaps.</p><div class="qrow"><span class="qnum">1</span> This is <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> school where I study English.</div><div class="qrow"><span class="qnum">2</span> She has <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"> nice car, but she wants a better one.</div><div class="qrow"><span class="qnum">3</span> Do you watch <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> TV often?</div><div class="qrow"><span class="qnum">4</span> There is <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;an&quot;]' style="width:150px"> interesting article in <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> newspaper.</div><div class="qrow"><span class="qnum">5</span> I want to go to <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> cinema this evening.</div><div class="qrow"><span class="qnum">6</span> I like watching <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> baseball.</div><div class="qrow"><span class="qnum">7</span> She is in <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> hospital because she had <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;an&quot;]' style="width:150px"> accident.</div><div class="qrow"><span class="qnum">8</span> Julie&#x27;s mum is <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"> doctor.</div><div class="qrow"><span class="qnum">9</span> It is so nice to see <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> sun again!</div><div class="qrow"><span class="qnum">10</span> Is it time to go to <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"> bed already?</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="ID · Ex 4" data-title="Complete the letter"><div class="exhead"><span class="excode">ID · Ex 4</span><span class="extitle">Complete the letter</span></div><p class="instr">a / an, the or no article (–).</p><div class="qrow"><span class="qnum">1</span> Are you enjoying <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> winter holidays?</div><div class="qrow"><span class="qnum">2</span> It&#x27;s <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"> very old building.</div><div class="qrow"><span class="qnum">3</span> they built <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> &#x27;new&#x27; part in 1930!</div><div class="qrow"><span class="qnum">4</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> classrooms are bright and clean.</div><div class="qrow"><span class="qnum">5</span> everyone wants to use <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> classrooms …</div><div class="qrow"><span class="qnum">6</span> … with <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> new whiteboards.</div><div class="qrow"><span class="qnum">7</span> there isn&#x27;t <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"> swimming pool.</div><div class="qrow"><span class="qnum">8</span> it looks like <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"> very new building …</div><div class="qrow"><span class="qnum">9</span> … from <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> photographs I saw.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="ID · Ex 5" data-title="there is / there are"><div class="exhead"><span class="excode">ID · Ex 5</span><span class="extitle">there is / there are</span></div><p class="instr">Complete each sentence.</p><div class="qrow"><span class="qnum">1</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there are&quot;, &quot;there&#x27;re&quot;]' style="width:130px"> three new students in our class.</div><div class="qrow"><span class="qnum">2</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there is&quot;, &quot;there&#x27;s&quot;]' style="width:130px"> a great drama class at my school.</div><div class="qrow"><span class="qnum">3</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there are&quot;, &quot;there&#x27;re&quot;]' style="width:130px"> about 50 laptops in our computer lab.</div><div class="qrow"><span class="qnum">4</span> I think <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there is&quot;, &quot;there&#x27;s&quot;]' style="width:130px"> a good film on at the cinema.</div><div class="qrow"><span class="qnum">5</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there are&quot;, &quot;there&#x27;re&quot;]' style="width:130px"> only two shows I watch on TV.</div><div class="qrow"><span class="qnum">6</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there are&quot;, &quot;there&#x27;re&quot;]' style="width:130px"> some really nice clothes in that shop.</div><div class="qrow"><span class="qnum">7</span> Ethan, <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there is&quot;, &quot;there&#x27;s&quot;]' style="width:130px"> a man here who wants to talk to you.</div><div class="qrow"><span class="qnum">8</span> I know <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there is&quot;, &quot;there&#x27;s&quot;]' style="width:130px"> an answer to this problem, but I can&#x27;t find it.</div><div class="qrow"><span class="qnum">9</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there are&quot;, &quot;there&#x27;re&quot;]' style="width:130px"> people from many different countries in London.</div><div class="qrow"><span class="qnum">10</span> I want to go home. <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there is&quot;, &quot;there&#x27;s&quot;]' style="width:130px"> a storm coming.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="ID · Ex 6" data-title="Find and correct the mistakes"><div class="exhead"><span class="excode">ID · Ex 6</span><span class="extitle">Find and correct the mistakes</span></div><p class="instr">Each sentence has exactly <b>one</b> mistake with <b>a / an / the / no article</b> or with <b>There is / There are</b> (a word is wrong, missing, or shouldn't be there). Read the sentence, work out the correct form, and type <b>only the one corrected word</b> in the box — do <b>not</b> rewrite the whole sentence. Type <b>-</b> if no article is needed.<br>Reminder: <b>a/an</b> = first mention · <b>the</b> = already known / the only one · <b>There is/are</b> = to say something exists · <b>-</b> = no article (e.g. school subjects, <i>work</i>, <i>school</i>).</p><div class="qrow"><span class="qnum">1</span> It is a first day of school tomorrow.  ✗ → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">2</span> They are three students from China in my class this year.  ✗ → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there&quot;, &quot;there are&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">3</span> I play in football team with classmates from my school.  ✗ → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">4</span> My dad leaves for the work at 7 a.m. every morning.  ✗ → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">5</span> Kelly&#x27;s sister is an dancer.  ✗ → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">6</span> It is a great film on TV tonight.  ✗ → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there&quot;, &quot;there is&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">7</span> We have the great computer lab in our school.  ✗ → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">8</span> We have a new car. A car is very fast.  ✗ → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">9</span> I&#x27;m giving Maggie the CD of dance music for her birthday.  ✗ → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">10</span> I&#x27;m interested in the geography. It&#x27;s my favourite subject.  ✗ → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;-&quot;]' style="width:150px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+  <div class="src">Solutions Pre-Intermediate (3rd Edition) · Workbook Introduction (IA–ID) · auto-marked homework</div>
+</div>
+<div class="actionbar">
+  <span class="score" id="scoreLbl">Score: — / —</span>
+  <button class="btn grade" id="gradeBtn" type="button">Grade all</button>
+  <button class="btn pdf" id="pdfBtn" type="button" disabled>Download PDF report</button>
+  <button class="btn mail" id="mailBtn" type="button" disabled>Submit to teacher (email)</button>
+  <button class="btn reset" id="resetBtn" type="button">Reset</button>
+</div>
+<script>
+const TEACHER_EMAIL = "huongstella8@gmail.com";
+const FILEKEY = "WB_Intro";
+const WS_TITLE = "Workbook Homework – Introduction";
+
+function norm(s){
+  return (s||'').toString().toLowerCase()
+    .replace(/[’‘ʼ]/g,"'").replace(/[–—]/g,'-')
+    .replace(/ /g,' ').trim().replace(/\s+/g,' ')
+    .replace(/[.,!?;:]+$/,'').trim();
+}
+function noap(s){return norm(s).replace(/'/g,'').replace(/\s+/g,' ').trim();}
+
+function matches(userRaw, accepts){
+  const u = norm(userRaw), un = noap(userRaw);
+  if(u==='') return false;               // an empty box is never correct (must type '-' for no article)
+  for(const a of accepts){
+    if(u===norm(a)) return true;
+    if(un===noap(a)) return true;
+  }
+  return false;
+}
+
+function clearField(f){
+  f.classList.remove('correct','wrong');
+  if(f.nextSibling && f.nextSibling.classList && f.nextSibling.classList.contains('correction'))
+    f.nextSibling.remove();
+}
+
+const PASS = 70;   // pass threshold (%)
+
+// ---- grading: ONLY colour red/green. No answer keys are shown on screen.
+function gradeExercise(ex){
+  const fields=[...ex.querySelectorAll('.field')];
+  let correct=0;
+  fields.forEach(f=>{
+    clearField(f);
+    const accepts=JSON.parse(f.dataset.accept);
+    if(matches(f.value, accepts)){ f.classList.add('correct'); correct++; }
+    else { f.classList.add('wrong'); }
+  });
+  return {correct, total:fields.length};
+}
+
+function paintResult(ex,r){
+  const res=ex.querySelector('.exResult');
+  res.textContent=r.correct+' / '+r.total;
+  res.style.color=(r.correct===r.total)?'#1a8f43':(r.correct===0?'#c62828':'#a5228e');
+}
+
+function gradeAll(){
+  let C=0,T=0; const per=[];
+  document.querySelectorAll('.exercise').forEach(ex=>{
+    const r=gradeExercise(ex); C+=r.correct; T+=r.total; paintResult(ex,r);
+    per.push({code:ex.dataset.exid,title:ex.dataset.title,correct:r.correct,total:r.total});
+  });
+  const pct = T? Math.round(C/T*100):0;
+  const passed = pct>=PASS;
+  const lbl=document.getElementById('scoreLbl');
+  lbl.textContent='Score: '+C+' / '+T+'  ('+pct+'%)  —  '+(passed?'PASSED ✓':'REDO REQUIRED (below '+PASS+'%)');
+  lbl.style.color = passed ? '#1a8f43' : '#c62828';
+  window.__grade={C,T,pct,passed,per};
+  document.getElementById('pdfBtn').disabled=false;
+  return window.__grade;
+}
+
+// ---- progress saved per email -------------------------------------------------
+function emailVal(){return (document.getElementById('semail').value||'').trim();}
+function emailOK(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function studentName(){return (document.getElementById('sname').value||'').trim();}
+function pkey(e){return 'hsp_'+FILEKEY+'_'+e.toLowerCase();}
+function attKey(e){return 'att_'+FILEKEY+'_'+(e?e.toLowerCase():'anon');}
+
+function saveProgress(){
+  const e=emailVal(); if(!emailOK(e)){return;}
+  const ans={};
+  document.querySelectorAll('.field').forEach(f=>{ if((f.value||'').trim()!=='') ans[f.dataset.fi]=f.value; });
+  localStorage.setItem(pkey(e), JSON.stringify({name:studentName(), answers:ans, ts:Date.now()}));
+  const s=document.getElementById('saveLbl');
+  s.textContent='Progress saved for '+e+' · '+new Date().toLocaleTimeString();
+}
+function loadProgress(){
+  const e=emailVal(); if(!emailOK(e)){return false;}
+  const raw=localStorage.getItem(pkey(e));
+  showAttempt();
+  if(!raw){document.getElementById('saveLbl').textContent='New email — a fresh progress file will be started for '+e+'.';return false;}
+  const d=JSON.parse(raw);
+  if(d.name && !studentName()) document.getElementById('sname').value=d.name;
+  let n=0;
+  document.querySelectorAll('.field').forEach(f=>{ const v=d.answers[f.dataset.fi]; if(v!==undefined){ f.value=v; clearField(f); n++; } });
+  document.getElementById('saveLbl').textContent='Progress restored for '+e+' ('+n+' answers). You can continue where you left off.';
+  return true;
+}
+function attemptCount(){return parseInt(localStorage.getItem(attKey(emailVal()))||'0',10);}
+function bumpAttempt(){const n=attemptCount()+1;localStorage.setItem(attKey(emailVal()),n);showAttempt();return n;}
+function showAttempt(){document.getElementById('attLbl').innerHTML='Completed attempts: <b>'+attemptCount()+'</b>';}
+
+// ---- PDF report ---------------------------------------------------------------
+function makePDF(){
+  const name=studentName(), email=emailVal();
+  if(!name){alert('Please type your name at the top before downloading the report.');document.getElementById('sname').focus();return null;}
+  if(!emailOK(email)){alert('Please type a valid email at the top (your progress is saved to this email).');document.getElementById('semail').focus();return null;}
+  const g = window.__grade || gradeAll();
+  const passed=g.passed;
+  const attempt = bumpAttempt();
+  const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'pt',format:'a4'});
+  const W=doc.internal.pageSize.getWidth(); let y=0;
+  // header band
+  doc.setFillColor(122,31,107); doc.rect(0,0,W,86,'F');
+  doc.setTextColor(255); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+  doc.text('HUONG STELLA PARADIGM  |  PIONEER SERIES',40,20);
+  doc.setFontSize(16); doc.text('Homework Result Report',40,42);
+  doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.text(WS_TITLE,40,62);
+  doc.setFontSize(9); doc.text('Solutions Pre-Intermediate (3rd Edition) · auto-graded',40,76);
+  y=108; doc.setTextColor(34);
+  // info box
+  doc.setDrawColor(220); doc.setFillColor(247,242,246); doc.roundedRect(40,y,W-80,96,6,6,'FD');
+  doc.setFont('helvetica','bold'); doc.setFontSize(11);
+  const dt=new Date();
+  doc.text('Student: '+name, 54, y+22);
+  doc.text('Attempt #: '+attempt, W-170, y+22);
+  doc.setFont('helvetica','normal');
+  doc.text('Email: '+email, 54, y+40);
+  doc.text('Date: '+dt.toLocaleString(), 54, y+58);
+  doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(122,31,107);
+  doc.text('Total score: '+g.C+' / '+g.T+'   ('+g.pct+'%)', 54, y+82);
+  doc.setFontSize(12); doc.setTextColor(passed?26:198, passed?143:40, passed?67:40);
+  doc.text('Result: '+(passed?'PASSED':'REDO REQUIRED (below '+PASS+'%)'), W-230, y+82);
+  doc.setTextColor(34); doc.setFontSize(10); doc.setFont('helvetica','normal');
+  y+=116;
+  // per-exercise table
+  doc.setFont('helvetica','bold'); doc.setFillColor(122,31,107); doc.setTextColor(255);
+  doc.rect(40,y,W-80,20,'F');
+  doc.text('Exercise',48,y+14); doc.text('Score',W-170,y+14); doc.text('%',W-90,y+14);
+  y+=20; doc.setTextColor(34); doc.setFont('helvetica','normal');
+  g.per.forEach((p,i)=>{
+    if(y>790){doc.addPage();y=48;}
+    if(i%2){doc.setFillColor(244,238,243);doc.rect(40,y,W-80,18,'F');}
+    const t=(p.code+'  '+p.title); const pc=p.total?Math.round(p.correct/p.total*100):0;
+    doc.text(doc.splitTextToSize(t,W-260)[0],48,y+13);
+    doc.text(p.correct+' / '+p.total,W-170,y+13);
+    doc.text(pc+'%',W-90,y+13);
+    y+=18;
+  });
+  // wrong-answer section (answers revealed ONLY if passed >= 70%)
+  const wrong=[]; document.querySelectorAll('.exercise').forEach(ex=>{
+    const fs=[...ex.querySelectorAll('.field')];
+    fs.forEach((f,k)=>{ if(f.classList.contains('wrong')){
+      const acc=JSON.parse(f.dataset.accept); const shown=acc[0]==='-'?'(no article)':acc[0];
+      wrong.push({label:ex.dataset.exid+' — item '+(k+1), your:(f.value||'').trim()||'(blank)', corr:shown});
+    }});
+  });
+  y+=24; if(y>760){doc.addPage();y=48;}
+  if(wrong.length===0){
+    doc.setTextColor(26,143,67);doc.setFont('helvetica','bold');doc.setFontSize(12);
+    doc.text('Perfect! All answers are correct.',40,y);
+  } else if(passed){
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(122,31,107);
+    doc.text('Answers to review ('+wrong.length+')',40,y); y+=16;
+    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(34);
+    wrong.forEach(w=>{ if(y>800){doc.addPage();y=48;}
+      const line=w.label+':  your answer "'+w.your+'"  ->  correct: '+w.corr;
+      doc.text(doc.splitTextToSize(line,W-80),44,y); y+=13; });
+  } else {
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(198,40,40);
+    doc.text('REDO REQUIRED — your score is below '+PASS+'%.',40,y); y+=18;
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(34);
+    doc.text(doc.splitTextToSize('Correct answers are hidden until you reach '+PASS+'%. Please redo the questions listed below (marked in red on screen) and download the report again.',W-80),40,y);
+    y+=34;
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(122,31,107);
+    doc.text('Questions to redo ('+wrong.length+')',40,y); y+=15;
+    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(34);
+    wrong.forEach(w=>{ if(y>800){doc.addPage();y=48;}
+      const line=w.label+':  your answer "'+w.your+'"  (incorrect)';
+      doc.text(doc.splitTextToSize(line,W-80),44,y); y+=13; });
+  }
+  const fn = 'Report_'+FILEKEY+'_'+name.replace(/\s+/g,'')+'_attempt'+attempt+'.pdf';
+  doc.save(fn);
+  window.__lastReport={name,email,attempt,pct:g.pct,C:g.C,T:g.T,passed,file:fn};
+  document.getElementById('mailBtn').disabled=false;
+  return window.__lastReport;
+}
+
+function emailTeacher(){
+  const r=window.__lastReport;
+  if(!r){alert('Please download the PDF report first, then submit it.');return;}
+  const subj='Homework submission - '+WS_TITLE+' - '+r.name+' (Attempt '+r.attempt+')';
+  const body=
+    'Dear teacher,\n\nPlease find my completed homework attached.\n\n'+
+    'Student: '+r.name+'\n'+
+    'Student email: '+r.email+'\n'+
+    'Worksheet: '+WS_TITLE+'\n'+
+    'Attempt: '+r.attempt+'\n'+
+    'Score: '+r.C+' / '+r.T+' ('+r.pct+'%) - '+(r.passed?'PASSED':'REDO REQUIRED')+'\n\n'+
+    'IMPORTANT: please attach the downloaded file "'+r.file+'" to this email before sending.\n\n'+
+    'Best regards,\n'+r.name;
+  window.location.href='mailto:'+TEACHER_EMAIL+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
+}
+
+function resetAll(){
+  if(!confirm('Clear all your answers on this page? (Saved progress for your email will also be removed.)'))return;
+  document.querySelectorAll('.field').forEach(f=>{clearField(f);f.value='';});
+  document.querySelectorAll('.exResult').forEach(s=>s.textContent='');
+  const lbl=document.getElementById('scoreLbl');lbl.textContent='Score: — / —';lbl.style.color='';
+  window.__grade=null;window.__lastReport=null;
+  document.getElementById('pdfBtn').disabled=true;document.getElementById('mailBtn').disabled=true;
+  const e=emailVal(); if(emailOK(e)) localStorage.removeItem(pkey(e));
+  document.getElementById('saveLbl').textContent='Answers cleared.';
+}
+
+document.addEventListener('click',e=>{
+  if(e.target.classList.contains('checkBtn')){
+    const ex=e.target.closest('.exercise'); paintResult(ex, gradeExercise(ex));
+  }
+});
+document.addEventListener('input',e=>{
+  if(e.target.classList.contains('field')||e.target.id==='sname'){ saveProgress(); }
+});
+window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.field').forEach((f,i)=>f.dataset.fi=i);
+  showAttempt();
+  const em=document.getElementById('semail');
+  em.addEventListener('change',loadProgress);
+  em.addEventListener('blur',loadProgress);
+  document.getElementById('gradeBtn').onclick=gradeAll;
+  document.getElementById('pdfBtn').onclick=makePDF;
+  document.getElementById('mailBtn').onclick=emailTeacher;
+  document.getElementById('resetBtn').onclick=resetAll;
+});
+</script>
+</body></html>

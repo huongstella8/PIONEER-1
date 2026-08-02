@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student&#x27;s Book — Introduction</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--pur:#7a1f6b;--pur2:#a5228e;--org:#f39200;--ink:#222;--line:#e3d7e0;--ok:#1a8f43;--no:#c62828;--bg:#faf7fa;}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+header.top{background:linear-gradient(120deg,var(--pur),var(--pur2));color:#fff;padding:16px 28px 20px}
+header.top .brand{font-size:12px;font-weight:800;letter-spacing:.32em;opacity:.92;margin-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:9px;display:inline-block}
+header.top h1{margin:0;font-size:22px}
+header.top p{margin:4px 0 0;opacity:.9;font-size:13px}
+.savebar{margin-top:10px;font-size:13px;color:var(--pur);background:#f4eef3;border:1px solid var(--line);
+  border-radius:8px;padding:7px 11px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px 120px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.panel h3{margin:.1em 0 .5em;color:var(--pur)}
+.namebar{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.namebar label{font-weight:600;font-size:14px}
+.namebar input{padding:8px 10px;border:1px solid #bbb;border-radius:8px;font-size:14px}
+.attempt{margin-left:auto;font-size:13px;color:#555}
+.attempt b{color:var(--pur)}
+.lesson{margin:26px 0}
+.lesson>h2{background:var(--pur);color:#fff;padding:9px 14px;border-radius:9px;font-size:18px;display:flex;align-items:center;gap:10px}
+.lcode{background:#fff;color:var(--pur);border-radius:6px;padding:2px 9px;font-weight:800}
+.ltag{margin-left:auto;font-size:12px;font-weight:400;opacity:.85;text-transform:uppercase;letter-spacing:.06em}
+.exercise{background:#fff;border:1px solid var(--line);border-left:5px solid var(--org);border-radius:10px;padding:14px 16px;margin:14px 0}
+.exhead{display:flex;align-items:baseline;gap:8px}
+.excode{background:var(--org);color:#fff;font-weight:700;border-radius:5px;padding:1px 8px;font-size:13px}
+.extitle{font-weight:700}
+.instr{margin:.4em 0 .7em;color:#444;font-size:14px}
+.qrow{padding:5px 0;font-size:15px}
+.qnum{display:inline-block;min-width:22px;font-weight:700;color:var(--pur)}
+.order .scramble{font-style:italic;color:#555}
+input.field,select.field{font-size:14px;padding:4px 7px;border:1px solid #b8a9b4;border-radius:6px;background:#fffdfe;margin:2px 3px}
+input.field:focus,select.field:focus{outline:2px solid var(--pur2)}
+.field.correct{border-color:var(--ok);background:#eaffef}
+.field.wrong{border-color:var(--no);background:#ffecec}
+.correction{color:var(--ok);font-size:13px;font-weight:600;margin-left:6px;white-space:nowrap}
+.correction.miss{color:var(--no)}
+.exfoot{margin-top:10px;display:flex;align-items:center;gap:12px}
+.checkBtn{background:var(--pur);color:#fff;border:0;border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer}
+.checkBtn:hover{background:var(--pur2)}
+.exResult{font-weight:700;font-size:14px}
+.reading{background:#f4eef3;border:1px dashed #c9b6c6;border-radius:8px;padding:10px 14px;margin:6px 0 12px;font-size:14px}
+.reading h4{margin:.1em 0 .4em;color:var(--pur)}
+.reading p{margin:.4em 0}
+.listen{margin:6px 0 12px}
+.listenHead{font-size:13.5px;background:#eef4ea;border:1px solid #cbe0c1;border-radius:8px;padding:8px 12px;margin-bottom:8px}
+.transcript{margin:0;font-size:13.5px}
+.transcript summary{cursor:pointer;display:inline-block;background:var(--pur);color:#fff;border-radius:8px;
+  padding:6px 14px;font-weight:600;font-size:13px;list-style:none;user-select:none}
+.transcript summary::-webkit-details-marker{display:none}
+.transcript summary::before{content:'▶ '}
+.transcript[open] summary::before{content:'▼ '}
+.transcript[open] summary{background:var(--pur2)}
+.transcript>div{background:#f4eef3;border-radius:8px;padding:10px 14px;margin-top:8px}
+.actionbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--pur);
+  padding:12px 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;box-shadow:0 -2px 8px rgba(0,0,0,.08);z-index:50}
+.actionbar .score{font-weight:800;font-size:16px;color:var(--pur);margin-right:auto}
+.btn{border:0;border-radius:9px;padding:10px 16px;font-size:14px;cursor:pointer;font-weight:600}
+.btn.grade{background:var(--org);color:#fff}
+.btn.pdf{background:var(--pur);color:#fff}
+.btn.mail{background:#1769aa;color:#fff}
+.btn.reset{background:#eee;color:#444}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.noteHead{font-weight:700;color:var(--pur);font-size:13px;margin:12px 0 4px}
+.note{font-size:13px;color:#555;margin:0;padding-left:20px}
+.note li{margin:5px 0}
+.src{text-align:center;color:#cbbcc6;font-size:11px;font-style:italic;letter-spacing:.02em;margin:38px 0 4px}
+@media(max-width:640px){.actionbar{flex-direction:column;align-items:stretch}.actionbar .score{margin:0 0 4px}}
+</style></head><body>
+<header class="top"><div class="brand">HUONG&nbsp;STELLA&nbsp;PARADIGM&nbsp;&nbsp;|&nbsp;&nbsp;PIONEER&nbsp;SERIES</div><h1>Student&#x27;s Book — Introduction</h1></header>
+<div class="wrap">
+  <div class="panel">
+    <div class="namebar">
+      <label for="sname">Your name:</label>
+      <input id="sname" type="text" placeholder="Full name" style="min-width:180px">
+      <label for="semail">Email:</label>
+      <input id="semail" type="email" placeholder="you@example.com" style="min-width:210px">
+      <span class="attempt" id="attLbl"></span>
+    </div>
+    <div class="savebar" id="saveLbl">Enter your email to save your progress and continue later.</div>
+    <p class="noteHead">How this worksheet works</p>
+    <ul class="note">
+      <li>Type your <b>name</b> and <b>email</b>, then answer the questions.</li>
+      <li>Your work is <b>saved automatically to your email</b> — if you can't finish in one go, just reopen the page and type the same email to restore your answers.</li>
+      <li>Press <b>Check</b> on an exercise or <b>Grade all</b> to see right (green) / wrong (red). <b>Answers are not shown on screen</b>, so you can try again.</li>
+      <li>Download the <b>PDF report</b> (with your <b>attempt number</b>) and submit it to your teacher (huongstella8@gmail.com).</li>
+      <li>The report shows the correct answers only if you score <b>70% or more</b>; below that you are asked to redo.</li>
+      <li>Each <b>listening</b> task tells you which <b>audio track</b> to play from the link your teacher shares on Google Classroom; the transcript stays hidden behind a <b>Show transcript</b> button so you can check it only after listening.</li>
+    </ul>
+  </div>
+  <section class="lesson"><h2><span class="lcode">IA</span> Likes and dislikes <span class="ltag">Vocabulary</span></h2><div class="exercise" data-exid="IA · Ex 3" data-title="True or false"><div class="exhead"><span class="excode">IA · Ex 3</span><span class="extitle">True or false</span></div><p class="instr">Read the dialogue and write T (true) or F (false).</p><div class="reading"><h4>Dialogue (exercise 2)</h4><p><b>Ryan</b> Hi, Izzy. Can I sit here?<br><b>Izzy</b> Yes, of course. This is Becky. She's new.<br><b>Ryan</b> Hi, Becky. I'm Ryan, Izzy's brother.<br><b>Becky</b> Hi. Nice to meet you!<br><b>Ryan</b> Where are you from, Becky?<br><b>Becky</b> I'm from London. I moved here two weeks ago.<br><b>Ryan</b> I love London. I've got friends there. I sometimes visit them and we go skateboarding.<br><b>Izzy</b> Do you like skateboarding, Becky?<br><b>Becky</b> Not really. But I like ice skating.<br><b>Izzy</b> Me too! Let's go ice skating after school.<br><b>Becky</b> Great idea!<br><b>Ryan</b> I'm not very keen on ice skating. What do you think of bowling?<br><b>Becky</b> Bowling? I hate it.<br><b>Ryan</b> Oh. Actually, I don't mind ice skating ...<br><b>Izzy</b> There's the bell. I've got maths, then history.<br><b>Becky</b> I've got PE now. I love PE! See you after school, Izzy!<br><b>Izzy</b> Bye, Becky.<br><b>Ryan</b> Yeah ... Bye ...</p></div><div class="qrow"><span class="qnum">1</span> This is the first time Izzy and Ryan meet. &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">2</span> This is the first time Becky and Ryan meet. &nbsp; <select class="field" data-accept='[&quot;T&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">3</span> Ryan sometimes goes skateboarding in London. &nbsp; <select class="field" data-accept='[&quot;T&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">4</span> Becky does not like skateboarding or bowling. &nbsp; <select class="field" data-accept='[&quot;T&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">5</span> Ryan and Becky agree to go ice skating after school. &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">6</span> Izzy and Becky have got PE next. &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IA · Ex 4" data-title="Add words to each list"><div class="exhead"><span class="excode">IA · Ex 4</span><span class="extitle">Add words to each list</span></div><p class="instr">Add three words from the dialogue to each list (any order).</p><div class="qrow"><span class="qnum">1</span> Sports and hobbies (three words from the dialogue): <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;skateboarding&quot;, &quot;ice skating&quot;, &quot;bowling&quot;]' style="width:130px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;skateboarding&quot;, &quot;ice skating&quot;, &quot;bowling&quot;]' style="width:130px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;skateboarding&quot;, &quot;ice skating&quot;, &quot;bowling&quot;]' style="width:130px"></div><div class="qrow"><span class="qnum">2</span> School subjects (three words from the dialogue): <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;maths&quot;, &quot;history&quot;, &quot;pe&quot;, &quot;p.e.&quot;]' style="width:110px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;maths&quot;, &quot;history&quot;, &quot;pe&quot;, &quot;p.e.&quot;]' style="width:110px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;maths&quot;, &quot;history&quot;, &quot;pe&quot;, &quot;p.e.&quot;]' style="width:110px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IA · Ex 6" data-title="Likes and dislikes — key phrases"><div class="exhead"><span class="excode">IA · Ex 6</span><span class="extitle">Likes and dislikes — key phrases</span></div><p class="instr">Label each phrase <b>A</b> (like), <b>B</b> (OK) or <b>C</b> (don't like).</p><div class="qrow"><span class="qnum">1</span> I can&#x27;t stand … &nbsp; <select class="field" data-accept='[&quot;C&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div><div class="qrow"><span class="qnum">2</span> I don&#x27;t mind … &nbsp; <select class="field" data-accept='[&quot;B&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div><div class="qrow"><span class="qnum">3</span> I hate … &nbsp; <select class="field" data-accept='[&quot;C&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div><div class="qrow"><span class="qnum">4</span> I love … &nbsp; <select class="field" data-accept='[&quot;A&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div><div class="qrow"><span class="qnum">5</span> I (quite) like … &nbsp; <select class="field" data-accept='[&quot;B&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div><div class="qrow"><span class="qnum">6</span> I&#x27;m really keen on … &nbsp; <select class="field" data-accept='[&quot;A&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div><div class="qrow"><span class="qnum">7</span> … isn&#x27;t bad. &nbsp; <select class="field" data-accept='[&quot;B&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div><div class="qrow"><span class="qnum">8</span> … is great. &nbsp; <select class="field" data-accept='[&quot;A&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div><div class="qrow"><span class="qnum">9</span> … is terrible. &nbsp; <select class="field" data-accept='[&quot;C&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">IB</span> Contrast: present simple and present continuous <span class="ltag">Grammar</span></h2><div class="exercise" data-exid="IB · Ex 3" data-title="Complete the rules"><div class="exhead"><span class="excode">IB · Ex 3</span><span class="extitle">Complete the rules</span></div><p class="instr">Choose the correct tense for each rule in the <i>Learn this!</i> box.</p><div class="qrow"><span class="qnum">2</span> the ___ … for something happening at this moment &nbsp; <select class="field" data-accept='[&quot;present continuous&quot;]'><option value="">—</option><option value="present simple">present simple</option><option value="present continuous">present continuous</option></select></div><div class="qrow"><span class="qnum">3</span> the ___ … for something happening around this time &nbsp; <select class="field" data-accept='[&quot;present continuous&quot;]'><option value="">—</option><option value="present simple">present simple</option><option value="present continuous">present continuous</option></select></div><div class="qrow"><span class="qnum">4</span> the ___ … for stating a fact &nbsp; <select class="field" data-accept='[&quot;present simple&quot;]'><option value="">—</option><option value="present simple">present simple</option><option value="present continuous">present continuous</option></select></div><div class="qrow"><span class="qnum">5</span> the ___ … with certain verbs (believe, know, like, love, need, understand, want) &nbsp; <select class="field" data-accept='[&quot;present simple&quot;]'><option value="">—</option><option value="present simple">present simple</option><option value="present continuous">present continuous</option></select></div><div class="qrow"><span class="qnum">6</span> the ___ … for future arrangements &nbsp; <select class="field" data-accept='[&quot;present continuous&quot;]'><option value="">—</option><option value="present simple">present simple</option><option value="present continuous">present continuous</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IB · Ex 6" data-title="Complete the phone dialogue"><div class="exhead"><span class="excode">IB · Ex 6</span><span class="extitle">Complete the phone dialogue</span></div><p class="instr">Use the present simple or present continuous form of the verbs in brackets.</p><div class="qrow"><span class="qnum">2</span> Toby: I&#x27;m at the sports centre. I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;m waiting&quot;, &quot;am waiting&quot;, &quot;im waiting&quot;]' style="width:150px"> (wait) for Tom.</div><div class="qrow"><span class="qnum">3</span> Leia: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;are you going&quot;]' style="width:150px"> (you / go) swimming?</div><div class="qrow"><span class="qnum">4</span> Toby: No, we <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;are playing&quot;, &quot;&#x27;re playing&quot;, &quot;re playing&quot;]' style="width:150px"> (play) table tennis.</div><div class="qrow"><span class="qnum">5</span> Toby: We <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;play&quot;]' style="width:150px"> (play) every Saturday morning.</div><div class="qrow"><span class="qnum">6</span> Leia: What <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;is he doing&quot;]' style="width:150px"> (he / do)?</div><div class="qrow"><span class="qnum">7</span> Toby: I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;don&#x27;t know&quot;, &quot;do not know&quot;]' style="width:150px"> (not know).</div><div class="qrow"><span class="qnum">8</span> Toby: He <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;isn&#x27;t answering&quot;, &quot;is not answering&quot;]' style="width:150px"> (not answer) his phone.</div><div class="qrow"><span class="qnum">9</span> Leia: I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;m not buying&quot;, &quot;am not buying&quot;, &quot;im not buying&quot;]' style="width:150px"> (not buy) anything today.</div><div class="qrow"><span class="qnum">10</span> Leia: I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;m&quot;, &quot;am&quot;, &quot;im&quot;]' style="width:150px"> just <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;looking&quot;]' style="width:150px"> (look).</div><div class="qrow"><span class="qnum">11</span> Toby: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;do you like&quot;]' style="width:150px"> (you / like) table tennis?</div><div class="qrow"><span class="qnum">12</span> Toby: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;do you want&quot;]' style="width:150px"> (you / want) to play?</div><div class="qrow"><span class="qnum">13</span> Leia: But I <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;&#x27;m not wearing&quot;, &quot;am not wearing&quot;, &quot;im not wearing&quot;]' style="width:150px"> (not wear) sports clothes.</div><div class="qrow"><span class="qnum">14</span> Toby: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;are you wearing&quot;]' style="width:150px"> (you / wear) trainers?</div><div class="qrow"><span class="qnum">15</span> Toby: You <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;don&#x27;t need&quot;, &quot;do not need&quot;]' style="width:150px"> (not need) sports clothes.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">IC</span> Describing people <span class="ltag">Vocabulary</span></h2><div class="exercise" data-exid="IC · Ex 1" data-title="Match the characters with the photos"><div class="exhead"><span class="excode">IC · Ex 1</span><span class="extitle">Match the characters with the photos</span></div><p class="instr">📖 <b>Look at the six photos (A–F) of famous film characters on page 6 of your Student's Book.</b> Match each film character below with the correct photo letter (A–F).</p><div class="qrow"><span class="qnum">1</span> James Bond (Daniel Craig) &nbsp; <select class="field" data-accept='[&quot;D&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option></select></div><div class="qrow"><span class="qnum">2</span> Edward Cullen (Robert Pattinson) &nbsp; <select class="field" data-accept='[&quot;C&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option></select></div><div class="qrow"><span class="qnum">3</span> Galadriel (Cate Blanchett) &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option></select></div><div class="qrow"><span class="qnum">4</span> Black Widow (Scarlett Johansson) &nbsp; <select class="field" data-accept='[&quot;E&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option></select></div><div class="qrow"><span class="qnum">5</span> Javert (Russell Crowe) &nbsp; <select class="field" data-accept='[&quot;B&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option></select></div><div class="qrow"><span class="qnum">6</span> Katniss Everdeen (Jennifer Lawrence) &nbsp; <select class="field" data-accept='[&quot;A&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IC · Ex 2" data-title="Match the descriptions"><div class="exhead"><span class="excode">IC · Ex 2</span><span class="extitle">Match the descriptions</span></div><p class="instr">Match each sentence beginning (1–4) with the correct ending (a–d).</p><div class="qrow"><span class="qnum">1</span> Katniss Everdeen has got long brown hair. She&#x27;s wearing …<br><select class="field" data-accept='[&quot;b&quot;]'><option value="">—</option><option value="a">a) a black jacket and black trousers</option><option value="b">b) a brown jacket and a black T-shirt</option><option value="c">c) a coat and a hat</option><option value="d">d) a grey coat, a blue shirt and dark jeans</option></select></div><div class="qrow"><span class="qnum">2</span> Black Widow has got long wavy red hair. She&#x27;s wearing …<br><select class="field" data-accept='[&quot;a&quot;]'><option value="">—</option><option value="a">a) a black jacket and black trousers</option><option value="b">b) a brown jacket and a black T-shirt</option><option value="c">c) a coat and a hat</option><option value="d">d) a grey coat, a blue shirt and dark jeans</option></select></div><div class="qrow"><span class="qnum">3</span> Edward Cullen has got short dark hair. He&#x27;s wearing …<br><select class="field" data-accept='[&quot;d&quot;]'><option value="">—</option><option value="a">a) a black jacket and black trousers</option><option value="b">b) a brown jacket and a black T-shirt</option><option value="c">c) a coat and a hat</option><option value="d">d) a grey coat, a blue shirt and dark jeans</option></select></div><div class="qrow"><span class="qnum">4</span> Javert has got a beard and moustache. He&#x27;s wearing …<br><select class="field" data-accept='[&quot;c&quot;]'><option value="">—</option><option value="a">a) a black jacket and black trousers</option><option value="b">b) a brown jacket and a black T-shirt</option><option value="c">c) a coat and a hat</option><option value="d">d) a grey coat, a blue shirt and dark jeans</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="IC · Ex 3" data-title="Order of adjectives"><div class="exhead"><span class="excode">IC · Ex 3</span><span class="extitle">Order of adjectives</span></div><p class="instr">Put each adjective in the correct column: Length, Style or Colour.</p><div class="qrow"><span class="qnum">1</span> long &nbsp; <select class="field" data-accept='[&quot;Length&quot;]'><option value="">—</option><option value="Length">Length</option><option value="Style">Style</option><option value="Colour">Colour</option></select></div><div class="qrow"><span class="qnum">2</span> medium-length &nbsp; <select class="field" data-accept='[&quot;Length&quot;]'><option value="">—</option><option value="Length">Length</option><option value="Style">Style</option><option value="Colour">Colour</option></select></div><div class="qrow"><span class="qnum">3</span> straight &nbsp; <select class="field" data-accept='[&quot;Style&quot;]'><option value="">—</option><option value="Length">Length</option><option value="Style">Style</option><option value="Colour">Colour</option></select></div><div class="qrow"><span class="qnum">4</span> wavy &nbsp; <select class="field" data-accept='[&quot;Style&quot;]'><option value="">—</option><option value="Length">Length</option><option value="Style">Style</option><option value="Colour">Colour</option></select></div><div class="qrow"><span class="qnum">5</span> black &nbsp; <select class="field" data-accept='[&quot;Colour&quot;]'><option value="">—</option><option value="Length">Length</option><option value="Style">Style</option><option value="Colour">Colour</option></select></div><div class="qrow"><span class="qnum">6</span> brown &nbsp; <select class="field" data-accept='[&quot;Colour&quot;]'><option value="">—</option><option value="Length">Length</option><option value="Style">Style</option><option value="Colour">Colour</option></select></div><div class="qrow"><span class="qnum">7</span> fair &nbsp; <select class="field" data-accept='[&quot;Colour&quot;]'><option value="">—</option><option value="Length">Length</option><option value="Style">Style</option><option value="Colour">Colour</option></select></div><div class="qrow"><span class="qnum">8</span> red &nbsp; <select class="field" data-accept='[&quot;Colour&quot;]'><option value="">—</option><option value="Length">Length</option><option value="Style">Style</option><option value="Colour">Colour</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">ID</span> Articles <span class="ltag">Grammar</span></h2><div class="exercise" data-exid="ID · Ex 3" data-title="Complete the rules"><div class="exhead"><span class="excode">ID · Ex 3</span><span class="extitle">Complete the rules</span></div><p class="instr">Choose a / an, the or no article for each rule.</p><div class="qrow"><span class="qnum">1</span> We use ___ to talk about something for the first time. &nbsp; <select class="field" data-accept='[&quot;a / an&quot;]'><option value="">—</option><option value="a / an">a / an</option><option value="the">the</option><option value="no article">no article</option></select></div><div class="qrow"><span class="qnum">2</span> We use ___ when we mention something again. &nbsp; <select class="field" data-accept='[&quot;the&quot;]'><option value="">—</option><option value="a / an">a / an</option><option value="the">the</option><option value="no article">no article</option></select></div><div class="qrow"><span class="qnum">3</span> We use ___ when it is clear what we are talking about, or when there is only one of something. &nbsp; <select class="field" data-accept='[&quot;the&quot;]'><option value="">—</option><option value="a / an">a / an</option><option value="the">the</option><option value="no article">no article</option></select></div><div class="qrow"><span class="qnum">4</span> We use ___ to say what someone&#x27;s job is. &nbsp; <select class="field" data-accept='[&quot;a / an&quot;]'><option value="">—</option><option value="a / an">a / an</option><option value="the">the</option><option value="no article">no article</option></select></div><div class="qrow"><span class="qnum">5</span> Set phrases: ___ + listen to the radio, go to the cinema, play the guitar. &nbsp; <select class="field" data-accept='[&quot;the&quot;]'><option value="">—</option><option value="a / an">a / an</option><option value="the">the</option><option value="no article">no article</option></select></div><div class="qrow"><span class="qnum">6</span> Set phrases: ___ + watch TV, listen to music, in / to bed, at home. &nbsp; <select class="field" data-accept='[&quot;no article&quot;]'><option value="">—</option><option value="a / an">a / an</option><option value="the">the</option><option value="no article">no article</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="ID · Ex 5" data-title="Complete the dialogue"><div class="exhead"><span class="excode">ID · Ex 5</span><span class="extitle">Complete the dialogue</span></div><p class="instr">Use a / an or the. (Blank 1 = 'the', given.)</p><div class="qrow"><span class="qnum">2</span> Jake: Really? What&#x27;s <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> name of the school?</div><div class="qrow"><span class="qnum">3</span> Jake: … name of <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> school?</div><div class="qrow"><span class="qnum">4</span> Martha: St Mark&#x27;s. It&#x27;s <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"> private school.</div><div class="qrow"><span class="qnum">5</span> Jake: I know <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"> girl who goes there. Alice Smith.</div><div class="qrow"><span class="qnum">6</span> Martha: There&#x27;s <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;an&quot;]' style="width:150px"> Alice Smith in my class.</div><div class="qrow"><span class="qnum">7</span> Martha: I wonder if it&#x27;s <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;the&quot;]' style="width:150px"> same one.</div><div class="qrow"><span class="qnum">8</span> Jake: … long wavy hair and <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"> nice smile.</div><div class="qrow"><span class="qnum">9</span> Martha: My dad&#x27;s <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;a&quot;]' style="width:150px"> maths teacher there: John Chapman.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="ID · Ex 6" data-title="Generalisations — circle the correct words"><div class="exhead"><span class="excode">ID · Ex 6</span><span class="extitle">Generalisations — circle the correct words</span></div><p class="instr">Choose the correct option.</p><div class="qrow"><span class="qnum">1</span> ___ are more intelligent than ___ . &nbsp; <select class="field" data-accept='[&quot;Dogs / cats&quot;]'><option value="">—</option><option value="Dogs / cats">Dogs / cats</option><option value="The dogs / cats">The dogs / cats</option><option value="Dogs / the cats">Dogs / the cats</option><option value="The dogs / the cats">The dogs / the cats</option></select></div><div class="qrow"><span class="qnum">2</span> ___ is nice today. &nbsp; <select class="field" data-accept='[&quot;The weather&quot;]'><option value="">—</option><option value="Weather">Weather</option><option value="The weather">The weather</option></select></div><div class="qrow"><span class="qnum">3</span> ___ is more fun than ___ . &nbsp; <select class="field" data-accept='[&quot;Football / volleyball&quot;]'><option value="">—</option><option value="Football / volleyball">Football / volleyball</option><option value="The football / volleyball">The football / volleyball</option><option value="Football / the volleyball">Football / the volleyball</option><option value="The football / the volleyball">The football / the volleyball</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="ID · Ex 7" data-title="There is / There are"><div class="exhead"><span class="excode">ID · Ex 7</span><span class="extitle">There is / There are</span></div><p class="instr">Complete the rules with is or are.</p><div class="qrow"><span class="qnum">a</span> We use &lt;i&gt;There&lt;/i&gt; <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;is&quot;]' style="width:150px"> with singular nouns. (e.g. a book on the desk)</div><div class="qrow"><span class="qnum">b</span> We use &lt;i&gt;There&lt;/i&gt; <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;are&quot;]' style="width:150px"> with plural nouns. (e.g. twenty children in the class)</div><div class="qrow"><span class="qnum">c</span> The short form of &lt;i&gt;There is&lt;/i&gt; is &lt;i&gt;There&#x27;s&lt;/i&gt;. &lt;i&gt;There <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;are&quot;]' style="width:150px">&lt;/i&gt; (plural) has no short form.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+  <div class="src">Solutions Pre-Intermediate (3rd Edition) · Introduction (IA–ID) · interactive lesson with auto-marking</div>
+</div>
+<div class="actionbar">
+  <span class="score" id="scoreLbl">Score: — / —</span>
+  <button class="btn grade" id="gradeBtn" type="button">Grade all</button>
+  <button class="btn pdf" id="pdfBtn" type="button" disabled>Download PDF report</button>
+  <button class="btn mail" id="mailBtn" type="button" disabled>Submit to teacher (email)</button>
+  <button class="btn reset" id="resetBtn" type="button">Reset</button>
+</div>
+<script>
+const TEACHER_EMAIL = "huongstella8@gmail.com";
+const FILEKEY = "SB_Intro";
+const WS_TITLE = "Student's Book – Introduction";
+
+function norm(s){
+  return (s||'').toString().toLowerCase()
+    .replace(/[’‘ʼ]/g,"'").replace(/[–—]/g,'-')
+    .replace(/ /g,' ').trim().replace(/\s+/g,' ')
+    .replace(/[.,!?;:]+$/,'').trim();
+}
+function noap(s){return norm(s).replace(/'/g,'').replace(/\s+/g,' ').trim();}
+
+function matches(userRaw, accepts){
+  const u = norm(userRaw), un = noap(userRaw);
+  if(u==='') return false;               // an empty box is never correct (must type '-' for no article)
+  for(const a of accepts){
+    if(u===norm(a)) return true;
+    if(un===noap(a)) return true;
+  }
+  return false;
+}
+
+function clearField(f){
+  f.classList.remove('correct','wrong');
+  if(f.nextSibling && f.nextSibling.classList && f.nextSibling.classList.contains('correction'))
+    f.nextSibling.remove();
+}
+
+const PASS = 70;   // pass threshold (%)
+
+// ---- grading: ONLY colour red/green. No answer keys are shown on screen.
+function gradeExercise(ex){
+  const fields=[...ex.querySelectorAll('.field')];
+  let correct=0;
+  fields.forEach(f=>{
+    clearField(f);
+    const accepts=JSON.parse(f.dataset.accept);
+    if(matches(f.value, accepts)){ f.classList.add('correct'); correct++; }
+    else { f.classList.add('wrong'); }
+  });
+  return {correct, total:fields.length};
+}
+
+function paintResult(ex,r){
+  const res=ex.querySelector('.exResult');
+  res.textContent=r.correct+' / '+r.total;
+  res.style.color=(r.correct===r.total)?'#1a8f43':(r.correct===0?'#c62828':'#a5228e');
+}
+
+function gradeAll(){
+  let C=0,T=0; const per=[];
+  document.querySelectorAll('.exercise').forEach(ex=>{
+    const r=gradeExercise(ex); C+=r.correct; T+=r.total; paintResult(ex,r);
+    per.push({code:ex.dataset.exid,title:ex.dataset.title,correct:r.correct,total:r.total});
+  });
+  const pct = T? Math.round(C/T*100):0;
+  const passed = pct>=PASS;
+  const lbl=document.getElementById('scoreLbl');
+  lbl.textContent='Score: '+C+' / '+T+'  ('+pct+'%)  —  '+(passed?'PASSED ✓':'REDO REQUIRED (below '+PASS+'%)');
+  lbl.style.color = passed ? '#1a8f43' : '#c62828';
+  window.__grade={C,T,pct,passed,per};
+  document.getElementById('pdfBtn').disabled=false;
+  return window.__grade;
+}
+
+// ---- progress saved per email -------------------------------------------------
+function emailVal(){return (document.getElementById('semail').value||'').trim();}
+function emailOK(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function studentName(){return (document.getElementById('sname').value||'').trim();}
+function pkey(e){return 'hsp_'+FILEKEY+'_'+e.toLowerCase();}
+function attKey(e){return 'att_'+FILEKEY+'_'+(e?e.toLowerCase():'anon');}
+
+function saveProgress(){
+  const e=emailVal(); if(!emailOK(e)){return;}
+  const ans={};
+  document.querySelectorAll('.field').forEach(f=>{ if((f.value||'').trim()!=='') ans[f.dataset.fi]=f.value; });
+  localStorage.setItem(pkey(e), JSON.stringify({name:studentName(), answers:ans, ts:Date.now()}));
+  const s=document.getElementById('saveLbl');
+  s.textContent='Progress saved for '+e+' · '+new Date().toLocaleTimeString();
+}
+function loadProgress(){
+  const e=emailVal(); if(!emailOK(e)){return false;}
+  const raw=localStorage.getItem(pkey(e));
+  showAttempt();
+  if(!raw){document.getElementById('saveLbl').textContent='New email — a fresh progress file will be started for '+e+'.';return false;}
+  const d=JSON.parse(raw);
+  if(d.name && !studentName()) document.getElementById('sname').value=d.name;
+  let n=0;
+  document.querySelectorAll('.field').forEach(f=>{ const v=d.answers[f.dataset.fi]; if(v!==undefined){ f.value=v; clearField(f); n++; } });
+  document.getElementById('saveLbl').textContent='Progress restored for '+e+' ('+n+' answers). You can continue where you left off.';
+  return true;
+}
+function attemptCount(){return parseInt(localStorage.getItem(attKey(emailVal()))||'0',10);}
+function bumpAttempt(){const n=attemptCount()+1;localStorage.setItem(attKey(emailVal()),n);showAttempt();return n;}
+function showAttempt(){document.getElementById('attLbl').innerHTML='Completed attempts: <b>'+attemptCount()+'</b>';}
+
+// ---- PDF report ---------------------------------------------------------------
+function makePDF(){
+  const name=studentName(), email=emailVal();
+  if(!name){alert('Please type your name at the top before downloading the report.');document.getElementById('sname').focus();return null;}
+  if(!emailOK(email)){alert('Please type a valid email at the top (your progress is saved to this email).');document.getElementById('semail').focus();return null;}
+  const g = window.__grade || gradeAll();
+  const passed=g.passed;
+  const attempt = bumpAttempt();
+  const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'pt',format:'a4'});
+  const W=doc.internal.pageSize.getWidth(); let y=0;
+  // header band
+  doc.setFillColor(122,31,107); doc.rect(0,0,W,86,'F');
+  doc.setTextColor(255); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+  doc.text('HUONG STELLA PARADIGM  |  PIONEER SERIES',40,20);
+  doc.setFontSize(16); doc.text('Homework Result Report',40,42);
+  doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.text(WS_TITLE,40,62);
+  doc.setFontSize(9); doc.text('Solutions Pre-Intermediate (3rd Edition) · auto-graded',40,76);
+  y=108; doc.setTextColor(34);
+  // info box
+  doc.setDrawColor(220); doc.setFillColor(247,242,246); doc.roundedRect(40,y,W-80,96,6,6,'FD');
+  doc.setFont('helvetica','bold'); doc.setFontSize(11);
+  const dt=new Date();
+  doc.text('Student: '+name, 54, y+22);
+  doc.text('Attempt #: '+attempt, W-170, y+22);
+  doc.setFont('helvetica','normal');
+  doc.text('Email: '+email, 54, y+40);
+  doc.text('Date: '+dt.toLocaleString(), 54, y+58);
+  doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(122,31,107);
+  doc.text('Total score: '+g.C+' / '+g.T+'   ('+g.pct+'%)', 54, y+82);
+  doc.setFontSize(12); doc.setTextColor(passed?26:198, passed?143:40, passed?67:40);
+  doc.text('Result: '+(passed?'PASSED':'REDO REQUIRED (below '+PASS+'%)'), W-230, y+82);
+  doc.setTextColor(34); doc.setFontSize(10); doc.setFont('helvetica','normal');
+  y+=116;
+  // per-exercise table
+  doc.setFont('helvetica','bold'); doc.setFillColor(122,31,107); doc.setTextColor(255);
+  doc.rect(40,y,W-80,20,'F');
+  doc.text('Exercise',48,y+14); doc.text('Score',W-170,y+14); doc.text('%',W-90,y+14);
+  y+=20; doc.setTextColor(34); doc.setFont('helvetica','normal');
+  g.per.forEach((p,i)=>{
+    if(y>790){doc.addPage();y=48;}
+    if(i%2){doc.setFillColor(244,238,243);doc.rect(40,y,W-80,18,'F');}
+    const t=(p.code+'  '+p.title); const pc=p.total?Math.round(p.correct/p.total*100):0;
+    doc.text(doc.splitTextToSize(t,W-260)[0],48,y+13);
+    doc.text(p.correct+' / '+p.total,W-170,y+13);
+    doc.text(pc+'%',W-90,y+13);
+    y+=18;
+  });
+  // wrong-answer section (answers revealed ONLY if passed >= 70%)
+  const wrong=[]; document.querySelectorAll('.exercise').forEach(ex=>{
+    const fs=[...ex.querySelectorAll('.field')];
+    fs.forEach((f,k)=>{ if(f.classList.contains('wrong')){
+      const acc=JSON.parse(f.dataset.accept); const shown=acc[0]==='-'?'(no article)':acc[0];
+      wrong.push({label:ex.dataset.exid+' — item '+(k+1), your:(f.value||'').trim()||'(blank)', corr:shown});
+    }});
+  });
+  y+=24; if(y>760){doc.addPage();y=48;}
+  if(wrong.length===0){
+    doc.setTextColor(26,143,67);doc.setFont('helvetica','bold');doc.setFontSize(12);
+    doc.text('Perfect! All answers are correct.',40,y);
+  } else if(passed){
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(122,31,107);
+    doc.text('Answers to review ('+wrong.length+')',40,y); y+=16;
+    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(34);
+    wrong.forEach(w=>{ if(y>800){doc.addPage();y=48;}
+      const line=w.label+':  your answer "'+w.your+'"  ->  correct: '+w.corr;
+      doc.text(doc.splitTextToSize(line,W-80),44,y); y+=13; });
+  } else {
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(198,40,40);
+    doc.text('REDO REQUIRED — your score is below '+PASS+'%.',40,y); y+=18;
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(34);
+    doc.text(doc.splitTextToSize('Correct answers are hidden until you reach '+PASS+'%. Please redo the questions listed below (marked in red on screen) and download the report again.',W-80),40,y);
+    y+=34;
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(122,31,107);
+    doc.text('Questions to redo ('+wrong.length+')',40,y); y+=15;
+    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(34);
+    wrong.forEach(w=>{ if(y>800){doc.addPage();y=48;}
+      const line=w.label+':  your answer "'+w.your+'"  (incorrect)';
+      doc.text(doc.splitTextToSize(line,W-80),44,y); y+=13; });
+  }
+  const fn = 'Report_'+FILEKEY+'_'+name.replace(/\s+/g,'')+'_attempt'+attempt+'.pdf';
+  doc.save(fn);
+  window.__lastReport={name,email,attempt,pct:g.pct,C:g.C,T:g.T,passed,file:fn};
+  document.getElementById('mailBtn').disabled=false;
+  return window.__lastReport;
+}
+
+function emailTeacher(){
+  const r=window.__lastReport;
+  if(!r){alert('Please download the PDF report first, then submit it.');return;}
+  const subj='Homework submission - '+WS_TITLE+' - '+r.name+' (Attempt '+r.attempt+')';
+  const body=
+    'Dear teacher,\n\nPlease find my completed homework attached.\n\n'+
+    'Student: '+r.name+'\n'+
+    'Student email: '+r.email+'\n'+
+    'Worksheet: '+WS_TITLE+'\n'+
+    'Attempt: '+r.attempt+'\n'+
+    'Score: '+r.C+' / '+r.T+' ('+r.pct+'%) - '+(r.passed?'PASSED':'REDO REQUIRED')+'\n\n'+
+    'IMPORTANT: please attach the downloaded file "'+r.file+'" to this email before sending.\n\n'+
+    'Best regards,\n'+r.name;
+  window.location.href='mailto:'+TEACHER_EMAIL+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
+}
+
+function resetAll(){
+  if(!confirm('Clear all your answers on this page? (Saved progress for your email will also be removed.)'))return;
+  document.querySelectorAll('.field').forEach(f=>{clearField(f);f.value='';});
+  document.querySelectorAll('.exResult').forEach(s=>s.textContent='');
+  const lbl=document.getElementById('scoreLbl');lbl.textContent='Score: — / —';lbl.style.color='';
+  window.__grade=null;window.__lastReport=null;
+  document.getElementById('pdfBtn').disabled=true;document.getElementById('mailBtn').disabled=true;
+  const e=emailVal(); if(emailOK(e)) localStorage.removeItem(pkey(e));
+  document.getElementById('saveLbl').textContent='Answers cleared.';
+}
+
+document.addEventListener('click',e=>{
+  if(e.target.classList.contains('checkBtn')){
+    const ex=e.target.closest('.exercise'); paintResult(ex, gradeExercise(ex));
+  }
+});
+document.addEventListener('input',e=>{
+  if(e.target.classList.contains('field')||e.target.id==='sname'){ saveProgress(); }
+});
+window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.field').forEach((f,i)=>f.dataset.fi=i);
+  showAttempt();
+  const em=document.getElementById('semail');
+  em.addEventListener('change',loadProgress);
+  em.addEventListener('blur',loadProgress);
+  document.getElementById('gradeBtn').onclick=gradeAll;
+  document.getElementById('pdfBtn').onclick=makePDF;
+  document.getElementById('mailBtn').onclick=emailTeacher;
+  document.getElementById('resetBtn').onclick=resetAll;
+});
+</script>
+</body></html>
