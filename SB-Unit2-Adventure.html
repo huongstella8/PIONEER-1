@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student&#x27;s Book — Unit 2: Adventure</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--pur:#7a1f6b;--pur2:#a5228e;--org:#f39200;--ink:#222;--line:#e3d7e0;--ok:#1a8f43;--no:#c62828;--bg:#faf7fa;}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+header.top{background:linear-gradient(120deg,var(--pur),var(--pur2));color:#fff;padding:16px 28px 20px}
+header.top .brand{font-size:12px;font-weight:800;letter-spacing:.32em;opacity:.92;margin-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:9px;display:inline-block}
+header.top h1{margin:0;font-size:22px}
+header.top p{margin:4px 0 0;opacity:.9;font-size:13px}
+.savebar{margin-top:10px;font-size:13px;color:var(--pur);background:#f4eef3;border:1px solid var(--line);
+  border-radius:8px;padding:7px 11px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px 120px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.panel h3{margin:.1em 0 .5em;color:var(--pur)}
+.namebar{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.namebar label{font-weight:600;font-size:14px}
+.namebar input{padding:8px 10px;border:1px solid #bbb;border-radius:8px;font-size:14px}
+.attempt{margin-left:auto;font-size:13px;color:#555}
+.attempt b{color:var(--pur)}
+.lesson{margin:26px 0}
+.lesson>h2{background:var(--pur);color:#fff;padding:9px 14px;border-radius:9px;font-size:18px;display:flex;align-items:center;gap:10px}
+.lcode{background:#fff;color:var(--pur);border-radius:6px;padding:2px 9px;font-weight:800}
+.ltag{margin-left:auto;font-size:12px;font-weight:400;opacity:.85;text-transform:uppercase;letter-spacing:.06em}
+.exercise{background:#fff;border:1px solid var(--line);border-left:5px solid var(--org);border-radius:10px;padding:14px 16px;margin:14px 0}
+.exhead{display:flex;align-items:baseline;gap:8px}
+.excode{background:var(--org);color:#fff;font-weight:700;border-radius:5px;padding:1px 8px;font-size:13px}
+.extitle{font-weight:700}
+.instr{margin:.4em 0 .7em;color:#444;font-size:14px}
+.qrow{padding:5px 0;font-size:15px}
+.qnum{display:inline-block;min-width:22px;font-weight:700;color:var(--pur)}
+.order .scramble{font-style:italic;color:#555}
+input.field,select.field{font-size:14px;padding:4px 7px;border:1px solid #b8a9b4;border-radius:6px;background:#fffdfe;margin:2px 3px}
+input.field:focus,select.field:focus{outline:2px solid var(--pur2)}
+.field.correct{border-color:var(--ok);background:#eaffef}
+.field.wrong{border-color:var(--no);background:#ffecec}
+.correction{color:var(--ok);font-size:13px;font-weight:600;margin-left:6px;white-space:nowrap}
+.correction.miss{color:var(--no)}
+.exfoot{margin-top:10px;display:flex;align-items:center;gap:12px}
+.checkBtn{background:var(--pur);color:#fff;border:0;border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer}
+.checkBtn:hover{background:var(--pur2)}
+.exResult{font-weight:700;font-size:14px}
+.reading{background:#f4eef3;border:1px dashed #c9b6c6;border-radius:8px;padding:10px 14px;margin:6px 0 12px;font-size:14px}
+.reading h4{margin:.1em 0 .4em;color:var(--pur)}
+.reading p{margin:.4em 0}
+.listen{margin:6px 0 12px}
+.listenHead{font-size:13.5px;background:#eef4ea;border:1px solid #cbe0c1;border-radius:8px;padding:8px 12px;margin-bottom:8px}
+.transcript{margin:0;font-size:13.5px}
+.transcript summary{cursor:pointer;display:inline-block;background:var(--pur);color:#fff;border-radius:8px;
+  padding:6px 14px;font-weight:600;font-size:13px;list-style:none;user-select:none}
+.transcript summary::-webkit-details-marker{display:none}
+.transcript summary::before{content:'▶ '}
+.transcript[open] summary::before{content:'▼ '}
+.transcript[open] summary{background:var(--pur2)}
+.transcript>div{background:#f4eef3;border-radius:8px;padding:10px 14px;margin-top:8px}
+.actionbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--pur);
+  padding:12px 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;box-shadow:0 -2px 8px rgba(0,0,0,.08);z-index:50}
+.actionbar .score{font-weight:800;font-size:16px;color:var(--pur);margin-right:auto}
+.btn{border:0;border-radius:9px;padding:10px 16px;font-size:14px;cursor:pointer;font-weight:600}
+.btn.grade{background:var(--org);color:#fff}
+.btn.pdf{background:var(--pur);color:#fff}
+.btn.mail{background:#1769aa;color:#fff}
+.btn.reset{background:#eee;color:#444}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.noteHead{font-weight:700;color:var(--pur);font-size:13px;margin:12px 0 4px}
+.note{font-size:13px;color:#555;margin:0;padding-left:20px}
+.note li{margin:5px 0}
+.src{text-align:center;color:#cbbcc6;font-size:11px;font-style:italic;letter-spacing:.02em;margin:38px 0 4px}
+@media(max-width:640px){.actionbar{flex-direction:column;align-items:stretch}.actionbar .score{margin:0 0 4px}}
+</style></head><body>
+<header class="top"><div class="brand">HUONG&nbsp;STELLA&nbsp;PARADIGM&nbsp;&nbsp;|&nbsp;&nbsp;PIONEER&nbsp;SERIES</div><h1>Student&#x27;s Book — Unit 2: Adventure</h1></header>
+<div class="wrap">
+  <div class="panel">
+    <div class="namebar">
+      <label for="sname">Your name:</label>
+      <input id="sname" type="text" placeholder="Full name" style="min-width:180px">
+      <label for="semail">Email:</label>
+      <input id="semail" type="email" placeholder="you@example.com" style="min-width:210px">
+      <span class="attempt" id="attLbl"></span>
+    </div>
+    <div class="savebar" id="saveLbl">Enter your email to save your progress and continue later.</div>
+    <p class="noteHead">How this worksheet works</p>
+    <ul class="note">
+      <li>Type your <b>name</b> and <b>email</b>, then answer the questions.</li>
+      <li>Your work is <b>saved automatically to your email</b> — if you can't finish in one go, just reopen the page and type the same email to restore your answers.</li>
+      <li>Press <b>Check</b> on an exercise or <b>Grade all</b> to see right (green) / wrong (red). <b>Answers are not shown on screen</b>, so you can try again.</li>
+      <li>Download the <b>PDF report</b> (with your <b>attempt number</b>) and submit it to your teacher (huongstella8@gmail.com).</li>
+      <li>The report shows the correct answers only if you score <b>70% or more</b>; below that you are asked to redo.</li>
+      <li>Each <b>listening</b> task tells you which <b>audio track</b> to play from the link your teacher shares on Google Classroom; the transcript stays hidden behind a <b>Show transcript</b> button so you can check it only after listening.</li>
+    </ul>
+  </div>
+  <section class="lesson"><h2><span class="lcode">2A</span> Landscapes <span class="ltag">Vocabulary</span></h2><div class="exercise" data-exid="2A · Ex 2" data-title="Landscape features in the photos"><div class="exhead"><span class="excode">2A · Ex 2</span><span class="extitle">Landscape features in the photos</span></div><p class="instr">📖 <b>Look at photos A–E on page 18 of your Student's Book.</b> Play <b>Track 1.15</b> and write the landscape features you hear for each photo (any order). Word bank: cave, cliff, desert, forest, hill, lake, mountain, ocean, river, rocks, shore, stream, valley, volcano, waterfall.</p><div class="listen"><div class="listenHead">🎧 <b>Listening — Track 1.15.</b> Play the audio from the link your teacher shared on Google Classroom, then answer the questions. Check the transcript only <u>after</u> you have listened.</div><details class="transcript"><summary>Show transcript</summary><div><p><b>A</b> There are two people on a bridge near a forest. There's a waterfall and some rocks below them. The bridge goes across a river.</p><p><b>B</b> There is a man standing on some rocks at the top of a hill. He's looking out over a valley.</p><p><b>C</b> This man is climbing up a cliff. You can see the ocean and the rocks below.</p><p><b>D</b> This diver is inside an underwater cave in the ocean. He's looking between the rocks.</p><p><b>E</b> This person is in a small boat – it's a kayak. The kayak is on a lake, near the shore. In the background, there are mountains.</p></div></details></div><div class="qrow"><span class="qnum">A</span> Photo A – features: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;forest&quot;, &quot;river&quot;, &quot;rocks&quot;, &quot;waterfall&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;forest&quot;, &quot;river&quot;, &quot;rocks&quot;, &quot;waterfall&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;forest&quot;, &quot;river&quot;, &quot;rocks&quot;, &quot;waterfall&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;forest&quot;, &quot;river&quot;, &quot;rocks&quot;, &quot;waterfall&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">B</span> Photo B – features: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;hill&quot;, &quot;rocks&quot;, &quot;valley&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;hill&quot;, &quot;rocks&quot;, &quot;valley&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;hill&quot;, &quot;rocks&quot;, &quot;valley&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">C</span> Photo C – features: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;cliff&quot;, &quot;ocean&quot;, &quot;rocks&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;cliff&quot;, &quot;ocean&quot;, &quot;rocks&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;cliff&quot;, &quot;ocean&quot;, &quot;rocks&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">D</span> Photo D – features: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;cave&quot;, &quot;ocean&quot;, &quot;rocks&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;cave&quot;, &quot;ocean&quot;, &quot;rocks&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;cave&quot;, &quot;ocean&quot;, &quot;rocks&quot;]' style="width:120px"></div><div class="qrow"><span class="qnum">E</span> Photo E – features: <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;lake&quot;, &quot;mountain&quot;, &quot;shore&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;lake&quot;, &quot;mountain&quot;, &quot;shore&quot;]' style="width:120px"> , <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;lake&quot;, &quot;mountain&quot;, &quot;shore&quot;]' style="width:120px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2A · Ex 3" data-title="Opposite adjectives"><div class="exhead"><span class="excode">2A · Ex 3</span><span class="extitle">Opposite adjectives</span></div><p class="instr">Write the opposite of each adjective. Choose from: dark, icy, rocky, shallow, steep, tall, wide.</p><div class="qrow"><span class="qnum">1</span> deep ↔ <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;shallow&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">2</span> low ↔ <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;tall&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">3</span> narrow ↔ <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;wide&quot;]' style="width:150px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2A · Ex 5" data-title="Match the adverts with the photos"><div class="exhead"><span class="excode">2A · Ex 5</span><span class="extitle">Match the adverts with the photos</span></div><p class="instr">📖 <b>Look at photos A–E on page 18.</b> Play <b>Track 1.16</b> and match three of the four adverts with a photo. Choose <b>none</b> if an advert does not match any photo.</p><div class="listen"><div class="listenHead">🎧 <b>Listening — Track 1.16.</b> Play the audio from the link your teacher shared on Google Classroom, then answer the questions. Check the transcript only <u>after</u> you have listened.</div><details class="transcript"><summary>Show transcript</summary><div><p><b>1</b> Bored with the beach? Hungry for adventure? Why not spend seven days in a remote and beautiful landscape in Alaska? Kayak across icy lakes and shallow rivers. See eagles, bears and other fascinating wildlife. Or just enjoy the amazing scenery on your journey through tall mountains and deep valleys. The view of the mountains as you kayak across the lake is unforgettable.</p><p><b>2</b> For experienced divers only, this holiday offers an amazing chance to explore the rocky caves along the coast of Mexico. You can only reach some of these areas by boat – a boat that will be your home for five days. After three days near the caves, the boat leaves the steep cliffs and heads for the ocean for two days.</p><p><b>3</b> On this seven-day walking holiday in the Philippines, you'll see mountains and valleys, lakes and forests. But the highlight of the week is the chance to stand beside Lake Pinatubo, a lake inside a volcano. When Mount Pinatubo erupted in 1991, the top of the volcano blew off. A shallow lake formed, which soon became deep because of all the rain.</p><p><b>4</b> Join Forest Trekkers on a Canadian adventure you'll never forget. Kayak down narrow rivers under the trees or walk across narrow, wooden bridges. Find dark caves behind tall waterfalls.</p></div></details></div><div class="qrow"><span class="qnum">1</span> Advert 1 (Alaska: kayak across icy lakes; tall mountains; deep valleys) &nbsp; <select class="field" data-accept='[&quot;E&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="qrow"><span class="qnum">2</span> Advert 2 (Mexico: explore rocky caves; steep cliffs; ocean) &nbsp; <select class="field" data-accept='[&quot;D&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="qrow"><span class="qnum">3</span> Advert 3 (Philippines: walking; a lake inside a volcano) &nbsp; <select class="field" data-accept='[&quot;none&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="qrow"><span class="qnum">4</span> Advert 4 (Canada: kayak down narrow rivers under trees; caves behind waterfalls) &nbsp; <select class="field" data-accept='[&quot;A&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="none">none</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2A · Ex 6" data-title="Complete the extracts from the adverts"><div class="exhead"><span class="excode">2A · Ex 6</span><span class="extitle">Complete the extracts from the adverts</span></div><p class="instr">Play <b>Track 1.16</b> again and complete the extracts. Use prepositions (across, along, behind, beside, down, inside, near, through, under), landscape nouns and adjectives.</p><div class="listen"><div class="listenHead">🎧 <b>Listening — Track 1.16.</b> Play the audio from the link your teacher shared on Google Classroom, then answer the questions. Check the transcript only <u>after</u> you have listened.</div><details class="transcript"><summary>Show transcript</summary><div><p><b>1</b> Bored with the beach? Hungry for adventure? Why not spend seven days in a remote and beautiful landscape in Alaska? Kayak across icy lakes and shallow rivers. See eagles, bears and other fascinating wildlife. Or just enjoy the amazing scenery on your journey through tall mountains and deep valleys. The view of the mountains as you kayak across the lake is unforgettable.</p><p><b>2</b> For experienced divers only, this holiday offers an amazing chance to explore the rocky caves along the coast of Mexico. You can only reach some of these areas by boat – a boat that will be your home for five days. After three days near the caves, the boat leaves the steep cliffs and heads for the ocean for two days.</p><p><b>3</b> On this seven-day walking holiday in the Philippines, you'll see mountains and valleys, lakes and forests. But the highlight of the week is the chance to stand beside Lake Pinatubo, a lake inside a volcano. When Mount Pinatubo erupted in 1991, the top of the volcano blew off. A shallow lake formed, which soon became deep because of all the rain.</p><p><b>4</b> Join Forest Trekkers on a Canadian adventure you'll never forget. Kayak down narrow rivers under the trees or walk across narrow, wooden bridges. Find dark caves behind tall waterfalls.</p></div></details></div><div class="qrow"><span class="qnum">1</span> Kayak <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;across&quot;]' style="width:150px"> icy lakes and shallow rivers.</div><div class="qrow"><span class="qnum">2</span> Your journey <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;through&quot;]' style="width:150px"> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;tall&quot;]' style="width:150px"> mountains and deep <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;valleys&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">3</span> Explore the <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;rocky&quot;]' style="width:150px"> caves <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;along&quot;]' style="width:150px"> the coast of Mexico.</div><div class="qrow"><span class="qnum">4</span> After three days <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;near&quot;]' style="width:150px"> the caves, the boat leaves the steep <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;cliffs&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">5</span> Stand <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;beside&quot;]' style="width:150px"> Lake Pinatubo, a lake <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;inside&quot;]' style="width:150px"> a <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;volcano&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">6</span> A <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;shallow&quot;]' style="width:150px"> lake formed, which soon became <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;deep&quot;]' style="width:150px"> .</div><div class="qrow"><span class="qnum">7</span> Kayak <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;down&quot;]' style="width:150px"> narrow rivers <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;under&quot;]' style="width:150px"> the trees.</div><div class="qrow"><span class="qnum">8</span> Find dark caves <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;behind&quot;]' style="width:150px"> tall <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;waterfalls&quot;]' style="width:150px"> .</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2A · Ex 7" data-title="There&#x27;s / There are"><div class="exhead"><span class="excode">2A · Ex 7</span><span class="extitle">There&#x27;s / There are</span></div><p class="instr">Complete each sentence with <b>There's</b> (singular / uncountable) or <b>There are</b> (plural).</p><div class="qrow"><span class="qnum">1</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there&#x27;s&quot;, &quot;there is&quot;]' style="width:150px"> clear, blue water all around.</div><div class="qrow"><span class="qnum">2</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there&#x27;s&quot;, &quot;there is&quot;]' style="width:150px"> grass in the valley and also <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there are&quot;, &quot;there&#x27;re&quot;]' style="width:150px"> some trees.</div><div class="qrow"><span class="qnum">3</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there are&quot;, &quot;there&#x27;re&quot;]' style="width:150px"> trees and bushes on both sides of the river.</div><div class="qrow"><span class="qnum">4</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;there&#x27;s&quot;, &quot;there is&quot;]' style="width:150px"> snow on the tops of the mountains.</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">2B</span> Past continuous <span class="ltag">Grammar</span></h2><div class="exercise" data-exid="2B · Ex 3" data-title="Complete the paragraph"><div class="exhead"><span class="excode">2B · Ex 3</span><span class="extitle">Complete the paragraph</span></div><p class="instr">Complete the paragraph with the <b>past continuous</b> form of the verbs in brackets. Do not repeat the subject or was / were if they are not necessary.</p><div class="reading"><h4>The opening paragraph (exercise 3)</h4><p>I left the hotel early the next morning. Already, the sun (1)___ brightly and the temperature (2)___ . In the square, café owners (3)___ tables outside. A dog (4)___ on the pavement nearby, but it (5)___ . Two teenage girls (6)___ on a bench (7)___ headphones. What (8)___ to?</p></div><div class="qrow"><span class="qnum">1</span> the sun <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;was shining&quot;]' style="width:150px"> (shine) brightly</div><div class="qrow"><span class="qnum">2</span> the temperature <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;was rising&quot;]' style="width:150px"> (rise)</div><div class="qrow"><span class="qnum">3</span> café owners <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;were carrying&quot;]' style="width:150px"> (carry) tables outside</div><div class="qrow"><span class="qnum">4</span> A dog <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;was lying&quot;]' style="width:150px"> (lie) on the pavement nearby</div><div class="qrow"><span class="qnum">5</span> but it <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;wasn&#x27;t sleeping&quot;, &quot;was not sleeping&quot;]' style="width:150px"> (not sleep)</div><div class="qrow"><span class="qnum">6</span> Two teenage girls <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;were sitting&quot;]' style="width:150px"> (sit) on a bench</div><div class="qrow"><span class="qnum">7</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;sharing&quot;]' style="width:150px"> (share) headphones  [do not repeat the subject or was/were]</div><div class="qrow"><span class="qnum">8</span> What <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;were they listening&quot;]' style="width:150px"> (they / listen) to?</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">2C</span> Adrenaline junkies <span class="ltag">Listening</span></h2><div class="exercise" data-exid="2C · Ex 3" data-title="Synonyms and opposites"><div class="exhead"><span class="excode">2C · Ex 3</span><span class="extitle">Synonyms and opposites</span></div><p class="instr">Play <b>Track 1.17</b>. Six people talk about BASE jumping. Write the word each speaker uses that has a similar or opposite meaning to the phrase in each sentence.</p><div class="listen"><div class="listenHead">🎧 <b>Listening — Track 1.17.</b> Play the audio from the link your teacher shared on Google Classroom, then answer the questions. Check the transcript only <u>after</u> you have listened.</div><details class="transcript"><summary>Show transcript</summary><div><p><b>Fred</b> I like BASE jumping because it allows me to get away from the city, to remote places where you hardly see anyone.</p><p><b>Sally</b> BASE jumping is really a sport for young people. There aren't many BASE jumpers who are over 30.</p><p><b>Chris</b> I love the outdoors, but I'm not particularly brave, so I haven't considered BASE jumping as a hobby.</p><p><b>Celina</b> BASE jumping certainly isn't a sport to try if you are unfit.</p><p><b>Shelley</b> BASE jumping is a great sport and you get to do it in such spectacular surroundings.</p><p><b>Martin</b> My friend asked me to go BASE jumping with him, and I hated it.</p></div></details></div><div class="qrow"><span class="qnum">1</span> Fred loves being in wild, faraway places. → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;remote&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">2</span> Sally says BASE jumping isn&#x27;t popular with older people. → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;over 30&quot;, &quot;over thirty&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">3</span> Chris doesn&#x27;t consider himself a courageous person. → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;brave&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">4</span> Celina says people who aren&#x27;t strong and fit shouldn&#x27;t try it. → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;unfit&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">5</span> For Shelley, the appeal is the breathtaking landscapes. → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;spectacular&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">6</span> Martin really didn&#x27;t enjoy BASE jumping. → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;hated&quot;]' style="width:150px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2C · Ex 5" data-title="True or false"><div class="exhead"><span class="excode">2C · Ex 5</span><span class="extitle">True or false</span></div><p class="instr">Play <b>Track 1.18</b> (the interview with Tanya). Write <b>T</b> (true) or <b>F</b> (false).</p><div class="listen"><div class="listenHead">🎧 <b>Listening — Track 1.18.</b> Play the audio from the link your teacher shared on Google Classroom, then answer the questions. Check the transcript only <u>after</u> you have listened.</div><details class="transcript"><summary>Show transcript</summary><div><p><b>Interviewer</b> Today I'm talking to BASE jumper Tanya Marks. Tanya, my first question is basically … why? Why choose a sport with so many dangers? Why not something nice and safe, like table tennis?</p><p><b>Tanya</b> Well, I can answer that in one word: adrenaline. Extreme sports aren't safe! That's precisely why I enjoy them so much. I'm the kind of person who loves that thrill of risk and adventure.</p><p><b>I</b> Do you do any others? <b>T</b> I like skydiving – and hang-gliding too. But BASE jumping is my new sport – and my obsession!</p><p><b>I</b> How did you first get into it? <b>T</b> It was one of my skydiving friends who suggested it. He had the equipment and invited me to join him. My first jump was terrifying – but I loved it!</p><p><b>I</b> What's your favourite place for BASE jumping? <b>T</b> It keeps changing … But at the moment, I love the cliffs in Tonsai, in Thailand. Though it isn't an ideal place to do it, as there are no hospitals nearby!</p><p><b>I</b> Do you think that's why there aren't many women who do BASE jumping? Do the risks put them off? <b>T</b> I'm not sure … I don't really agree. More women are joining the sport every year.</p><p><b>I</b> Who are the big names? <b>T</b> I guess Roberta Mancino is the new star of BASE jumping. She's a great role model and, hopefully, she'll encourage more girls to take up extreme sports.</p></div></details></div><div class="qrow"><span class="qnum">1</span> Tanya likes extreme sports because they&#x27;re dangerous. &nbsp; <select class="field" data-accept='[&quot;T&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">2</span> A friend told Tanya to try BASE jumping. &nbsp; <select class="field" data-accept='[&quot;T&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">3</span> Tanya didn&#x27;t enjoy her first experience of BASE jumping. &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">4</span> In Tanya&#x27;s opinion, the cliffs in Tonsai, Thailand are the perfect venue for BASE jumping. &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">5</span> Tanya thinks the dangers of BASE jumping make women unwilling to try it. &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">6</span> In Tanya&#x27;s opinion, Roberta Mancino is a great sportswoman. &nbsp; <select class="field" data-accept='[&quot;T&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">2D</span> Contrast: past simple and past continuous <span class="ltag">Grammar</span></h2><div class="exercise" data-exid="2D · Ex 3" data-title="Past simple or past continuous"><div class="exhead"><span class="excode">2D · Ex 3</span><span class="extitle">Past simple or past continuous</span></div><p class="instr">Complete sentences a–e with the past simple or past continuous form of the verbs in brackets.</p><div class="reading"><h4>From the story (exercises 3)</h4><p>a While he ___ (listen) to their argument, the boat's engines ___ (start).<br>b Someone ___ (fall) into the water. Harry ___ (realise) who it was and ___ (jump) in too.<br>c Still underwater, he ___ (swim) close to the boat, then ___ (come) up silently. Three people ___ (argue) loudly.<br>d The boat ___ (begin) to move away. As he ___ (decide) what to do, he ___ (hear) a scream.<br>e Before it started moving, Harry quickly ___ (climb) onto the back of the boat and ___ (hide).</p></div><div class="qrow"><span class="qnum">a</span> While he <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;was listening&quot;]' style="width:150px"> (listen) to their argument, the boat&#x27;s engines <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;started&quot;]' style="width:150px"> (start).</div><div class="qrow"><span class="qnum">b</span> Someone <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;fell&quot;]' style="width:150px"> (fall) into the water. Harry <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;realised&quot;, &quot;realized&quot;]' style="width:150px"> (realise) who it was and <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;jumped&quot;]' style="width:150px"> (jump) in too.</div><div class="qrow"><span class="qnum">c</span> Still underwater, he <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;swam&quot;]' style="width:150px"> (swim) close to the boat, then <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;came&quot;]' style="width:150px"> (come) up silently. Three people <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;were arguing&quot;]' style="width:150px"> (argue) loudly.</div><div class="qrow"><span class="qnum">d</span> The boat <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;began&quot;]' style="width:150px"> (begin) to move away. As he <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;was deciding&quot;]' style="width:150px"> (decide) what to do, he <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;heard&quot;]' style="width:150px"> (hear) a scream.</div><div class="qrow"><span class="qnum">e</span> Before it started moving, Harry quickly <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;climbed&quot;]' style="width:150px"> (climb) onto the back of the boat and <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;hid&quot;]' style="width:150px"> (hide).</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2D · Ex 4" data-title="Put the story in order"><div class="exhead"><span class="excode">2D · Ex 4</span><span class="extitle">Put the story in order</span></div><p class="instr">Sentences a–e above are in the wrong order. Choose which sentence (a–e) comes first, second, and so on.</p><div class="qrow"><span class="qnum">1</span> 1st sentence in the story &nbsp; <select class="field" data-accept='[&quot;c&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option></select></div><div class="qrow"><span class="qnum">2</span> 2nd sentence &nbsp; <select class="field" data-accept='[&quot;a&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option></select></div><div class="qrow"><span class="qnum">3</span> 3rd sentence &nbsp; <select class="field" data-accept='[&quot;e&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option></select></div><div class="qrow"><span class="qnum">4</span> 4th sentence &nbsp; <select class="field" data-accept='[&quot;d&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option></select></div><div class="qrow"><span class="qnum">5</span> 5th sentence &nbsp; <select class="field" data-accept='[&quot;b&quot;]'><option value="">—</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2D · Ex 5" data-title="Rewrite with &#x27;when&#x27;"><div class="exhead"><span class="excode">2D · Ex 5</span><span class="extitle">Rewrite with &#x27;when&#x27;</span></div><p class="instr">Rewrite each sentence so it begins with the person and uses <b>when</b> + the past simple. (e.g. <i>While I was walking, I found a coin.</i> → <i>I was walking when I found a coin.</i>)</p><div class="qrow order"><span class="qnum">1</span> <span class="scramble">As he was getting near the boat, he heard a shout. → rewrite with &#x27;when&#x27;</span><br><input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;he was getting near the boat when he heard a shout&quot;]' style="width:560px"></div><div class="qrow order"><span class="qnum">2</span> <span class="scramble">While he was listening to their argument, the boat&#x27;s engines started. → rewrite with &#x27;when&#x27;</span><br><input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;he was listening to their argument when the boat&#x27;s engines started&quot;]' style="width:560px"></div><div class="qrow order"><span class="qnum">3</span> <span class="scramble">As he was deciding what to do, he heard a scream. → rewrite with &#x27;when&#x27;</span><br><input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;he was deciding what to do when he heard a scream&quot;]' style="width:560px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">2E</span> Word building <span class="ltag">Word Skills</span></h2><div class="exercise" data-exid="2E · Ex 6" data-title="Complete with the correct noun"><div class="exhead"><span class="excode">2E · Ex 6</span><span class="extitle">Complete with the correct noun</span></div><p class="instr">Complete each sentence with the noun formed from the verb in brackets. Use a dictionary to help you.</p><div class="qrow"><span class="qnum">1</span> Teenagers who go on adventures should be proud of their <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;accomplishments&quot;]' style="width:150px"> . (accomplish)</div><div class="qrow"><span class="qnum">2</span> Companies will want to offer them <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;employment&quot;]' style="width:150px"> . (employ)</div><div class="qrow"><span class="qnum">3</span> The most difficult part of the trips is the <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;preparation&quot;]' style="width:150px"> . (prepare)</div><div class="qrow"><span class="qnum">4</span> Teenagers shouldn&#x27;t be allowed to put their lives at <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;risk&quot;]' style="width:150px"> . (risk)</div><div class="qrow"><span class="qnum">5</span> These trips are great for the <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;development&quot;]' style="width:150px"> of personal skills. (develop)</div><div class="qrow"><span class="qnum">6</span> Young people go on these adventures because they don&#x27;t have enough <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;imagination&quot;]' style="width:150px"> to understand the dangers. (imagine)</div><div class="qrow"><span class="qnum">7</span> The <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dream&quot;]' style="width:150px"> of most teenagers is to become famous. (dream)</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">2F</span> Lost at sea <span class="ltag">Reading</span></h2><div class="exercise" data-exid="2F · Ex 4" data-title="Complete the text with the missing sentences"><div class="exhead"><span class="excode">2F · Ex 4</span><span class="extitle">Complete the text with the missing sentences</span></div><p class="instr">📖 The full article is on pages 24–25 of your Student's Book (also shown below). Match sentences A–G with gaps [1]–[5] in the text. There are two extra sentences.</p><div class="reading"><h4>Lost at sea</h4><p>A dream holiday turned into a nightmare for an American brother and sister called Dan and Kate Suski. They were enjoying a fishing trip in the Caribbean, near the stunning island of St Lucia, when their boat sank, leaving them and their captain to fight for their lives.</p><p>The fishing trip began well enough. The weather wasn't brilliant, but Dan wasn't complaining: he had a little fish on his line! He was trying to pull it onto the boat and Kate was helping him. But then the captain realised there was a problem. Water was coming into the cabin and the boat was sinking fast. The captain used his radio to send a message for help. Then he shouted to the Suskis, 'Jump out! Jump out!' <b>[1]___</b> They were about 15 km from land.</p><p>The captain told the Suskis to wait with him in the water. Help was coming. The weather was now awful, but they were wearing life jackets. After an hour, the captain and the Suskis lost each other, and there was no sign of rescue. <b>[2]___</b> They were both thinking the same terrifying thought: sharks!</p><p>A plane and a helicopter appeared in the sky, but nobody saw Dan and Kate in the water. Hours passed and night came. The Suskis swam for fourteen hours. Then, in the moonlight, they saw some cliffs. They were only a few metres from land! <b>[3]___</b> The waves were breaking against sharp rocks; it was too dangerous. So Kate and Dan swam past the cliffs. By now, they were exhausted. Eventually, they reached a sandy beach. <b>[4]___</b> Then they started to look for a town or village. On the way, they picked and ate green bananas. Dan said later that it was the worst – and best – food of his life!</p><p>After three hours, they met a young farm worker. <b>[5]___</b> He also gave them some tragic news: the captain was lost at sea. Dan and Kate Suski spent a few days in hospital. Their story appeared in news programmes around the world. And there was one final piece of astonishing news: the captain also survived. A rescue boat found him after 23 hours in the water!</p></div><div class="reading"><h4>Sentences A–G</h4><p>A So Dan and Kate started to swim as fast as they could towards land.<br>B The captain helped them as they climbed onto dry land.<br>C He gave them water and food, and stayed with them until the police arrived.<br>D So they did, and a few minutes later, the boat disappeared under the waves.<br>E Out of the water at last, they lay down and rested.<br>F But the sharks swam away after a few minutes.<br>G But they couldn't get out of the water here.</p></div><div class="qrow"><span class="qnum">1</span> Gap [1] &nbsp; <select class="field" data-accept='[&quot;D&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div><div class="qrow"><span class="qnum">2</span> Gap [2] &nbsp; <select class="field" data-accept='[&quot;A&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div><div class="qrow"><span class="qnum">3</span> Gap [3] &nbsp; <select class="field" data-accept='[&quot;G&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div><div class="qrow"><span class="qnum">4</span> Gap [4] &nbsp; <select class="field" data-accept='[&quot;E&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div><div class="qrow"><span class="qnum">5</span> Gap [5] &nbsp; <select class="field" data-accept='[&quot;C&quot;]'><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2F · Ex 6" data-title="True or false"><div class="exhead"><span class="excode">2F · Ex 6</span><span class="extitle">True or false</span></div><p class="instr">Read the text again and write T (true) or F (false).</p><div class="qrow"><span class="qnum">1</span> When Dan and Kate were fishing, the weather was brilliant. &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">2</span> Dan was the first person to see that there was a problem with the boat. &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">3</span> The boat sank before Dan and Kate could jump into the water. &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">4</span> A helicopter saw Dan and Kate in the sea, but it couldn&#x27;t rescue them. &nbsp; <select class="field" data-accept='[&quot;F&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">5</span> When Dan and Kate reached land, they couldn&#x27;t get out of the water at first. &nbsp; <select class="field" data-accept='[&quot;T&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="qrow"><span class="qnum">6</span> There was nobody on the beach when Dan and Kate got out of the sea. &nbsp; <select class="field" data-accept='[&quot;T&quot;]'><option value="">—</option><option value="T">True</option><option value="F">False</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2F · Ex 7" data-title="Extreme adjectives"><div class="exhead"><span class="excode">2F · Ex 7</span><span class="extitle">Extreme adjectives</span></div><p class="instr">Complete each pair. Choose from: dirty, good, hungry, small.</p><div class="qrow"><span class="qnum">1</span> filthy = very <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;dirty&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">2</span> starving = very <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;hungry&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">3</span> fantastic = very <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;good&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">4</span> tiny = very <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;small&quot;]' style="width:150px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2F · Ex 8" data-title="Match the extreme adjectives"><div class="exhead"><span class="excode">2F · Ex 8</span><span class="extitle">Match the extreme adjectives</span></div><p class="instr">Find the extreme adjective in the text (astonishing, awful, brilliant, exhausted, huge, stunning, terrifying, tragic) that matches each meaning below.</p><div class="qrow"><span class="qnum">1</span> very bad → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;awful&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">2</span> very good → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;brilliant&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">3</span> very beautiful → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;stunning&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">4</span> very big → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;huge&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">5</span> very surprising → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;astonishing&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">6</span> very sad → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;tragic&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">7</span> very frightening → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;terrifying&quot;]' style="width:150px"></div><div class="qrow"><span class="qnum">8</span> very tired → <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;exhausted&quot;]' style="width:150px"></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+<section class="lesson"><h2><span class="lcode">2G</span> Photo description <span class="ltag">Speaking</span></h2><div class="exercise" data-exid="2G · Ex 2" data-title="Who follows the strategy better?"><div class="exhead"><span class="excode">2G · Ex 2</span><span class="extitle">Who follows the strategy better?</span></div><p class="instr">Play <b>Track 1.22</b>. Two students describe a photo. Choose the one who follows the 'simple structure' Speaking Strategy better.</p><div class="listen"><div class="listenHead">🎧 <b>Listening — Track 1.22.</b> Play the audio from the link your teacher shared on Google Classroom, then answer the questions. Check the transcript only <u>after</u> you have listened.</div><details class="transcript"><summary>Show transcript</summary><div><p><b>Student 1</b> Well, on the left, there are some trees. And in the centre, there's a woman walking along. She's hiking somewhere – it looks like a forest. She's holding a pole in each hand and she's wearing a rucksack, I think. At the bottom of the picture, you can see that it's a really muddy path. But the woman doesn't look worried. She seems to be having a good time.</p><p><b>Student 2</b> The photo shows five people in a dinghy. They're white-water rafting on a river. In the top left corner of the photo, there is a man leaning out of the boat. In the foreground, there's a lot of water. The man at the back of the dinghy is trying to guide the dinghy with his paddle. The other four people aren't helping very much. It looks as if they're new to it. They're all wearing the same life jackets and helmets. I imagine they're doing this as a holiday activity.</p></div></details></div><div class="qrow"><span class="qnum">1</span> Which student follows the &#x27;simple structure&#x27; strategy better (general first, then details, then a comment)?<br><select class="field" data-accept='[&quot;b&quot;]'><option value="">—</option><option value="a">a) Student 1</option><option value="b">b) Student 2</option></select></div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div><div class="exercise" data-exid="2G · Ex 3" data-title="Phrases for describing a photo"><div class="exhead"><span class="excode">2G · Ex 3</span><span class="extitle">Phrases for describing a photo</span></div><p class="instr">Complete each phrase with one word: at, in, looks, on, seems or shows. (Some words are used more than once.)</p><div class="qrow"><span class="qnum">1</span> The photo <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;shows&quot;]' style="width:150px"> two children on a climbing wall.</div><div class="qrow"><span class="qnum">2</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;in&quot;]' style="width:150px"> the foreground / background</div><div class="qrow"><span class="qnum">3</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;in&quot;]' style="width:150px"> the top left corner / bottom right corner</div><div class="qrow"><span class="qnum">4</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;at&quot;]' style="width:150px"> the top / bottom</div><div class="qrow"><span class="qnum">5</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;on&quot;]' style="width:150px"> the left / right</div><div class="qrow"><span class="qnum">6</span> <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;in&quot;]' style="width:150px"> the centre</div><div class="qrow"><span class="qnum">7</span> It <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;looks&quot;]' style="width:150px"> like a …</div><div class="qrow"><span class="qnum">8</span> She <input class="field" type="text" autocomplete="off" spellcheck="false" data-accept='[&quot;seems&quot;]' style="width:150px"> to be …</div><div class="exfoot"><button class="checkBtn" type="button">Check this exercise</button><span class="exResult"></span></div></div></section>
+  <div class="src">Solutions Pre-Intermediate (3rd Edition) · Unit 2 Adventure (2A–2G) · interactive lesson with auto-marking</div>
+</div>
+<div class="actionbar">
+  <span class="score" id="scoreLbl">Score: — / —</span>
+  <button class="btn grade" id="gradeBtn" type="button">Grade all</button>
+  <button class="btn pdf" id="pdfBtn" type="button" disabled>Download PDF report</button>
+  <button class="btn mail" id="mailBtn" type="button" disabled>Submit to teacher (email)</button>
+  <button class="btn reset" id="resetBtn" type="button">Reset</button>
+</div>
+<script>
+const TEACHER_EMAIL = "huongstella8@gmail.com";
+const FILEKEY = "SB_Unit2";
+const WS_TITLE = "Student's Book – Unit 2: Adventure";
+
+function norm(s){
+  return (s||'').toString().toLowerCase()
+    .replace(/[’‘ʼ]/g,"'").replace(/[–—]/g,'-')
+    .replace(/ /g,' ').trim().replace(/\s+/g,' ')
+    .replace(/[.,!?;:]+$/,'').trim();
+}
+function noap(s){return norm(s).replace(/'/g,'').replace(/\s+/g,' ').trim();}
+// punctuation-insensitive form: drop . , ! ? ; : ' " anywhere (for word-order phrases like "Oh no! What a shame!")
+function nopunc(s){return norm(s).replace(/[.,!?;:'"]/g,'').replace(/\s+/g,' ').trim();}
+
+function matches(userRaw, accepts){
+  const u = norm(userRaw), un = noap(userRaw), up = nopunc(userRaw);
+  if(u==='') return false;               // an empty box is never correct (must type '-' for no article)
+  for(const a of accepts){
+    if(u===norm(a)) return true;
+    if(un===noap(a)) return true;
+    if(up===nopunc(a)) return true;
+  }
+  return false;
+}
+
+function clearField(f){
+  f.classList.remove('correct','wrong');
+  if(f.nextSibling && f.nextSibling.classList && f.nextSibling.classList.contains('correction'))
+    f.nextSibling.remove();
+}
+
+const PASS = 70;   // pass threshold (%)
+
+// ---- grading: ONLY colour red/green. No answer keys are shown on screen.
+function gradeExercise(ex){
+  const fields=[...ex.querySelectorAll('.field')];
+  let correct=0;
+  fields.forEach(f=>{
+    clearField(f);
+    const accepts=JSON.parse(f.dataset.accept);
+    if(matches(f.value, accepts)){ f.classList.add('correct'); correct++; }
+    else { f.classList.add('wrong'); }
+  });
+  return {correct, total:fields.length};
+}
+
+function paintResult(ex,r){
+  const res=ex.querySelector('.exResult');
+  res.textContent=r.correct+' / '+r.total;
+  res.style.color=(r.correct===r.total)?'#1a8f43':(r.correct===0?'#c62828':'#a5228e');
+}
+
+function gradeAll(){
+  let C=0,T=0; const per=[];
+  document.querySelectorAll('.exercise').forEach(ex=>{
+    const r=gradeExercise(ex); C+=r.correct; T+=r.total; paintResult(ex,r);
+    per.push({code:ex.dataset.exid,title:ex.dataset.title,correct:r.correct,total:r.total});
+  });
+  const pct = T? Math.round(C/T*100):0;
+  const passed = pct>=PASS;
+  const lbl=document.getElementById('scoreLbl');
+  lbl.textContent='Score: '+C+' / '+T+'  ('+pct+'%)  —  '+(passed?'PASSED ✓':'REDO REQUIRED (below '+PASS+'%)');
+  lbl.style.color = passed ? '#1a8f43' : '#c62828';
+  window.__grade={C,T,pct,passed,per};
+  document.getElementById('pdfBtn').disabled=false;
+  return window.__grade;
+}
+
+// ---- progress saved per email -------------------------------------------------
+function emailVal(){return (document.getElementById('semail').value||'').trim();}
+function emailOK(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function studentName(){return (document.getElementById('sname').value||'').trim();}
+function pkey(e){return 'hsp_'+FILEKEY+'_'+e.toLowerCase();}
+function attKey(e){return 'att_'+FILEKEY+'_'+(e?e.toLowerCase():'anon');}
+
+function saveProgress(){
+  const e=emailVal(); if(!emailOK(e)){return;}
+  const ans={};
+  document.querySelectorAll('.field').forEach(f=>{ if((f.value||'').trim()!=='') ans[f.dataset.fi]=f.value; });
+  localStorage.setItem(pkey(e), JSON.stringify({name:studentName(), answers:ans, ts:Date.now()}));
+  const s=document.getElementById('saveLbl');
+  s.textContent='Progress saved for '+e+' · '+new Date().toLocaleTimeString();
+}
+function loadProgress(){
+  const e=emailVal(); if(!emailOK(e)){return false;}
+  const raw=localStorage.getItem(pkey(e));
+  showAttempt();
+  if(!raw){document.getElementById('saveLbl').textContent='New email — a fresh progress file will be started for '+e+'.';return false;}
+  const d=JSON.parse(raw);
+  if(d.name && !studentName()) document.getElementById('sname').value=d.name;
+  let n=0;
+  document.querySelectorAll('.field').forEach(f=>{ const v=d.answers[f.dataset.fi]; if(v!==undefined){ f.value=v; clearField(f); n++; } });
+  document.getElementById('saveLbl').textContent='Progress restored for '+e+' ('+n+' answers). You can continue where you left off.';
+  return true;
+}
+function attemptCount(){return parseInt(localStorage.getItem(attKey(emailVal()))||'0',10);}
+function bumpAttempt(){const n=attemptCount()+1;localStorage.setItem(attKey(emailVal()),n);showAttempt();return n;}
+function showAttempt(){document.getElementById('attLbl').innerHTML='Completed attempts: <b>'+attemptCount()+'</b>';}
+
+// ---- PDF report ---------------------------------------------------------------
+function makePDF(){
+  const name=studentName(), email=emailVal();
+  if(!name){alert('Please type your name at the top before downloading the report.');document.getElementById('sname').focus();return null;}
+  if(!emailOK(email)){alert('Please type a valid email at the top (your progress is saved to this email).');document.getElementById('semail').focus();return null;}
+  const g = window.__grade || gradeAll();
+  const passed=g.passed;
+  const attempt = bumpAttempt();
+  const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'pt',format:'a4'});
+  const W=doc.internal.pageSize.getWidth(); let y=0;
+  // header band
+  doc.setFillColor(122,31,107); doc.rect(0,0,W,86,'F');
+  doc.setTextColor(255); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+  doc.text('HUONG STELLA PARADIGM  |  PIONEER SERIES',40,20);
+  doc.setFontSize(16); doc.text('Homework Result Report',40,42);
+  doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.text(WS_TITLE,40,62);
+  doc.setFontSize(9); doc.text('Solutions Pre-Intermediate (3rd Edition) · auto-graded',40,76);
+  y=108; doc.setTextColor(34);
+  // info box
+  doc.setDrawColor(220); doc.setFillColor(247,242,246); doc.roundedRect(40,y,W-80,96,6,6,'FD');
+  doc.setFont('helvetica','bold'); doc.setFontSize(11);
+  const dt=new Date();
+  doc.text('Student: '+name, 54, y+22);
+  doc.text('Attempt #: '+attempt, W-170, y+22);
+  doc.setFont('helvetica','normal');
+  doc.text('Email: '+email, 54, y+40);
+  doc.text('Date: '+dt.toLocaleString(), 54, y+58);
+  doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(122,31,107);
+  doc.text('Total score: '+g.C+' / '+g.T+'   ('+g.pct+'%)', 54, y+82);
+  doc.setFontSize(12); doc.setTextColor(passed?26:198, passed?143:40, passed?67:40);
+  doc.text('Result: '+(passed?'PASSED':'REDO REQUIRED (below '+PASS+'%)'), W-230, y+82);
+  doc.setTextColor(34); doc.setFontSize(10); doc.setFont('helvetica','normal');
+  y+=116;
+  // per-exercise table
+  doc.setFont('helvetica','bold'); doc.setFillColor(122,31,107); doc.setTextColor(255);
+  doc.rect(40,y,W-80,20,'F');
+  doc.text('Exercise',48,y+14); doc.text('Score',W-170,y+14); doc.text('%',W-90,y+14);
+  y+=20; doc.setTextColor(34); doc.setFont('helvetica','normal');
+  g.per.forEach((p,i)=>{
+    if(y>790){doc.addPage();y=48;}
+    if(i%2){doc.setFillColor(244,238,243);doc.rect(40,y,W-80,18,'F');}
+    const t=(p.code+'  '+p.title); const pc=p.total?Math.round(p.correct/p.total*100):0;
+    doc.text(doc.splitTextToSize(t,W-260)[0],48,y+13);
+    doc.text(p.correct+' / '+p.total,W-170,y+13);
+    doc.text(pc+'%',W-90,y+13);
+    y+=18;
+  });
+  // wrong-answer section (answers revealed ONLY if passed >= 70%)
+  const wrong=[]; document.querySelectorAll('.exercise').forEach(ex=>{
+    const fs=[...ex.querySelectorAll('.field')];
+    fs.forEach((f,k)=>{ if(f.classList.contains('wrong')){
+      const acc=JSON.parse(f.dataset.accept); const shown=acc[0]==='-'?'(no article)':acc[0];
+      wrong.push({label:ex.dataset.exid+' — item '+(k+1), your:(f.value||'').trim()||'(blank)', corr:shown});
+    }});
+  });
+  y+=24; if(y>760){doc.addPage();y=48;}
+  if(wrong.length===0){
+    doc.setTextColor(26,143,67);doc.setFont('helvetica','bold');doc.setFontSize(12);
+    doc.text('Perfect! All answers are correct.',40,y);
+  } else if(passed){
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(122,31,107);
+    doc.text('Answers to review ('+wrong.length+')',40,y); y+=16;
+    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(34);
+    wrong.forEach(w=>{ if(y>800){doc.addPage();y=48;}
+      const line=w.label+':  your answer "'+w.your+'"  ->  correct: '+w.corr;
+      doc.text(doc.splitTextToSize(line,W-80),44,y); y+=13; });
+  } else {
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(198,40,40);
+    doc.text('REDO REQUIRED — your score is below '+PASS+'%.',40,y); y+=18;
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(34);
+    doc.text(doc.splitTextToSize('Correct answers are hidden until you reach '+PASS+'%. Please redo the questions listed below (marked in red on screen) and download the report again.',W-80),40,y);
+    y+=34;
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(122,31,107);
+    doc.text('Questions to redo ('+wrong.length+')',40,y); y+=15;
+    doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(34);
+    wrong.forEach(w=>{ if(y>800){doc.addPage();y=48;}
+      const line=w.label+':  your answer "'+w.your+'"  (incorrect)';
+      doc.text(doc.splitTextToSize(line,W-80),44,y); y+=13; });
+  }
+  const fn = 'Report_'+FILEKEY+'_'+name.replace(/\s+/g,'')+'_attempt'+attempt+'.pdf';
+  doc.save(fn);
+  window.__lastReport={name,email,attempt,pct:g.pct,C:g.C,T:g.T,passed,file:fn};
+  document.getElementById('mailBtn').disabled=false;
+  return window.__lastReport;
+}
+
+function emailTeacher(){
+  const r=window.__lastReport;
+  if(!r){alert('Please download the PDF report first, then submit it.');return;}
+  const subj='Homework submission - '+WS_TITLE+' - '+r.name+' (Attempt '+r.attempt+')';
+  const body=
+    'Dear teacher,\n\nPlease find my completed homework attached.\n\n'+
+    'Student: '+r.name+'\n'+
+    'Student email: '+r.email+'\n'+
+    'Worksheet: '+WS_TITLE+'\n'+
+    'Attempt: '+r.attempt+'\n'+
+    'Score: '+r.C+' / '+r.T+' ('+r.pct+'%) - '+(r.passed?'PASSED':'REDO REQUIRED')+'\n\n'+
+    'IMPORTANT: please attach the downloaded file "'+r.file+'" to this email before sending.\n\n'+
+    'Best regards,\n'+r.name;
+  window.location.href='mailto:'+TEACHER_EMAIL+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
+}
+
+function resetAll(){
+  if(!confirm('Clear all your answers on this page? (Saved progress for your email will also be removed.)'))return;
+  document.querySelectorAll('.field').forEach(f=>{clearField(f);f.value='';});
+  document.querySelectorAll('.exResult').forEach(s=>s.textContent='');
+  const lbl=document.getElementById('scoreLbl');lbl.textContent='Score: — / —';lbl.style.color='';
+  window.__grade=null;window.__lastReport=null;
+  document.getElementById('pdfBtn').disabled=true;document.getElementById('mailBtn').disabled=true;
+  const e=emailVal(); if(emailOK(e)) localStorage.removeItem(pkey(e));
+  document.getElementById('saveLbl').textContent='Answers cleared.';
+}
+
+document.addEventListener('click',e=>{
+  if(e.target.classList.contains('checkBtn')){
+    const ex=e.target.closest('.exercise'); paintResult(ex, gradeExercise(ex));
+  }
+});
+document.addEventListener('input',e=>{
+  if(e.target.classList.contains('field')||e.target.id==='sname'){ saveProgress(); }
+});
+window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.field').forEach((f,i)=>f.dataset.fi=i);
+  showAttempt();
+  const em=document.getElementById('semail');
+  em.addEventListener('change',loadProgress);
+  em.addEventListener('blur',loadProgress);
+  document.getElementById('gradeBtn').onclick=gradeAll;
+  document.getElementById('pdfBtn').onclick=makePDF;
+  document.getElementById('mailBtn').onclick=emailTeacher;
+  document.getElementById('resetBtn').onclick=resetAll;
+});
+</script>
+</body></html>
