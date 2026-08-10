@@ -92,6 +92,7 @@ input.field:focus,select.field:focus{outline:2px solid var(--pur2)}
       <li>Press <b>Check</b> on an exercise or <b>Grade all</b> to see right (green) / wrong (red). <b>Answers are not shown on screen</b>, so you can try again.</li>
       <li>Download the <b>PDF report</b> (with your <b>attempt number</b>) and submit it to your teacher (huongstella8@gmail.com).</li>
       <li>The report shows the correct answers only if you score <b>70% or more</b>; below that you are asked to redo.</li>
+      <li>For <b>"write your own sentence"</b> tasks, the auto-check only confirms the grammar structure — your actual sentences are included in the report and email so your <b>teacher can read and mark the meaning</b>.</li>
       <li>Each <b>listening</b> task tells you which <b>audio track</b> to play from the link your teacher shares on Google Classroom; the transcript stays hidden behind a <b>Show transcript</b> button so you can check it only after listening.</li>
     </ul>
   </div>
@@ -269,14 +270,28 @@ function makePDF(){
     y+=18;
   });
   // wrong-answer section (answers revealed ONLY if passed >= 70%)
+  // NOTE: open "write your own sentence" fields (data-pattern) are NOT listed here — they have no
+  // single correct answer, so they go to the teacher-review section below instead of the redo list.
   const wrong=[]; document.querySelectorAll('.exercise').forEach(ex=>{
     const fs=[...ex.querySelectorAll('.field')];
-    fs.forEach((f,k)=>{ if(f.classList.contains('wrong')){
-      let shown;
-      if(f.dataset.pattern!==undefined){ shown='(free sentence — check the grammar structure)'; }
-      else { const acc=JSON.parse(f.dataset.accept); shown=acc[0]==='-'?'(no article)':acc[0]; }
-      wrong.push({label:ex.dataset.exid+' — item '+(k+1), your:(f.value||'').trim()||'(blank)', corr:shown});
-    }});
+    fs.forEach((f,k)=>{
+      if(f.dataset.pattern!==undefined) return;   // open sentence -> teacher-review section, not redo list
+      if(f.classList.contains('wrong')){
+        const acc=JSON.parse(f.dataset.accept); const shown=acc[0]==='-'?'(no article)':acc[0];
+        wrong.push({label:ex.dataset.exid+' — item '+(k+1), your:(f.value||'').trim()||'(blank)', corr:shown});
+      }
+    });
+  });
+  // student's own sentences (render_open) — always captured verbatim for the teacher to read.
+  // The auto-check only confirms grammar structure; the teacher marks the meaning.
+  const openItems=[]; document.querySelectorAll('.exercise').forEach(ex=>{
+    const fs=[...ex.querySelectorAll('.field')];
+    fs.forEach((f,k)=>{
+      if(f.dataset.pattern===undefined) return;
+      const val=(f.value||'').trim();
+      if(val==='') return;                        // nothing written yet -> nothing to review
+      openItems.push({label:ex.dataset.exid+' — item '+(k+1), text:val, ok:f.classList.contains('correct')});
+    });
   });
   y+=24; if(y>760){doc.addPage();y=48;}
   if(wrong.length===0){
@@ -302,9 +317,24 @@ function makePDF(){
       const line=w.label+':  your answer "'+w.your+'"  (incorrect)';
       doc.text(doc.splitTextToSize(line,W-80),44,y); y+=13; });
   }
+  // ---- student's own sentences: always shown to the teacher (meaning is a teacher check) ----
+  if(openItems.length){
+    y+=26; if(y>740){doc.addPage();y=48;}
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(122,31,107);
+    doc.text('Sentences for your teacher to review ('+openItems.length+')',40,y); y+=15;
+    doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);
+    const note='These are your own sentences. The auto-check only confirms the grammar structure; your teacher will read each one and mark the meaning.';
+    doc.splitTextToSize(note,W-84).forEach(ln=>{doc.text(ln,44,y);y+=12;}); y+=6;
+    doc.setFontSize(9.5);doc.setTextColor(34);
+    openItems.forEach(o=>{ if(y>800){doc.addPage();y=48;}
+      const tag = o.ok ? '[grammar OK]' : '[check grammar]';
+      const lines=doc.splitTextToSize(o.label+'  '+tag+':  "'+o.text+'"',W-84);
+      lines.forEach(ln=>{doc.text(ln,44,y);y+=13;});
+    });
+  }
   const fn = 'Report_'+FILEKEY+'_'+name.replace(/\s+/g,'')+'_attempt'+attempt+'.pdf';
   doc.save(fn);
-  window.__lastReport={name,email,attempt,pct:g.pct,C:g.C,T:g.T,passed,file:fn};
+  window.__lastReport={name,email,attempt,pct:g.pct,C:g.C,T:g.T,passed,file:fn,open:openItems};
   document.getElementById('mailBtn').disabled=false;
   return window.__lastReport;
 }
@@ -320,6 +350,10 @@ function emailTeacher(){
     'Worksheet: '+WS_TITLE+'\n'+
     'Attempt: '+r.attempt+'\n'+
     'Score: '+r.C+' / '+r.T+' ('+r.pct+'%) - '+(r.passed?'PASSED':'REDO REQUIRED')+'\n\n'+
+    (r.open && r.open.length ?
+      'My own sentences for your review (auto-check = grammar structure only; please mark the meaning):\n'+
+      r.open.map(o=>'  - '+o.label+' '+(o.ok?'[grammar OK]':'[check grammar]')+': "'+o.text+'"').join('\n')+
+      '\n\n' : '')+
     'IMPORTANT: please attach the downloaded file "'+r.file+'" to this email before sending.\n\n'+
     'Best regards,\n'+r.name;
   window.location.href='mailto:'+TEACHER_EMAIL+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
