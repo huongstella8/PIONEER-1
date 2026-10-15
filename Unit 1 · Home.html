@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Unit 1 · Home</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--bg:#f5f6fb;--card:#fff;--ink:#1c1f33;--mut:#5d6280;--pri:#4f46e5;--pri2:#eef0ff;--ok:#12805c;--okb:#e3f6ee;--bad:#c0262d;--badb:#fdeaea;--warn:#a15c00;--warnb:#fff3dc;--bd:#dfe2f0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13141f;--card:#1d1f30;--ink:#e8e9f5;--mut:#a3a7c4;--pri:#8b84ff;--pri2:#2a2c47;--ok:#4fd1a1;--okb:#173a30;--bad:#ff8087;--badb:#40191d;--warn:#ffc266;--warnb:#3d2d10;--bd:#33364f}}
+:root[data-theme="dark"]{--bg:#13141f;--card:#1d1f30;--ink:#e8e9f5;--mut:#a3a7c4;--pri:#8b84ff;--pri2:#2a2c47;--ok:#4fd1a1;--okb:#173a30;--bad:#ff8087;--badb:#40191d;--warn:#ffc266;--warnb:#3d2d10;--bd:#33364f}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:860px;margin:0 auto;padding:12px}
+header{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:10px}
+h1{margin:0 0 2px;font-size:1.35rem}.mut{color:var(--mut);font-size:.9rem;margin:0}
+.fr{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+input[type=text],input[type=email],select{font:inherit;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%}
+.fr input{flex:1 1 180px}
+.btn{font:inherit;font-weight:600;border:0;border-radius:8px;padding:9px 16px;background:var(--pri);color:#fff;cursor:pointer;margin-top:10px}.btn.g{background:var(--pri2);color:var(--pri);margin:0}.btn.w2{background:var(--warn);color:#fff}
+.sm{border:1px solid var(--bd);background:var(--card);border-radius:6px;cursor:pointer;padding:1px 6px}
+#msg{color:var(--bad);font-size:.9rem;margin:6px 0 0;min-height:1em}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--pri);color:#fff;border-radius:10px;padding:8px 14px;display:flex;justify-content:space-between;font-weight:600;margin-bottom:10px}
+.bar.low{background:var(--bad)}
+nav{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;padding-bottom:4px}
+nav button{flex:0 0 auto;font:inherit;font-size:.88rem;border:1px solid var(--bd);background:var(--card);color:var(--ink);border-radius:20px;padding:6px 12px;cursor:pointer}
+nav button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}h2{margin:0;font-size:1.2rem}h3{margin:18px 0 6px;font-size:1rem;color:var(--pri)}
+.pill{background:var(--pri2);color:var(--pri);border-radius:20px;padding:2px 10px;font-size:.85rem}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin:12px 0}
+.tp{border-radius:10px;padding:10px;font-size:.88rem}.tp b{display:block;margin-bottom:2px}.t1{background:var(--pri2)}.t2{background:var(--okb)}.t3{background:var(--warnb)}
+.pre{background:var(--bg);border-left:4px solid var(--pri);padding:10px 12px;border-radius:6px;font-size:.93rem;margin:10px 0}
+.it{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;padding:8px;border-radius:8px;border:1px solid transparent;margin:4px 0}
+.it.ok{background:var(--okb);border-color:var(--ok)}.it.bad{background:var(--badb);border-color:var(--bad)}
+.n{background:var(--pri2);color:var(--pri);border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;flex:none}
+.qt{flex:1 1 240px}.it select,.it input{flex:1 1 200px;min-width:0}
+.key{flex:1 0 100%;font-size:.88rem;color:var(--ok);padding-left:34px}
+.res{border-radius:10px;padding:12px;margin-top:14px}.res.p{background:var(--okb);color:var(--ok)}.res.f{background:var(--warnb);color:var(--warn)}
+.att{font-size:.88rem;margin:6px 0 0;padding-left:18px}
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:20;align-items:center;justify-content:center;padding:16px}
+#modal>div{background:var(--card);border-radius:14px;padding:20px;max-width:380px;text-align:center}#modal .fr{justify-content:center}
+</style></head><body><div class="w">
+<header><h1>📘 Unit 1 · Home</h1><p class="mut">Vocabulary → Grammar → Pronunciation → Reading → Listening → Writing &amp; Speaking. Each section has its own timer. Score 70% or more to unlock the answer key.</p>
+<div class="fr"><input type="text" id="nm" placeholder="Full name" autocomplete="name"><input type="email" id="em" placeholder="Email" autocomplete="email"></div>
+<div class="fr"><span id="ov" class="pill">Overall: 0%</span><button class="btn g" onclick="exportPDF()">📄 Export PDF report</button></div><p id="msg"></p></header>
+<div class="bar" id="bar"><span id="bl"></span><span id="tm"></span></div><nav id="tabs"></nav><div id="panel"></div></div>
+<div id="modal"><div><h2>⏰ Time is up!</h2><p>Do you want to submit your answers now, or do you need more time?</p><div class="fr"><button class="btn" onclick="submitNow()">Submit now</button><button class="btn w2" onclick="moreTime()">I need more time (+3 min)</button></div></div></div>
+<script>
+const $=id=>document.getElementById(id);
+const m=(g,q,o,a,say)=>({g,q,t:'s',o,a,say}),w=(g,q,a,k)=>({g,q,t:'t',a,k});
+const OP=['small','dark','warm','uncomfortable','noisy'],SN=['/ɒ/ (what)','/eɪ/ (name)','/aɪ/ (I)'],TF=['True','False'],YN=['Yes','No'],IT=['Is there','Are there'],TI=['There is','There are'];
+const PH=['to someone','people','hello','a conversation','with friends','yourself to someone'];
+const G1='A. Making friends – match the verb with the phrase',G2='B. Choose the correct adjective',G3='C. Opposites – choose the opposite word';
+const MT=[['A. Making friends','Reading'],['',''],['','']];
+const S=[
+{n:'Vocabulary',ic:'📚',min:8,focus:'Making-friends phrases (chat to, introduce yourself) and room adjectives with their opposites.',
+tip:'Learn words in pairs (hot / cold) and in chunks (chat to someone, start a conversation).',
+strat:'Read the whole sentence first and look for clue words (busy road → noisy). Do the easy ones first.',
+trap:'“tidy” has no opposite in the list. Say “introduce yourself”, not “introduce hello”.',
+items:[
+...['chat','meet','say','start','go out','introduce'].map((v,i)=>m(G1,v+' …',PH,i)),
+m(G2,'It’s a very hard chair – it’s very ___.',['comfortable','uncomfortable'],1),
+m(G2,'There’s a lot of light in this room – it’s very ___.',['dark','bright'],1),
+m(G2,'It’s very ___ near her flat. It’s next to a busy road.',['quiet','noisy'],1),
+m(G2,'It’s a very ___ flat so there isn’t much space.',['small','large'],0),
+m(G2,'Her flat isn’t very ___. Her books are everywhere!',['tidy','cold'],0),
+m(G2,'It’s very ___ in here. Can I open the window?',['cold','warm'],1),
+...[['big',0],['bright',1],['cold',2],['comfortable',3],['quiet',4]].map(([q,a])=>m(G3,q+' ↔ …',OP,a))]},
+{n:'Grammar',ic:'🧩',min:10,focus:'Present simple of be (am/is/are) and there is / there are, including question forms.',
+tip:'I am · you/we/they are · he/she/it is. Use there is + singular, there are + plural.',
+strat:'Underline the subject, then choose the verb. In questions the verb comes first: Is he…? Are you…?',
+trap:'Don’t forget be (✗ She from China). Negatives: aren’t / isn’t / am not (never “amn’t”). Check plural nouns after there are.',
+items:[
+w('A. Complete with the correct form of be','Berlin ___ in Germany. It’s the capital city.',['is'],'is'),
+w('A. Complete with the correct form of be','Fouad and Yibo ___ in Melbourne.',['are'],'are'),
+w('A. Complete with the correct form of be','They ___ (not) in the art department.',['arent','are not'],'aren’t / are not'),
+w('A. Complete with the correct form of be','I ___ (not) from Australia.',['am not','m not'],'am not / ’m not'),
+w('A. Complete with the correct form of be','Agnes ___ (not) from Australia.',['isnt','is not'],'isn’t / is not'),
+w('A. Complete with the correct form of be','She ___ from Germany.',['is'],'is'),
+w('B. Put the words in order to make questions','German / he / Is ?',['is he german'],'Is he German?'),
+w('B. Put the words in order to make questions','Are / a / student / new / you ?',['are you a new student'],'Are you a new student?'),
+w('B. Put the words in order to make questions','she / from / China / Is ?',['is she from china'],'Is she from China?'),
+w('B. Put the words in order to make questions','they / Are / the / tour / on ?',['are they on the tour'],'Are they on the tour?'),
+w('B. Put the words in order to make questions','Yibo / Is / your / name ?',['is your name yibo'],'Is your name Yibo?'),
+m('C. There is / There are','___ a table in Hassan’s room.',TI,0),
+m('C. There is / There are','___ a sofa in Hassan’s room.',TI,0),
+m('C. There is / There are','___ a park near Etsuko’s home.',TI,0),
+m('C. There is / There are','___ three rooms in Hassan’s flat.',TI,1),
+m('D. Is there / Are there','___ three people in Hassan’s room?',IT,1),
+m('D. Is there / Are there','___ a lot of noise in Etsuko’s room?',IT,0),
+m('D. Is there / Are there','___ a laptop in Hassan’s room?',IT,0),
+m('D. Is there / Are there','___ bookshelves in Etsuko’s room?',IT,1)]},
+{n:'Pronunciation',ic:'🗣️',min:4,focus:'Vowel sounds /ɒ/, /eɪ/ and /aɪ/ (from, make, nice).',
+tip:'o → /ɒ/ (not) · a_e / ay → /eɪ/ (make, day) · i_e / y → /aɪ/ (nice, my).',
+strat:'Say the word aloud, then press 🔊 to listen. Match it with the example word.',
+trap:'“they” sounds /eɪ/ (like day), not /aɪ/. “what” and “from” share /ɒ/. Don’t trust spelling alone.',
+items:[['from',0],['make',1],['nice',2],['on',0],['day',1],['my',2],['not',0],['they',1]].map(([q,a])=>m('Choose the vowel sound',q,SN,a,q))},
+{n:'Reading',ic:'📖',min:12,focus:'Finding facts in a short text (Y/N, T/F) and guessing meaning from context.',
+tip:'First skim for the main idea (30 seconds). Then scan for numbers, names and key words.',
+strat:'Underline the key word in the question, find it in the text, read the sentence around it.',
+trap:'If the text says the opposite, the answer is No/False. Watch “not”, “isn’t”, “always”. Never answer from your own opinion.',
+pre:`<div class="pre"><b>Text 1 – Study in Australia</b><br>There are many reasons to study here! Australia is a very young and exciting country. There are 41 universities here, so there are many different courses. The teachers and the students are very friendly. Many students here aren’t from Australia either. The first week of the academic year is O-week. It’s a time to meet people, make friends and have fun. O-week isn’t a time to study! Student hosts are here to help you. They are students who know the university well.</div><div class="pre"><b>Text 2 – Making friends</b> (adapted)<br><b>A</b> There are new people to meet everywhere. There are many different ways to start a conversation. Smile and make eye contact first, then say “hello”. The weather is always a good topic. Keep the conversation light. Use a 30/70 pattern in small talk: 30% talking and 70% listening.<br><b>B</b> The Internet is a great way to make friends. Friends don’t always need common interests; some good friends are very different from each other. But it is easy to spend a lot of time online with someone and then find you can never meet them because of time and distance.<br><b>C</b> Sports clubs are great places to keep healthy and make friends. They are for everyone, not just for people who are good at sport. A sports team isn’t the only way to a good social life. If you play an instrument or sing, there are bands and choirs you can join too.</div>`,
+items:[
+m('A. Text 1 – choose the answer','How many universities are there in Australia?',['14','41','4'],1),
+m('A. Text 1 – choose the answer','Who is O-week for?',['New students','Teachers','Student hosts'],0),
+m('B. Text 1 – Yes or No?','Is Australia a young country?',YN,0),
+m('B. Text 1 – Yes or No?','Is O-week in the second week of the academic year?',YN,1),
+m('B. Text 1 – Yes or No?','Are some students from other countries?',YN,0),
+m('B. Text 1 – Yes or No?','Are the host students new students?',YN,1),
+m('C. Text 2 – True or False?','There are two ways to start a conversation.',TF,1),
+m('C. Text 2 – True or False?','It is a good idea to talk about serious topics when you meet someone new.',TF,1),
+m('C. Text 2 – True or False?','It is more important to listen than to talk.',TF,0),
+m('C. Text 2 – True or False?','Most good friends are very different from each other.',TF,1),
+m('C. Text 2 – True or False?','The Internet is not always a good way to make friends.',TF,0),
+m('C. Text 2 – True or False?','A sports team is the best way to meet new friends.',TF,1),
+m('D. Meaning in context','Small talk is …',['polite conversation about everyday things like the weather','conversation about serious topics'],0),
+m('D. Meaning in context','A common interest is …',['an activity which you share with another person','an activity you like to do by yourself'],0),
+m('D. Meaning in context','If you live at a distance from something, you live …',['far','near'],0),
+m('D. Meaning in context','If you have a good social life you are …',['usually at home by yourself','often out with people and having fun'],1)]},
+{n:'Listening',ic:'🎧',min:10,focus:'Listening for specific details (places, days, adjectives) and ignoring distractors.',
+tip:'Read all the questions BEFORE you listen and underline the key words.',
+strat:'Answers follow the order of the recording. Listen for the exact detail, then choose.',
+trap:'Speakers mention several things (Germany / Australia, Thursday / Friday). Choose the one that answers the question. In a real test you hear the audio only once.',
+pre:`<div class="pre">🔊 Use your browser voice (the original textbook audio is not included). Press Play as often as you need.<br><br><button class="sm" onclick="speak('mar')">▶ Play 1: Marisa’s room</button> <button class="sm" onclick="speak('fou')">▶ Play 2: Fouad &amp; Agnes</button> <button class="sm" onclick="speechSynthesis.cancel()">■ Stop</button><div id="tr"></div></div>`,
+items:[
+m('A. Play 1 – Marisa’s room','Marisa’s room is …',['small','big','quiet'],1),
+m('A. Play 1 – Marisa’s room','She thinks the colour blue is …',['calm','warm','cold'],0),
+m('A. Play 1 – Marisa’s room','There …',['are three bookshelves','are two bookshelves','is a red chair'],0),
+m('A. Play 1 – Marisa’s room','The room is a good place to study because …',['it’s noisy','it’s quiet','it’s bright'],1),
+m('B. Play 2 – Fouad and Agnes','Fouad is in the … department.',['science','business','art'],0),
+m('B. Play 2 – Fouad and Agnes','Fouad and Agnes are in …',['Australia','Canada','Germany'],0),
+m('B. Play 2 – Fouad and Agnes','Agnes is from …',['Saudi Arabia','Germany','China'],1),
+m('B. Play 2 – Fouad and Agnes','The free barbecue is on …',['Thursday','Friday','Saturday'],1)]},
+{n:'Writing & Speaking',ic:'✍️',min:10,focus:'Word order in questions and the language of meeting and introducing people.',
+tip:'Question pattern: Question word + verb be + subject (Where + is + your home?).',
+strat:'Find the question word first (What / Where), then the verb, then the rest. Start with a capital, end with ?',
+trap:'✗ “Where your home is?” ✓ “Where is your home?”. What’s = What is. Don’t forget the apostrophe in What’s.',
+pre:`<div class="pre"><b>Speaking practice (not graded)</b> – Work with a partner. Describe your ideal room to study in: <i>where it is, what colour it is, what there is in the room, why it is a good place to study.</i> Start by repeating the card slowly: “My ideal room to study in is …” – it gives you time to think.</div>`,
+items:[
+w('A. Word order – make questions','name / your / What’s ?',['whats your name','what is your name'],'What’s your name?'),
+w('A. Word order – make questions','from / Where / you / are ?',['where are you from'],'Where are you from?'),
+w('A. Word order – make questions','your / Where / is / city ?',['where is your city'],'Where is your city?'),
+w('A. Word order – make questions','home / is / Where / your ?',['where is your home'],'Where is your home?'),
+w('A. Word order – make questions','is / home / near / your / What ?',['what is near your home'],'What is near your home?'),
+w('A. Word order – make questions','is / like / What / home / your ?',['what is your home like'],'What is your home like?'),
+m('B. Introducing people – put the sentences in order (1, 2, 3)','“Hello, Fouad. Nice to meet you too.”',['1','2','3'],2),
+m('B. Introducing people – put the sentences in order (1, 2, 3)','“Hi, Yibo. Nice to meet you.”',['1','2','3'],1),
+m('B. Introducing people – put the sentences in order (1, 2, 3)','“Fouad, this is Yibo. Yibo, this is Fouad.”',['1','2','3'],0)]}
+];
+const TX={mar:'My ideal room to study in? It’s my bedroom at home. It’s a big room and it’s blue. Blue is a very calm colour. There’s a big window, so it’s very bright. There are three bookshelves, there’s a large desk for my laptop and there’s a red sofa. It’s a good room to study in because it’s very quiet and it’s very tidy!',
+fou:'Hello. I’m a new student. I’m in the science department. Hi! Welcome to O-Week! I’m your student host. My name’s Agnes. Nice to meet you. Are you from Australia? No, I’m not. I’m a student here in Melbourne, but I’m from Germany. Oh, I see. Is Berlin the capital of Germany? Yes, it is. There’s a free barbecue at the student union carnival on Friday. I’d like to go!'};
+const ST=S.map(()=>({st:'idle',ans:{},res:{},lock:{},att:[],left:0,elapsed:0,extra:0,paused:0,pass:false}));
+let cur=0,mi=0;
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const norm=s=>String(s||'').toLowerCase().replace(/[’']/g,'').replace(/[?.!,]/g,'').replace(/\s+/g,' ').trim();
+const chk=(it,a)=>it.t==='s'?(a!==''&&a!=null&&+a===it.a):it.a.includes(norm(a));
+const keyOf=it=>it.t==='s'?it.o[it.a]:it.k;
+const strip=s=>s.replace(/<[^>]+>/g,'');
+function totals(){let ok=0,n=0;S.forEach((s,i)=>{n+=s.items.length;const a=ST[i].att;if(a.length)ok+=a[a.length-1].ok});return{ok,n,pct:n?Math.round(ok/n*100):0}}
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+function speak(k){say(TX[k])}
+function tabs(){$('tabs').innerHTML=S.map((s,i)=>{const a=ST[i].att,l=a[a.length-1];const c=l?(ST[i].pass?' ✓ ':' ↻ ')+l.pct+'%':'';return `<button class="${i===cur?'on':''}" onclick="go(${i})">${s.ic} ${s.n}${c}</button>`}).join('');$('ov').textContent='Overall: '+totals().pct+'%'}
+function bar(){const st=ST[cur],s=S[cur];if(st.st==='run'){$('bl').textContent=s.n+' – time left';$('tm').textContent=fmt(Math.max(0,st.left));$('bar').className='bar'+(st.left<60?' low':'')}else{$('bl').textContent=s.n+' – suggested time';$('tm').textContent=s.min+' min';$('bar').className='bar'}}
+function panel(){
+const s=S[cur],st=ST[cur],run=st.st==='run';
+let h=`<div class="card"><div class="hd"><h2>${s.ic} ${s.n}</h2><span class="pill">⏱ ${s.min} min · ${s.items.length} items</span></div><div class="tips"><div class="tp t1"><b>💡 Tip</b>${s.tip}</div><div class="tp t2"><b>🎯 Strategy</b>${s.strat}</div><div class="tp t3"><b>⚠️ Common traps</b>${s.trap}</div></div>`;
+if(st.st==='idle'){h+=`<p class="mut">Press Start to reveal the exercises and begin the timer.</p><button class="btn" onclick="start()">▶ Start section</button></div>`;$('panel').innerHTML=h;return}
+let pre=s.pre||'';
+if(st.pass&&s.n==='Listening')pre=pre.replace('<div id="tr"></div>','<details open><summary>Transcripts</summary><p><b>1.</b> '+TX.mar+'</p><p><b>2.</b> '+TX.fou+'</p></details>');
+h+=pre;let lg='';
+s.items.forEach((it,j)=>{
+if(it.g!==lg){h+=`<h3>${it.g}</h3>`;lg=it.g}
+const dis=(!run||st.lock[j])?'disabled':'',a=st.ans[j]??'',r=st.res[j];
+let c;
+if(it.t==='s')c=`<select data-j="${j}" ${dis}><option value="">Choose…</option>${it.o.map((x,k)=>`<option value="${k}" ${String(a)===String(k)?'selected':''}>${esc(x)}</option>`).join('')}</select>`;
+else c=`<input type="text" data-j="${j}" value="${esc(a)}" placeholder="Type your answer" autocomplete="off" ${dis}>`;
+h+=`<div class="it ${r==='ok'?'ok':r==='bad'?'bad':''}"><span class="n">${j+1}</span><div class="qt">${it.q}${it.say?` <button class="sm" onclick="say('${it.say}')">🔊</button>`:''}</div>${c}${st.pass?`<div class="key">✔ Key: ${esc(keyOf(it))}</div>`:''}</div>`});
+if(run)h+=`<button class="btn" onclick="submitNow()">✅ Submit answers</button>`;
+if(st.st==='done'){const l=st.att[st.att.length-1];
+h+=`<div class="res ${st.pass?'p':'f'}"><b>Attempt ${l.n}: ${l.ok}/${l.tot} (${l.pct}%) · time ${fmt(l.secs)}</b><br>${st.pass?'🎉 You reached 70% or more – the answer key is unlocked.':'Below 70% – the key stays hidden. Fix the red questions and try again.'}<ul class="att">${st.att.map(x=>`<li>Attempt ${x.n}: ${x.ok}/${x.tot} (${x.pct}%) – ${fmt(x.secs)}${x.extra?' (+'+x.extra*3+' min extra)':''}</li>`).join('')}</ul></div>`;
+if(!st.pass)h+=`<button class="btn" onclick="retry()">↻ Retry the wrong items</button> `;
+if(cur<S.length-1)h+=`<button class="btn g" style="margin-top:10px" onclick="go(${cur+1})">Next section →</button>`}
+$('panel').innerHTML=h+'</div>'}
+function render(){tabs();bar();panel()}
+function go(i){cur=i;render();window.scrollTo(0,0)}
+function start(){const nm=$('nm').value.trim(),em=$('em').value.trim();
+if(!nm||!/^\S+@\S+\.\S+$/.test(em)){$('msg').textContent='Please enter your full name and a valid email before you start.';$('nm').focus();return}
+$('msg').textContent='';const st=ST[cur];st.st='run';st.left=S[cur].min*60;st.elapsed=0;st.extra=0;st.paused=0;render()}
+function grade(i){const s=S[i],st=ST[i];let ok=0,wrong=[];
+s.items.forEach((it,j)=>{if(st.lock[j]){ok++;return}const a=st.ans[j];
+if(chk(it,a)){ok++;st.lock[j]=1;st.res[j]='ok'}else{st.res[j]='bad';wrong.push({q:strip(it.q),a:(it.t==='s'?(a===''||a==null?'':it.o[a]):a)||'(blank)',k:keyOf(it)})}});
+const tot=s.items.length,pct=Math.round(ok/tot*100);
+st.att.push({n:st.att.length+1,ok,tot,pct,secs:st.elapsed,extra:st.extra,wrong});
+st.st='done';st.pass=pct>=70;st.paused=0;cur=i;render()}
+function submitNow(){$('modal').style.display='none';grade(ST[cur].st==='run'?cur:mi)}
+function moreTime(){$('modal').style.display='none';const st=ST[mi];st.left=180;st.extra++;st.paused=0;cur=mi;render()}
+function retry(){const st=ST[cur];S[cur].items.forEach((_,j)=>{if(st.res[j]==='bad'){delete st.res[j];delete st.ans[j]}});
+st.st='run';st.left=Math.max(120,Math.ceil(S[cur].min*30));st.elapsed=0;st.extra=0;st.paused=0;render()}
+setInterval(()=>{ST.forEach((st,i)=>{if(st.st==='run'&&!st.paused){st.left--;st.elapsed++;if(i===cur)bar();
+if(st.left<=0){st.paused=1;mi=i;cur=i;render();$('modal').style.display='flex'}}})},1000);
+$('panel').addEventListener('input',e=>{const j=e.target.dataset&&e.target.dataset.j;if(j!=null)ST[cur].ans[j]=e.target.value});
+$('panel').addEventListener('change',e=>{const j=e.target.dataset&&e.target.dataset.j;if(j!=null)ST[cur].ans[j]=e.target.value});
+async function exportPDF(){
+const nm=$('nm').value.trim(),em=$('em').value.trim(),msg=$('msg');
+if(!nm||!/^\S+@\S+\.\S+$/.test(em)){msg.textContent='Enter your name and a valid email to export the report.';return}
+if(!window.jspdf){msg.textContent='PDF library could not load. Please reload the page.';return}
+const d=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,M=14;let y=0;
+const nb=h=>{if(y+h>284){d.addPage();y=16}};
+const T=(t,sz,b,col,x)=>{d.setFont('helvetica',b?'bold':'normal');d.setFontSize(sz);d.setTextColor(...(col||[30,32,50]));
+d.splitTextToSize(String(t),W-M-(x||M)).forEach(l=>{nb(sz*.45+1);d.text(l,x||M,y);y+=sz*.4+1.4})};
+const tot=totals(),RED=[192,38,45],GRN=[18,128,92],PRI=[79,70,229];
+d.setFillColor(...PRI);d.rect(0,0,W,30,'F');d.setTextColor(255,255,255);d.setFont('helvetica','bold');d.setFontSize(20);d.text('Unit 1 - Home: Progress Report',M,14);
+d.setFontSize(10);d.setFont('helvetica','normal');d.text('Student: '+nm+'   |   Email: '+em+'   |   Date: '+new Date().toLocaleDateString('en-GB'),M,23);
+y=42;T('Overall score',11,1,PRI);T(tot.ok+' / '+tot.n+'  ('+tot.pct+'%)',22,1,tot.pct>=70?GRN:RED);y+=1;
+d.setDrawColor(200,200,215);d.rect(M,y,W-2*M,4);d.setFillColor(...(tot.pct>=70?GRN:RED));d.rect(M,y,(W-2*M)*tot.pct/100,4,'F');y+=9;
+T(tot.pct>=70?'Result: on target (70% or more).':'Result: needs improvement (below 70%).',10,1,tot.pct>=70?GRN:RED);y+=3;
+T('Section summary',13,1,PRI);y+=1;
+const cx=[M+2,M+56,M+78,M+96,M+116,M+136];
+d.setFillColor(...PRI);d.rect(M,y-4,W-2*M,7,'F');d.setTextColor(255,255,255);d.setFontSize(9);d.setFont('helvetica','bold');
+['Section','Score','%','Attempts','Time','Status'].forEach((t,i)=>d.text(t,cx[i],y));y+=7;
+S.forEach((s,i)=>{const st=ST[i],l=st.att[st.att.length-1],weak=!l||l.pct<70,secs=st.att.reduce((a,x)=>a+x.secs,0);
+nb(8);d.setFillColor(...(weak?[253,234,234]:[227,246,238]));d.rect(M,y-4.5,W-2*M,7,'F');d.setFont('helvetica','normal');d.setFontSize(9);d.setTextColor(30,32,50);
+[s.n,l?l.ok+'/'+l.tot:'-',l?l.pct+'%':'-',String(st.att.length),st.att.length?fmt(secs):'-',!l?'Not attempted':weak?'Needs work':'Passed'].forEach((t,k)=>d.text(t,cx[k],y));y+=8});
+y+=4;T('Detailed results by section',13,1,PRI);y+=1;
+S.forEach((s,i)=>{const st=ST[i];nb(20);T(s.n+' ('+s.items.length+' items, suggested '+s.min+' min)',11,1);
+if(!st.att.length){T('Not attempted yet.',9,0,RED,M+3);y+=2;return}
+st.att.forEach(a=>T('Attempt '+a.n+': '+a.ok+'/'+a.tot+' ('+a.pct+'%)  |  time '+fmt(a.secs)+(a.extra?'  |  +'+a.extra*3+' min extra':''),9,0,a.pct>=70?GRN:RED,M+3));
+const l=st.att[st.att.length-1];
+if(l.wrong.length){T('Items to review (latest attempt):',9,1,[30,32,50],M+3);l.wrong.slice(0,8).forEach(x=>T('- '+x.q.replace(/_{3}/g,'___')+'  ->  your answer: '+x.a+(st.pass?'   [key: '+x.k+']':''),8.5,0,[70,72,95],M+6));
+if(l.wrong.length>8)T('... and '+(l.wrong.length-8)+' more.',8.5,0,[70,72,95],M+6)}y+=3});
+nb(30);T('Areas to improve',13,1,RED);y+=1;
+const wk=S.filter((s,i)=>{const a=ST[i].att;return!a.length||a[a.length-1].pct<70});
+if(!wk.length)T('Great work! All sections are at 70% or above. Keep practising to stay confident.',10,0,GRN);
+wk.forEach(s=>{const a=ST[S.indexOf(s)].att;T('* '+s.n+(a.length?' ('+a[a.length-1].pct+'%)':' (not attempted)')+': '+s.focus+' Tip: '+s.tip,9.5,0,[30,32,50],M+2)});
+const pg=d.getNumberOfPages();for(let p=1;p<=pg;p++){d.setPage(p);d.setFontSize(8);d.setTextColor(130,130,150);d.text('Unit 1 Home - '+nm+' - page '+p+'/'+pg,M,291)}
+let dl=null;try{dl=window.claude?await claude.use('downloads'):null}catch(e){}
+if(!dl){msg.textContent='PDF download is not available in this view. Please open the page in claude.ai to export.';return}
+try{await dl.save({filename:'Unit1_Report_'+nm.replace(/\W+/g,'_')+'.pdf',data:d.output('blob')});msg.textContent=''}catch(e){if(e&&e.code!=='declined')msg.textContent='Could not save the PDF ('+(e.code||'error')+').'}}
+render();
+</script></body></html>
