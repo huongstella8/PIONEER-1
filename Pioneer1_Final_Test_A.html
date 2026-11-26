@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pioneer 1 Final Test — Version A</title>
+<!-- ================== TEACHER SETTINGS ==================
+  Dán URL Web App Google Apps Script (/exec) của bảng tính Pioneer1_Final_Test_Results vào SHEET_ENDPOINT.
+  Đẩy file HTML này cùng thư mục audio/ (chứa 6 file .mp3) lên GitHub Pages.
+========================================================= -->
+<script>
+window.CONFIG = {
+  SHEET_ENDPOINT: "PASTE_YOUR_WEB_APP_URL_HERE",
+  MAX_AUDIO_PLAYS: 2,
+  AUTOSAVE_MS: 8000,
+  EXAM_MODE: true
+};
+window.TEST_DATA = {"id": "pi1_final_a", "version": "Version A", "title": "Pioneer 1 Final Test — Version A", "subtitle": "End-of-Course CEFR Assessment (A2 → B1) · Oxford Solutions Pre-Intermediate 3rd Ed.", "targetMin": 120, "listeningMax": 20, "readingMax": 23, "langCheckMax": 29, "listening": [{"id": "L1", "tag": "L_TF", "title": "Part 1: Young Inventors Competition (True / False)", "instr": "Listen to an interview about a competition for young inventors. Choose True (T) or False (F). You may play each track up to 2 times.", "audio": "audio/ct19_part1.mp3", "type": "tf", "items": [{"id": "L1.1", "q": "Only teenagers over 14 years old can enter the competition this year.", "ans": "F"}, {"id": "L1.2", "q": "Their inventions have to be for something completely new.", "ans": "F"}, {"id": "L1.3", "q": "People are allowed to send in a model of their invention.", "ans": "T"}, {"id": "L1.4", "q": "Real adult inventors will choose their favourite designs.", "ans": "T"}, {"id": "L1.5", "q": "Dave advises people to design something that will sell for a lot of money.", "ans": "F"}]}, {"id": "L2", "tag": "L_MCQ4", "title": "Part 2: Four Short Extracts (Multiple Choice)", "instr": "Listen to four short recordings and choose the correct answer (A–D).", "audio": "audio/est4_track_3.08.mp3", "type": "mcq", "items": [{"id": "L2.1", "q": "Where would you hear this announcement?", "opts": ["A. in a shopping centre", "B. in a clothes shop", "C. in a department store", "D. in a camera shop"], "ans": "C"}, {"id": "L2.2", "q": "Who is the announcement for?", "opts": ["A. people who know something about a crime", "B. police investigating a crime", "C. the victims of a crime", "D. visitors to an art gallery"], "ans": "A"}, {"id": "L2.3", "q": "What does Lucy do to save money?", "opts": ["A. She never goes out.", "B. She works every weekend.", "C. She doesn't buy many things.", "D. She works every day."], "ans": "C"}, {"id": "L2.4", "q": "What is Jake going to do?", "opts": ["A. apply for a job", "B. make a phone call", "C. work as a waiter", "D. tell someone about a job"], "ans": "D"}]}, {"id": "L3", "tag": "L_MCQ3", "title": "Part 3: Becoming a Space Scientist (Multiple Choice)", "instr": "Listen to a talk by a space scientist and choose the correct answer (A–C).", "audio": "audio/est2_track_2.04.mp3", "type": "mcq", "items": [{"id": "L3.1", "q": "When the speaker was a child, her parents", "opts": ["A. taught her the names of all the stars.", "B. bought her books about space.", "C. spent time listening to her talk about the planets."], "ans": "C"}, {"id": "L3.2", "q": "What is true about the speaker at school?", "opts": ["A. She liked science best.", "B. She imagined being a musician one day.", "C. She was talented at maths."], "ans": "B"}, {"id": "L3.3", "q": "When did she decide to be a space scientist?", "opts": ["A. after a lesson at school about meteoroids", "B. after she saw a shooting star", "C. after she watched a film about space travel"], "ans": "B"}, {"id": "L3.4", "q": "What did she do when she first finished her education?", "opts": ["A. She worked abroad.", "B. She went travelling.", "C. She stayed in Britain."], "ans": "A"}, {"id": "L3.5", "q": "What is her advice to people who want to be space scientists?", "opts": ["A. work hard at university", "B. get a good science degree", "C. study different subjects"], "ans": "B"}]}, {"id": "L4", "tag": "L_Match", "title": "Part 4: Six Speakers Talking About Sport (Matching)", "instr": "Listen to six people talking about sport. Match statements A–G with speakers 1–6. There is ONE extra statement.", "audio": "audio/est1_track_1.24.mp3", "type": "match", "bank": ["A. We learn how a new sport developed.", "B. We find out about a new sporting venue.", "C. The speaker is talking to holiday guests.", "D. The speaker is talking about the different benefits of sport.", "E. The speaker is describing a personal experience of a sport.", "F. The speaker is advertising sports activities.", "G. The speaker is explaining the advantages of extreme sports."], "choices": ["A", "B", "C", "D", "E", "F", "G"], "items": [{"id": "L4.1", "q": "Speaker 1", "ans": "G"}, {"id": "L4.2", "q": "Speaker 2", "ans": "C"}, {"id": "L4.3", "q": "Speaker 3", "ans": "E"}, {"id": "L4.4", "q": "Speaker 4", "ans": "A"}, {"id": "L4.5", "q": "Speaker 5", "ans": "D"}, {"id": "L4.6", "q": "Speaker 6", "ans": "B"}]}], "reading": [{"id": "R1", "tag": "R_Short", "title": "Part 1: Five Short Texts (Multiple Choice)", "instr": "Read each short text and choose the correct answer (A–D).", "type": "short_mcq", "items": [{"id": "R1.1", "passage": "<strong>1. TV opportunity!</strong><br>Great Inventions is a new TV show and we are looking for young people to take part. Interested? We invite you to make a two-minute video that shows your idea for a new invention. Make sure you include: personal details (name, age, address), the name of your invention, how you got the idea and how it works. You can email us your video or send it to the address shown on our website. We'll choose the ones we think are most interesting. Your prize? The chance to appear on our TV show!", "q": "What do the programme makers want?", "opts": ["A. new inventors", "B. experienced film makers", "C. young TV presenters", "D. young actors"], "ans": "A"}, {"id": "R1.2", "passage": "<strong>2. 20th-century inventions</strong><br>The most important modern invention has to be the mobile phone. It was only invented in the 1970s, but look at it now! Everyone has a phone. Originally, of course, phones were large and were only used to make phone calls. Now those phones are in museums! Modern mobile phones are mini-computers – you can do so much with them. You can buy very expensive phones, but you can also buy cheap models. That's why, in my view, it's the best 20th-century invention.", "q": "What is the purpose of the text?", "opts": ["A. to advertise mobile phones", "B. to invite people to a museum exhibition", "C. to give an opinion about an invention", "D. to advise people to avoid cheap phones"], "ans": "C"}, {"id": "R1.3", "passage": "<strong>3. 3D printers</strong><br>3D printers are a new kind of machine that can make everyday objects. They're amazing because they can produce different things in different materials. A 3D printer can make anything from cups and plates to plastic toys and even chocolate cakes! So how do they work? First you design a 3D object on your computer, then you connect it to a 3D printer. Press 'print' and watch it work. The printer makes the object in very thin layers, like the pages of a book – one on top of the other until you have a complete object.", "q": "What is the writer of the text doing?", "opts": ["A. giving an idea about the future of printers", "B. describing an invention", "C. giving a short history of an object", "D. explaining different inventions"], "ans": "B"}, {"id": "R1.4", "passage": "<strong>4. Tim Berners-Lee</strong><br>Tim Berners-Lee is the British computer scientist who is given the credit for inventing the World Wide Web. People had been developing the internet since the 1960s. However, Tim Berners-Lee put all the ideas together to create the World Wide Web. In 1990, he produced the first version and it was put online in 1991. He could have made a lot of money from his invention, but he decided to offer it to the world as a gift.", "q": "What would be the best title for this article?", "opts": ["A. The inventor of the internet", "B. The advantages of the world wide web", "C. An expensive communication system", "D. The growth of the internet"], "ans": "A"}, {"id": "R1.5", "passage": "<strong>5. What's my password?</strong><br>These days we have so many computer passwords that it isn't surprising that we often forget them. That's why most people create passwords which are based on the people, places and things they know best. Using names and dates in different ways is popular. For example, combining part of your name with your date of birth. Using a childhood memory is also very common. You might use the name of the street you grew up in, or the name of your favourite teacher.", "q": "According to this article, how do most people decide on their passwords?", "opts": ["A. They only have one or two passwords for everything.", "B. They choose words which are very personal.", "C. They only use information about themselves.", "D. They use numbers rather than letters."], "ans": "B"}]}, {"id": "R2", "tag": "R_MCQ", "title": "Part 2: On Top of the World (Multiple Choice)", "instr": "Read the article and choose the correct answer (A–D).", "type": "mcq", "passage": "<h4>On top of the world</h4><p>In January 2015, Kevin Jorgeson and Tommy Caldwell climbed to the top of the Dawn Wall of El Capitan – a famous mountain in Yosemite National Park, USA. This is often described as the world’s most difficult rock climb. It took Jorgeson and Caldwell eighteen days to climb the 900 metres to the top! During this time, they hung tents off the rock, and ate and slept in them. The Dawn Wall is so difficult because there is nothing big for climbers to hold onto. Jorgeson and Caldwell had to climb by holding tiny pieces of rocks with the ends of their fingers. They used ropes to protect themselves from falling, but not to help them climb.</p><p>Kevin Jorgeson nearly didn't finish the climb. He found one part of the Dawn Wall extremely difficult. It took him seven days to do this part, and he fell eleven times. His fingers were damaged too, so he had to wait for them to get better before he could continue. But in the end, both men finished the climb together. It was an amazing achievement.</p><p>Only two weeks later, an ice climber called Will Gadd became the first person to climb a frozen part of the Niagara Falls. These falls, on the Niagara River between America and Canada, are the biggest waterfalls in North America. They are made of three separate waterfalls, and Gadd climbed the Horseshoe Falls, on the Canadian side. In winter, a part of these 50.9 metre falls freezes, and Gadd wanted to climb up the ice. But it was an extremely difficult climb. The ice was very thick in some places, but not in other places. And because only a part of the waterfall was frozen, a lot of water fell past Gadd as he climbed. Gadd knew that if he fell, he would probably die – but he got to the top.</p><p>But why do people want to do dangerous climbs like these? 'Dangerous situations are very exciting,' says climber Terrence Jones. 'They make you feel alive.' Humans have always looked for challenges, but many of the old challenges – like climbing Mount Everest – aren’t exciting enough for some climbers because so many people have already done them. 'Climbers like Caldwell and Gadd want to achieve more than anyone else,' says Jones, 'so that the world will read about them in the papers and see them on TV.'</p><p>One day people will complete all of the difficult climbs on Earth, so what will climbers do then? 'I don’t know,' says Jones. 'But perhaps one day far in the future people won’t climb on Earth. There are still mountains to climb on Mars!' This may never happen, of course, but one thing is certain: the search for adventure will not stop.</p>", "items": [{"id": "R2.1", "q": "Why was the Dawn Wall difficult to climb?", "opts": ["A. It was higher than the climbers thought.", "B. The climbers couldn't sleep.", "C. The rocks were difficult for climbers to hold.", "D. It took a very long time to finish."], "ans": "C"}, {"id": "R2.2", "q": "Jorgeson had to stop climbing for a while because", "opts": ["A. he was really tired.", "B. he was anxious.", "C. he often slipped.", "D. he had an injury."], "ans": "D"}, {"id": "R2.3", "q": "What does the text say about Will Gadd's climb?", "opts": ["A. Nobody had climbed that section of the falls before him.", "B. He climbed the highest part of the Niagara Falls.", "C. It was the most dangerous climb in the world.", "D. Nobody had climbed on ice in Canada before."], "ans": "A"}, {"id": "R2.4", "q": "Terrence suggests that Gadd and Caldwell climb", "opts": ["A. to become famous.", "B. to write about their experiences.", "C. to make TV programmes.", "D. to show people how difficult climbing is."], "ans": "A"}, {"id": "R2.5", "q": "In this article, the writer", "opts": ["A. encourages people to go on adventures.", "B. discusses people who do difficult things.", "C. describes why he likes doing dangerous climbs.", "D. predicts the future of climbing."], "ans": "B"}]}, {"id": "R3", "tag": "R_Head", "title": "Part 3: The Crime of the Century (Paragraph Matching)", "instr": "Read the text and match statements A–G with paragraphs 1–6. There is ONE extra statement.", "type": "match", "passage": "<h4>The crime of the century</h4><p><strong>[1]</strong> This is the story of one of Britain's most famous crimes: the Great Train Robbery. In 1963, an English criminal called Bruce Reynolds had an idea for a crime. He wanted to rob the night mail train from Glasgow to London because he knew the train carried thousands of pounds. He also knew he couldn't work alone, so he called fifteen other criminals and told them about the job. He called it 'the big one'.</p><p><strong>[2]</strong> The gang bought a farmhouse in the middle of the countryside to escape to after the crime. They also found a criminal train driver to help them drive the train after they stopped it, and they organised trucks to carry the money. Then, on the night of the robbery, they put up false signals on the track and waited.</p><p><strong>[3]</strong> The train appeared at around 3 a.m. and stopped at the false signals. The train driver, Jack Mills, was confused, so he got out and went to the signals. The thieves hit him on the head and then boarded the train. But now they had a problem – they needed to move the train to a bridge to unload the money, but their criminal train driver didn't understand the controls – he couldn't drive the train!</p><p><strong>[4]</strong> The thieves decided to drag the driver, Jack Mills, back onto the train to help them. Then they had a surprise. There was more than the thousands of pounds they thought would be on the train – there was over two and a half million! In those days that was a huge amount of money.</p><p><strong>[5]</strong> The men drove the money to their farmhouse and decided to wait there until the police ended their investigation. But this was a huge crime, and the police were looking everywhere. At last, the thieves became worried. They left the farmhouse with the money, and when the police found the house, they also found the men's fingerprints everywhere. The investigation continued, and the police started to arrest people. Many of the train robbers went to prison for thirty years for their crime.</p><p><strong>[6]</strong> In April 1965, one of the gang members, Ronnie Biggs, escaped from prison. He lived in Australia with his wife and children, and then he went to Brazil. During this time, the newspapers wrote many stories about him. In 2001, he returned to Britain because he was very ill. He went back to prison, but then left again in 2009 and died in an old people's home. Many people have made films and written books about the Great Train Robbery. It is one of Britain's most famous crime stories.</p>", "bank": ["A. how the thieves were discovered.", "B. how the men spent the money.", "C. how the thieves prepared for the robbery.", "D. the problem the robbers had on the night of the robbery.", "E. how their fame grew.", "F. what they found which was unexpected.", "G. why the thieves decided to work together."], "choices": ["A", "B", "C", "D", "E", "F", "G"], "items": [{"id": "R3.1", "q": "Paragraph 1 tells you...", "ans": "G"}, {"id": "R3.2", "q": "Paragraph 2 tells you...", "ans": "C"}, {"id": "R3.3", "q": "Paragraph 3 tells you...", "ans": "D"}, {"id": "R3.4", "q": "Paragraph 4 tells you...", "ans": "F"}, {"id": "R3.5", "q": "Paragraph 5 tells you...", "ans": "A"}, {"id": "R3.6", "q": "Paragraph 6 tells you...", "ans": "E"}]}, {"id": "R4", "tag": "R_Gap", "title": "Part 4: My Trip to Delhi (Gapped Text)", "instr": "Read the blog entry and match sentences A–I with gaps 1–7. There are TWO extra sentences.", "type": "match", "passage": "<h4>My trip to Delhi</h4><p><strong>Saturday</strong><br>After two flights, I finally arrived in Delhi. <strong>[Gap 1]</strong> It didn't take long, and I was soon driving through the streets to my small hotel. The owner was really kind and friendly. <strong>[Gap 2]</strong> It was very clean and comfortable. I was really tired, so I read some of my tourist guide to India. <strong>[Gap 3]</strong></p><p><strong>Sunday</strong><br>I got up at about 8 o'clock and went down for breakfast. <strong>[Gap 4]</strong> Afterwards, I went out into Delhi. I found a taxi and went to my first tourist spot: the Shri Lakshmi Narain Temple. <strong>[Gap 5]</strong> Inside, I found a guide and learned a lot about the history of the beautiful building. After this, I went to Raj Ghat. This is the last resting place of Mahatma Gandhi. The gardens were very green and there were lots of trees, but the fountains were dry because of the heat. After this I was very tired and hot. <strong>[Gap 6]</strong></p><p>Later, when I felt better, I went for dinner at a restaurant. I had a dosa, which is a kind of pancake with curried potatoes and onions. <strong>[Gap 7]</strong> Tomorrow, I'm going to visit Humayun's Tomb and the museum. I'm going to go to the markets and do some shopping too. Then I'll probably catch a flight to Varanasi. It's a very famous historical place. I'll let you know what it's like!</p>", "bank": ["A. It's going to be hotter tomorrow.", "B. I think I'll stay in Delhi for a few days.", "C. I didn't feel like exploring any more, so I went back to my hotel for a rest.", "D. He chatted for a bit and then showed me my room.", "E. That's why he met me at the airport.", "F. I took off my shoes and went in with the other tourists.", "G. I collected my luggage with no problems, left the airport and tried to find a taxi.", "H. It was a delicious meal of eggs, Indian breads and chutneys.", "I. I fell asleep in the middle of an article about street food."], "choices": ["A", "B", "C", "D", "E", "F", "G", "H", "I"], "items": [{"id": "R4.1", "q": "Gap 1", "ans": "G"}, {"id": "R4.2", "q": "Gap 2", "ans": "D"}, {"id": "R4.3", "q": "Gap 3", "ans": "I"}, {"id": "R4.4", "q": "Gap 4", "ans": "H"}, {"id": "R4.5", "q": "Gap 5", "ans": "F"}, {"id": "R4.6", "q": "Gap 6", "ans": "C"}, {"id": "R4.7", "q": "Gap 7", "ans": "B"}]}], "writing": [{"id": "W1", "title": "Task 1: Informal Email (10 marks · 60–80 words)", "minWords": 60, "maxWords": 80, "prompt": "Imagine you witnessed a robbery last week. Write an email to an English friend in which you:<br>• explain where you were.<br>• describe what you saw.<br>• say how it affected you.<br>• ask what similar experiences your friend has had."}, {"id": "W2", "title": "Task 2: Formal Application Letter (15 marks · 100–120 words)", "minWords": 100, "maxWords": 120, "prompt": "<strong>Staff wanted — Work with children aged 7–12 in summer camps in the USA</strong><br>Jobs available: ★ sports coaches (for football, tennis or swimming) · ★ kitchen staff (cooks and waiters).<br>Apply in writing, enclosing your CV, to: Al Spencer, Mega Camps, Pennsylvania 31450, USA.<br><br>Write an application letter (do not include addresses or date). Say:<br>• why you are writing, and where you saw the advert.<br>• which job you would prefer, and why.<br>• what work experience you have.<br>• when you can start."}], "langCheck": [{"id": "LC1", "title": "Ex 1: Verb Forms (8 marks)", "instr": "Complete the sentences with the correct form of the verbs in brackets.", "type": "fill", "items": [{"id": "LC1.1", "q": "Maira ______ (meet) me at the theatre tonight.", "ans": ["is going to meet", "is meeting", "'s going to meet", "'s meeting"]}, {"id": "LC1.2", "q": "If Jamie doesn't study hard, he ______ (not pass) his exams.", "ans": ["won't pass", "will not pass"]}, {"id": "LC1.3", "q": "My older brother ______ (not go) to bed until after midnight last night.", "ans": ["didn't go", "did not go"]}, {"id": "LC1.4", "q": "We ______ (never / visit) Greece, but we would like to.", "ans": ["have never visited", "'ve never visited"]}, {"id": "LC1.5", "q": "If I lived in Mexico, I ______ (learn) Spanish very quickly.", "ans": ["would learn", "'d learn"]}, {"id": "LC1.6", "q": "My friends ______ (eat) all the pizza when we arrived, so we were starving.", "ans": ["had eaten", "'d eaten"]}, {"id": "LC1.7", "q": "I ______ (not do) my homework when my mum came into my room, so she was really cross!", "ans": ["wasn't doing", "was not doing"]}, {"id": "LC1.8", "q": "Dad probably ______ (not come) with us to the restaurant tonight – he isn't feeling very well.", "ans": ["won't come", "will not come"]}]}, {"id": "LC2", "title": "Ex 2: Sentence Transformation (7 marks)", "instr": "Complete the second sentence so that it has the same meaning as the first sentence. Use 1–3 words.", "type": "fill", "items": [{"id": "LC2.1", "q": "You can wear a smart dress to the party, but it isn't necessary. → You ______ wear a smart dress to the party.", "ans": ["don't have to", "do not have to", "needn't", "need not"]}, {"id": "LC2.2", "q": "It isn't warm enough to have a picnic outside today. → It's ______ to have a picnic outside today.", "ans": ["too cold"]}, {"id": "LC2.3", "q": "'I hate my new haircut,' said Sally. → Sally said that ______ her new haircut.", "ans": ["she hated"]}, {"id": "LC2.4", "q": "The school hasn't given us our exam results yet. → We ______ our exam results yet.", "ans": ["haven't been given", "have not been given"]}, {"id": "LC2.5", "q": "This car isn't as powerful as Grandma's car. → Grandma's car is ______ this one.", "ans": ["more powerful than"]}, {"id": "LC2.6", "q": "The match finished before we arrived. → When we arrived, the match ______ .", "ans": ["had finished"]}, {"id": "LC2.7", "q": "We'll send an email about the school trip to your parents tomorrow. → Your parents ______ an email about the school trip tomorrow.", "ans": ["will be sent", "'ll be sent"]}]}, {"id": "LC3", "title": "Ex 3: Compound Nouns (6 marks)", "instr": "Make compound nouns using one word from Box A (bag, fossil, greenhouse, part, chewing, dental) and one from Box B (gas, fuels, gum, drop, records, time).", "type": "fill", "items": [{"id": "LC3.1", "q": "After the fire, the police discovered who the victim was by examining his ______ .", "ans": ["dental records"]}, {"id": "LC3.2", "q": "CO2 is a ______ , so it causes global warming.", "ans": ["greenhouse gas"]}, {"id": "LC3.3", "q": "My sister is going to get a ______ job while she's at university.", "ans": ["part-time", "part time"]}, {"id": "LC3.4", "q": "The policeman was pleased when he found the ______ in the car – it was an important clue.", "ans": ["chewing gum"]}, {"id": "LC3.5", "q": "You should take your luggage to the ______ when you get to the airport.", "ans": ["bag drop"]}, {"id": "LC3.6", "q": "I don't think we should burn ______ any more – it's bad for the environment.", "ans": ["fossil fuels"]}]}, {"id": "LC4", "title": "Ex 4: Word Formation — Food Inventions (8 marks)", "instr": "Complete the text with the correct form of the words in brackets.", "type": "fill", "passage": "<p>A lot of popular food was invented <strong>(1) [ACCIDENT]</strong>. For example, a chef called George Crum was working in a restaurant in Saratoga Springs in the US. One day, a <strong>(2) [CUSTOM]</strong> complained about his fried potatoes. He wanted them to be fried for a <strong>(3) [LONG]</strong> time than usual and to be cut into thinner slices. Maybe Crum was tired that day because he was not very <strong>(4) [HAPPY]</strong> about this! He sliced the potatoes very <strong>(5) [THIN]</strong> and fried them for a very long time. <strong>(6) [STRANGE]</strong>, the man loved them, and so, potato crisps were created! Another <strong>(7) [FAME]</strong> example is when a pharmacist named John Pemberton was working on some medicine for people who were tired or feeling <strong>(8) [NERVE]</strong>. One of his assistants used carbonated water by mistake, not still water. The result was the fizzy drink: cola.</p>", "items": [{"id": "LC4.1", "q": "Gap (1) [ACCIDENT]", "ans": ["accidentally"]}, {"id": "LC4.2", "q": "Gap (2) [CUSTOM]", "ans": ["customer"]}, {"id": "LC4.3", "q": "Gap (3) [LONG]", "ans": ["longer"]}, {"id": "LC4.4", "q": "Gap (4) [HAPPY]", "ans": ["happy"]}, {"id": "LC4.5", "q": "Gap (5) [THIN]", "ans": ["thinly"]}, {"id": "LC4.6", "q": "Gap (6) [STRANGE]", "ans": ["strangely"]}, {"id": "LC4.7", "q": "Gap (7) [FAME]", "ans": ["famous"]}, {"id": "LC4.8", "q": "Gap (8) [NERVE]", "ans": ["nervous"]}]}]};
+</script>
+<style>
+:root{
+  --bg:#f4f6f5; --paper:#ffffff; --ink:#111827; --ink2:#374151; --mute:#6b7280;
+  --line:#d1d5db; --accent:#0f766e; --accent-soft:#e6f4f1; --warn:#b45309; --warn-soft:#fef3c7;
+  --bad:#b91c1c; --bad-soft:#fee2e2; --ok:#15803d; --ok-soft:#dcfce7;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--sans)}
+.hdr{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line);box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.hdr-top{max-width:1120px;margin:0 auto;padding:12px 18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.brand{margin-right:auto}
+.brand b{font-size:17px;color:var(--accent);display:block}
+.brand span{font-size:12.5px;color:var(--mute)}
+.who{display:flex;gap:8px;flex-wrap:wrap}
+.who input{height:38px;padding:0 11px;border:1px solid var(--line);border-radius:8px;width:190px;font:inherit}
+.who input.invalid{border-color:var(--bad);background:var(--bad-soft)}
+.timer{font:700 18px/1 ui-monospace,monospace;color:var(--ink);min-width:96px;text-align:right}
+.timer.over{color:var(--bad)}
+.btn{height:38px;padding:0 16px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);font:600 14px var(--sans);cursor:pointer}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.tabs{max-width:1120px;margin:0 auto;padding:0 14px;display:flex;gap:4px;overflow-x:auto;border-top:1px solid #eef0ef}
+.tab{border:0;background:transparent;padding:10px 14px;border-bottom:3px solid transparent;font:600 14px var(--sans);color:var(--ink2);cursor:pointer;white-space:nowrap}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tab .cnt{font-size:11.5px;padding:1px 7px;border-radius:999px;background:#e5e7eb;margin-left:5px}
+main{max-width:1040px;margin:0 auto;padding:22px 18px 90px}
+.pane{display:none}.pane.on{display:block}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin-bottom:18px}
+.card h2{margin:0 0 6px;font-size:18px;color:var(--accent)}
+.instr{margin:0 0 14px;color:var(--ink2);font-size:14px}
+.audio-box{background:var(--accent-soft);border:1px solid #b5dfd7;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.audio-box button{height:34px;padding:0 14px;border-radius:6px;border:0;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+.audio-box button:disabled{background:#9ca3af;cursor:not-allowed}
+.audio-meta{font-size:13px;color:var(--ink2)}
+.passage{background:#f9fafb;border-left:4px solid var(--accent);padding:14px 16px;border-radius:6px;margin-bottom:16px;font-size:14.5px}
+.passage h4{margin:0 0 8px;color:var(--ink)}
+.bank{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:14px}
+.bank div{margin:3px 0}
+.qitem{padding:10px 0;border-bottom:1px solid #eef0ef}
+.qitem:last-child{border-bottom:0}
+.qtxt{font-weight:600;margin-bottom:6px}
+.opts{display:flex;flex-wrap:wrap;gap:10px 18px}
+.opts label{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:14.5px}
+select.sel, input.fill{padding:6px 10px;border:1px solid var(--line);border-radius:6px;font:14.5px var(--sans);min-width:180px}
+textarea.wbox{width:100%;min-height:190px;padding:12px;border:1px solid var(--line);border-radius:8px;font:15px/1.6 var(--sans);resize:vertical}
+.wmeta{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin-top:6px}
+.banner{padding:14px 16px;border-radius:8px;margin-bottom:16px;font-size:14px}
+.banner.ok{background:var(--ok-soft);color:var(--ok);border:1px solid #86efac}
+.banner.warn{background:var(--warn-soft);color:var(--warn);border:1px solid #fcd34d}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:16px 0}
+.stat{border:1px solid var(--line);border-radius:8px;padding:14px;background:#f9fafb}
+.stat small{display:block;color:var(--mute);font-size:12.5px}
+.stat b{font-size:22px;color:var(--accent)}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-top">
+    <div class="brand">
+      <b id="t-title"></b>
+      <span id="t-sub"></span>
+    </div>
+    <div class="who">
+      <input id="inp-name" type="text" placeholder="Họ và tên học viên *" autocomplete="name">
+      <input id="inp-email" type="email" placeholder="Email học viên *" autocomplete="email">
+    </div>
+    <div class="timer" id="clock">00:00</div>
+    <button class="btn primary" id="btn-submit" type="button">Nộp bài</button>
+  </div>
+  <nav class="tabs" id="nav-tabs">
+    <button class="tab on" data-tab="listening" type="button">1. Listening <span class="cnt" id="cnt-l">0</span></button>
+    <button class="tab" data-tab="reading" type="button">2. Reading <span class="cnt" id="cnt-r">0</span></button>
+    <button class="tab" data-tab="writing" type="button">3. Writing <span class="cnt" id="cnt-w">0/2</span></button>
+    <button class="tab" data-tab="lang" type="button">4. Language Check <span class="cnt" id="cnt-lc">0</span></button>
+    <button class="tab" data-tab="result" type="button" style="margin-left:auto">Kết quả</button>
+  </nav>
+</header>
+
+<main>
+  <div id="pane-listening" class="pane on"></div>
+  <div id="pane-reading" class="pane"></div>
+  <div id="pane-writing" class="pane"></div>
+  <div id="pane-lang" class="pane"></div>
+  <div id="pane-result" class="pane"></div>
+</main>
+
+<script>
+(function(){
+  var D = window.TEST_DATA, CFG = window.CONFIG;
+  var STORE_KEY = 'pi1_exam_state_' + D.id;
+  var QUEUE_KEY = 'pi1_exam_queue_' + D.id;
+  var S = loadState() || {
+    name: '', email: '', answers: {}, audioPlays: {}, startTs: Date.now(), elapsedSec: 0, submitted: false, result: null
+  };
+  var activeAudio = null;
+
+  function $(s){ return document.querySelector(s); }
+  function $$(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
+  function loadState(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)); }catch(e){ return null; } }
+  function saveState(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){} }
+  function norm(s){
+    return String(s||'').trim().toLowerCase()
+      .replace(/[’`]/g, "'")
+      .replace(/\s+/g, ' ')
+      .replace(/[.,!?]+$/g, '');
+  }
+  function countWords(s){
+    var t = String(s||'').trim();
+    return t ? t.split(/\s+/).length : 0;
+  }
+
+  $('#t-title').textContent = D.title;
+  $('#t-sub').textContent = D.subtitle + ' · Target: ' + D.targetMin + ' mins';
+  $('#inp-name').value = S.name;
+  $('#inp-email').value = S.email;
+  $('#inp-name').addEventListener('input', function(e){ S.name = e.target.value; e.target.classList.remove('invalid'); saveState(); });
+  $('#inp-email').addEventListener('input', function(e){ S.email = e.target.value; e.target.classList.remove('invalid'); saveState(); });
+
+  function renderSection(containerId, sections, kind){
+    var root = $('#' + containerId);
+    root.innerHTML = '';
+    sections.forEach(function(sec){
+      var card = document.createElement('div');
+      card.className = 'card';
+      var html = '<h2>' + sec.title + '</h2><p class="instr">' + sec.instr + '</p>';
+      if (sec.audio) {
+        var used = S.audioPlays[sec.id] || 0;
+        var left = Math.max(0, CFG.MAX_AUDIO_PLAYS - used);
+        html += '<div class="audio-box">'
+          + '<button type="button" class="play-btn" data-sec="' + sec.id + '" data-src="' + sec.audio + '"' + (left <= 0 ? ' disabled' : '') + '>▶ Phát Audio</button>'
+          + '<span class="audio-meta" id="ameta-' + sec.id + '">Số lượt nghe còn lại: <strong>' + left + '/' + CFG.MAX_AUDIO_PLAYS + '</strong> · File: <code>' + sec.audio + '</code></span>'
+          + '</div>';
+      }
+      if (sec.passage) html += '<div class="passage">' + sec.passage + '</div>';
+      if (sec.bank) {
+        html += '<div class="bank">' + sec.bank.map(function(b){ return '<div>' + b + '</div>'; }).join('') + '</div>';
+      }
+      sec.items.forEach(function(it, idx){
+        var val = S.answers[it.id] || '';
+        html += '<div class="qitem">';
+        if (it.passage) html += '<div class="passage">' + it.passage + '</div>';
+        html += '<div class="qtxt">' + (idx + 1) + '. ' + it.q + '</div>';
+        if (sec.type === 'tf') {
+          html += '<div class="opts">'
+            + '<label><input type="radio" name="' + it.id + '" value="T"' + (val==='T'?' checked':'') + '> True (T)</label>'
+            + '<label><input type="radio" name="' + it.id + '" value="F"' + (val==='F'?' checked':'') + '> False (F)</label>'
+            + '</div>';
+        } else if (sec.type === 'mcq' || sec.type === 'short_mcq') {
+          html += '<div class="opts">' + it.opts.map(function(o){
+            var code = o.charAt(0).toUpperCase();
+            return '<label><input type="radio" name="' + it.id + '" value="' + code + '"' + (val===code?' checked':'') + '> ' + o + '</label>';
+          }).join('') + '</div>';
+        } else if (sec.type === 'match') {
+          html += '<select class="sel" data-id="' + it.id + '"><option value="">-- Chọn đáp án --</option>'
+            + sec.choices.map(function(c){ return '<option value="' + c + '"' + (val===c?' selected':'') + '>' + c + '</option>'; }).join('')
+            + '</select>';
+        } else if (sec.type === 'fill') {
+          html += '<input class="fill" type="text" data-id="' + it.id + '" value="' + val.replace(/"/g,'&quot;') + '" placeholder="Nhập câu trả lời...">';
+        }
+        html += '</div>';
+      });
+      card.innerHTML = html;
+      root.appendChild(card);
+    });
+  }
+
+  function renderWriting(){
+    var root = $('#pane-writing');
+    root.innerHTML = '';
+    D.writing.forEach(function(w){
+      var val = S.answers[w.id] || '';
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = '<h2>' + w.title + '</h2><div class="passage">' + w.prompt + '</div>'
+        + '<textarea class="wbox" data-id="' + w.id + '" placeholder="Viết bài của bạn tại đây...">' + val.replace(/</g,'&lt;') + '</textarea>'
+        + '<div class="wmeta"><span>Yêu cầu độ dài: ' + w.minWords + '–' + w.maxWords + ' từ</span><span id="wc-' + w.id + '">Số từ: <strong>' + countWords(val) + '</strong></span></div>';
+      root.appendChild(card);
+    });
+  }
+
+  renderSection('pane-listening', D.listening, 'L');
+  renderSection('pane-reading', D.reading, 'R');
+  renderWriting();
+  renderSection('pane-lang', D.langCheck, 'LC');
+
+  // Bind inputs
+  document.addEventListener('change', function(e){
+    if (S.submitted) return;
+    if (e.target.type === 'radio' && e.target.name) {
+      S.answers[e.target.name] = e.target.value;
+      updateCounts(); saveState();
+    } else if (e.target.matches('select.sel')) {
+      S.answers[e.target.dataset.id] = e.target.value;
+      updateCounts(); saveState();
+    }
+  });
+  document.addEventListener('input', function(e){
+    if (S.submitted) return;
+    if (e.target.matches('input.fill')) {
+      S.answers[e.target.dataset.id] = e.target.value;
+      updateCounts(); saveState();
+    } else if (e.target.matches('textarea.wbox')) {
+      var id = e.target.dataset.id;
+      S.answers[id] = e.target.value;
+      var wc = $('#wc-' + id);
+      if (wc) wc.innerHTML = 'Số từ: <strong>' + countWords(e.target.value) + '</strong>';
+      updateCounts(); saveState();
+    }
+  });
+
+  // Audio player with strict 2-play limit
+  document.addEventListener('click', function(e){
+    if (!e.target.matches('.play-btn')) return;
+    var btn = e.target, secId = btn.dataset.sec, src = btn.dataset.src;
+    var used = S.audioPlays[secId] || 0;
+    if (used >= CFG.MAX_AUDIO_PLAYS) return;
+    if (activeAudio && !activeAudio.paused) {
+      alert('Vui lòng đợi đoạn audio đang phát kết thúc trước khi mở đoạn khác.');
+      return;
+    }
+    var a = new Audio(src);
+    activeAudio = a;
+    btn.disabled = true;
+    btn.textContent = 'Đang phát...';
+    a.play().then(function(){
+      S.audioPlays[secId] = used + 1;
+      saveState();
+      var left = Math.max(0, CFG.MAX_AUDIO_PLAYS - S.audioPlays[secId]);
+      $('#ameta-' + secId).innerHTML = 'Đang phát... (Lượt còn lại sau lần này: <strong>' + left + '/' + CFG.MAX_AUDIO_PLAYS + '</strong>)';
+    }).catch(function(){
+      btn.disabled = false;
+      btn.textContent = '▶ Phát Audio';
+      alert('Không tải được file âm thanh: ' + src + '. Hãy kiểm tra lại thư mục audio/ trên GitHub Pages.');
+    });
+    a.onended = function(){
+      var left = Math.max(0, CFG.MAX_AUDIO_PLAYS - (S.audioPlays[secId] || 0));
+      $('#ameta-' + secId).innerHTML = 'Số lượt nghe còn lại: <strong>' + left + '/' + CFG.MAX_AUDIO_PLAYS + '</strong>';
+      btn.textContent = left > 0 ? '▶ Phát lại Audio' : 'Đã hết lượt nghe';
+      btn.disabled = left <= 0;
+    };
+  });
+
+  // Tabs
+  $$('.tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      $$('.tab').forEach(function(x){ x.classList.remove('on'); });
+      $$('.pane').forEach(function(x){ x.classList.remove('on'); });
+      t.classList.add('on');
+      $('#pane-' + t.dataset.tab).classList.add('on');
+      window.scrollTo(0, 0);
+    });
+  });
+
+  function updateCounts(){
+    function cnt(secs){
+      var done = 0, tot = 0;
+      secs.forEach(function(s){ s.items.forEach(function(i){ tot++; if (String(S.answers[i.id]||'').trim()) done++; }); });
+      return done + '/' + tot;
+    }
+    $('#cnt-l').textContent = cnt(D.listening);
+    $('#cnt-r').textContent = cnt(D.reading);
+    $('#cnt-lc').textContent = cnt(D.langCheck);
+    var wd = D.writing.filter(function(w){ return countWords(S.answers[w.id]||'') >= 20; }).length;
+    $('#cnt-w').textContent = wd + '/' + D.writing.length;
+  }
+  updateCounts();
+
+  // Clock
+  setInterval(function(){
+    if (S.submitted) return;
+    S.elapsedSec++;
+    var m = Math.floor(S.elapsedSec / 60), s = S.elapsedSec % 60;
+    var el = $('#clock');
+    el.textContent = (m<10?'0':'') + m + ':' + (s<10?'0':'') + s;
+    if (m >= D.targetMin) el.classList.add('over');
+  }, 1000);
+  setInterval(saveState, CFG.AUTOSAVE_MS);
+
+  function gradeGroup(secs){
+    var raw = 0, max = 0, wrong = [], brk = [];
+    secs.forEach(function(s){
+      var sOk = 0, sTot = s.items.length;
+      s.items.forEach(function(it){
+        max++;
+        var u = S.answers[it.id] || '';
+        var ok = false;
+        if (Array.isArray(it.ans)) {
+          ok = it.ans.some(function(a){ return norm(a) === norm(u); });
+        } else {
+          ok = norm(u) === norm(it.ans);
+        }
+        if (ok) { raw++; sOk++; } else { wrong.push(it.id); }
+      });
+      brk.push((s.tag || s.id) + ': ' + sOk + '/' + sTot);
+    });
+    return { raw: raw, max: max, wrong: wrong, breakdown: brk.join(' | ') };
+  }
+
+  function submitExam(){
+    var nm = $('#inp-name').value.trim(), em = $('#inp-email').value.trim();
+    var ok = true;
+    if (!nm) { $('#inp-name').classList.add('invalid'); ok = false; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { $('#inp-email').classList.add('invalid'); ok = false; }
+    if (!ok) { alert('Vui lòng nhập đầy đủ Họ tên và Email hợp lệ ở thanh trên cùng trước khi nộp bài.'); return; }
+    if (!confirm('Xác nhận nộp bài thi cuối khóa ' + D.version + '? Sau khi nộp bạn sẽ không thể chỉnh sửa câu trả lời.')) return;
+
+    if (activeAudio && !activeAudio.paused) activeAudio.pause();
+    var gL = gradeGroup(D.listening);
+    var gR = gradeGroup(D.reading);
+    var gLC = gradeGroup(D.langCheck);
+    var l25 = Math.round((gL.raw / gL.max) * 250) / 10;
+    var r25 = Math.round((gR.raw / gR.max) * 250) / 10;
+    var lcPct = Math.round((gLC.raw / gLC.max) * 1000) / 10;
+    var w1Text = S.answers.W1 || '', w2Text = S.answers.W2 || '';
+
+    var payload = {
+      submittedAt: new Date().toISOString(),
+      testId: D.id,
+      version: D.version,
+      name: nm,
+      email: em.toLowerCase(),
+      attempt: 1,
+      listeningRawStr: gL.raw + '/' + gL.max,
+      listening25: l25,
+      readingRawStr: gR.raw + '/' + gR.max,
+      reading25: r25,
+      langCheckRawStr: gLC.raw + '/' + gLC.max,
+      langCheckPct: lcPct,
+      listeningBreakdown: gL.breakdown,
+      readingBreakdown: gR.breakdown,
+      writingTask1Text: w1Text,
+      writingTask1Words: countWords(w1Text),
+      writingTask2Text: w2Text,
+      writingTask2Words: countWords(w2Text),
+      timeMinutes: Math.max(1, Math.round(S.elapsedSec / 60)),
+      wrongItems: gL.wrong.concat(gR.wrong, gLC.wrong).join(', '),
+      answersJson: JSON.stringify(S.answers)
+    };
+
+    S.submitted = true;
+    S.result = payload;
+    saveState();
+    lockInputs();
+    renderResult(payload, 'Đang gửi kết quả về Google Sheet của giáo viên...');
+    document.querySelector('[data-tab="result"]').click();
+    sendToSheet(payload);
+  }
+
+  function lockInputs(){
+    $$('input, select, textarea, .play-btn').forEach(function(el){
+      if (el.id !== 'inp-name' && el.id !== 'inp-email') el.disabled = true;
+    });
+    $('#btn-submit').disabled = true;
+    $('#btn-submit').textContent = 'Đã nộp bài';
+  }
+
+  function sendToSheet(payload){
+    var url = CFG.SHEET_ENDPOINT;
+    if (!url || url.indexOf('PASTE_') === 0) {
+      renderResult(payload, 'Lưu ý: Giáo viên chưa dán link Apps Script (/exec) vào SHEET_ENDPOINT. Kết quả đã được lưu tạm trên trình duyệt.');
+      return;
+    }
+    fetch(url, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    }).then(function(){
+      renderResult(payload, 'Đã gửi kết quả thành công về bảng tính Google Sheet của giáo viên!');
+    }).catch(function(){
+      try { localStorage.setItem(QUEUE_KEY, JSON.stringify(payload)); } catch(e){}
+      renderResult(payload, 'Mạng chập chờn — kết quả đã lưu trên máy. Bấm nút "Gửi lại kết quả" bên dưới khi có mạng.', true);
+    });
+  }
+
+  function renderResult(p, msg, showRetry){
+    var root = $('#pane-result');
+    root.innerHTML = '<div class="card">'
+      + '<h2>Xác nhận nộp bài — ' + p.version + '</h2>'
+      + '<div class="banner ' + (showRetry ? 'warn' : 'ok') + '">' + msg + '</div>'
+      + '<p>Học viên: <strong>' + p.name + '</strong> (' + p.email + ') · Thời gian làm bài: <strong>' + p.timeMinutes + ' phút</strong></p>'
+      + '<div class="summary-grid">'
+      + '<div class="stat"><small>Listening (Tự chấm)</small><b>' + p.listening25 + ' / 25</b><small>(' + p.listeningRawStr + ' câu đúng)</small></div>'
+      + '<div class="stat"><small>Reading (Tự chấm)</small><b>' + p.reading25 + ' / 25</b><small>(' + p.readingRawStr + ' câu đúng)</small></div>'
+      + '<div class="stat"><small>Language Check (Chẩn đoán)</small><b>' + p.langCheckPct + '%</b><small>(' + p.langCheckRawStr + ' câu đúng)</small></div>'
+      + '<div class="stat"><small>Writing &amp; Speaking</small><b>Chờ GV chấm</b><small>W1: ' + p.writingTask1Words + ' từ · W2: ' + p.writingTask2Words + ' từ</small></div>'
+      + '</div>'
+      + '<p style="font-size:13.5px;color:var(--mute)">Điểm tổng 4 kỹ năng (/100), xếp trình độ CEFR chính thức và báo cáo PDF chi tiết sẽ được giáo viên gửi sau khi chấm xong Writing &amp; Speaking.</p>'
+      + (showRetry ? '<button class="btn primary" id="btn-retry" type="button">Gửi lại kết quả về Google Sheet</button>' : '')
+      + '</div>';
+    if (showRetry) {
+      $('#btn-retry').addEventListener('click', function(){ sendToSheet(p); });
+    }
+  }
+
+  $('#btn-submit').addEventListener('click', submitExam);
+  if (S.submitted && S.result) {
+    lockInputs();
+    renderResult(S.result, 'Bạn đã hoàn thành và nộp bài thi cuối khóa.');
+  }
+})();
+</script>
+</body>
+</html>
